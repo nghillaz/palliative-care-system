@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">MobileApp</string>
+    <string name="title_activity_login">Login</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_account">CreateAccount</string>
+    <string name="title_activity_forgot_password_email">ForgotPasswordEmail</string>
+    <string name="title_activity_main_menu">MainMenu</string>
+    <string name="title_activity_set_doctor">SetDoctor</string>
+    <string name="title_activity_enter_symptoms">EnterSymptoms</string>
+    <string name="title_activity_edit_personal_details">EditPersonalDetails</string>
+    <string-array name="doctorNames">
+        <item>Dr. Hill</item>
+        <item>Dr. Moore</item>
+        <item>Dr. Kulkarni</item>
+        <item>Dr. Segu</item>
+        <item>Dr. Valdez</item>
+    </string-array>
+    <string-array name="symptomList">
+        <item>Pain</item>
+        <item>Nausea</item>
+        <item>Fatigue</item>
+        <item>Anxiety</item>
+        <item>Depression</item>
+        <item>Constipation</item>
+        <item>Diarrhea</item>
+        <item>Cough</item>
+        <item>Sore Throat</item>
+        <item>Vomiting</item>
+        <item>Fever</item>
+    </string-array>
+</resources>
