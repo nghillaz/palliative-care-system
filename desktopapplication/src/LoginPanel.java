@@ -10,33 +10,49 @@ public class LoginPanel extends JPanel{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		//create the components and set them up
-		JLabel usernameLabel = new JLabel("Username:");
-		JTextField usernameField = new JTextField(20);
+		
+		//icon component
+		JLabel RPCSIconLabel = new JLabel("");
+		Image img = new ImageIcon(this.getClass().getResource("/RPCSIcon.jpg")).getImage();
+		RPCSIconLabel.setIcon(new ImageIcon(img));
+		
+		JLabel emailLabel = new JLabel("Email:");
+		JTextField emailField = new JTextField(20);
 		JLabel passwordLabel = new JLabel("Password:");
-		JTextField passwordField = new JTextField(20);
+		JPasswordField passwordField = new JPasswordField(20);
 		JButton loginButton = new JButton("Login");		
 		JButton forgotPasswordButton = new JButton("Forgot Password");
 		JButton createAccountButton = new JButton("Create Account");
 		forgotPasswordButton.addActionListener(new ForgotPasswordListener(contentPane));
 		loginButton.addActionListener(new LoginListener(contentPane));
 		createAccountButton.addActionListener(new CreateAccountListener(contentPane));
-		usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		RPCSIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		forgotPasswordButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		usernameField.setMaximumSize(new Dimension(200, 30));
+		emailField.setMaximumSize(new Dimension(200, 30));
 		passwordField.setMaximumSize(new Dimension(200, 30));
 		
 		//add the components to the panel
-		add(usernameLabel);
-		add(usernameField);
+		add(Box.createRigidArea(new Dimension(0,10)));
+		add(RPCSIconLabel);
+		add(Box.createRigidArea(new Dimension(0,10)));
+		add(emailLabel);
+		add(Box.createRigidArea(new Dimension(0,5)));
+		add(emailField);
+		add(Box.createRigidArea(new Dimension(0,2)));
 		add(passwordLabel);
+		add(Box.createRigidArea(new Dimension(0,5)));
 		add(passwordField);
+		add(Box.createRigidArea(new Dimension(0,10)));
 		add(loginButton);
+		add(Box.createRigidArea(new Dimension(0,5)));
 		add(forgotPasswordButton);
+		add(Box.createRigidArea(new Dimension(0,5)));
 		add(createAccountButton);
 	}
 	

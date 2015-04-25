@@ -8,7 +8,7 @@ public class MainClass {
 	}
 	private static void createAndShowGUI(){
 	 	
-		JFrame frame = new JFrame("Doctor Portal");
+		JFrame frame = new JFrame("Rice Palliative Care Software - Doctor Portal");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Dimension initSize = new Dimension(640,480);
