@@ -1,12 +1,11 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
 public class LoginPanel extends JPanel{
 	
 	public LoginPanel(Container contentPane){
-		//set to grid layout
+		//set to box layout
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		//create the components and set them up

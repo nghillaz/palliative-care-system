@@ -4,10 +4,6 @@ import java.awt.*;
 
 public class MainClass {
 	public static void main(String[] args){
-		createAndShowGUI();
-	}
-	private static void createAndShowGUI(){
-	 	
 		JFrame frame = new JFrame("Rice Palliative Care Software - Doctor Portal");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
