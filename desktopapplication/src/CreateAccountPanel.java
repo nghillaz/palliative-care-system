@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.*;
 
 public class CreateAccountPanel extends JPanel{
 	JTextField firstNameField;
@@ -119,7 +118,7 @@ public class CreateAccountPanel extends JPanel{
 			String firstName = firstNameField.getText();
 			String lastName = lastNameField.getText();
 			String email = emailField.getText();
-			String password = passwordField.getText();
+			char[] password = passwordField.getPassword();
 			String phoneNumber = phoneNumberField.getText();
 			Boolean docRButton = doctorRButton.isSelected();
 			Boolean nurRButton = nurseRButton.isSelected();
@@ -136,7 +135,7 @@ public class CreateAccountPanel extends JPanel{
 					fw.append(",");
 					fw.append(email);
 					fw.append(",");
-					fw.append(password);
+					fw.append(password.toString());
 					fw.append(",");
 					fw.append(phoneNumber);
 					fw.append(",");
@@ -175,7 +174,7 @@ public class CreateAccountPanel extends JPanel{
 					fw.append(",");
 					fw.append(email);
 					fw.append(",");
-					fw.append(password);
+					fw.append(password.toString());
 					fw.append(",");
 					fw.append(phoneNumber);
 					fw.append(",");
@@ -185,7 +184,6 @@ public class CreateAccountPanel extends JPanel{
 					
 					fw.close();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
