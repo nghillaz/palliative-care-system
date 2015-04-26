@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -16,6 +17,7 @@ public class CreateAccountPanel extends JPanel{
 	JTextField firstNameField;
 	JTextField lastNameField;
 	JTextField emailField;
+	// TODO Might want to change these JPasswordFields to JTextFields so we can email the password out if needed
 	JPasswordField passwordField;
 	JPasswordField cPasswordField;
 	JTextField phoneNumberField;
@@ -135,21 +137,28 @@ public class CreateAccountPanel extends JPanel{
 			String phoneNumber = phoneNumberField.getText();
 			Boolean docRButton = doctorRButton.isSelected();
 			Boolean nurRButton = nurseRButton.isSelected();
+			PrintStream console = System.out;
+			
+			// TODO We should verify if both passwords are equal
+			// TODO We should verify if all fields are filled in
 			
 			try {
 	            System.out.println("Downloading an object");
 	            S3Object s3object = s3Client.getObject(new GetObjectRequest(
 	            		bucketName, keyName));
-	            System.out.println("Content-Type: "  + 
-	            		s3object.getObjectMetadata().getContentType());
+	            System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(s3object.getObjectContent()));
 	            
-	           // Get a range of bytes from an object.
+	            PrintStream outcsv = new PrintStream(new FileOutputStream("doctors.csv"));
+	            System.setOut(outcsv);
 	            
-	            GetObjectRequest rangeObjectRequest = new GetObjectRequest(
-	            		bucketName, keyName);
-	            rangeObjectRequest.setRange(0, 10);
-	            S3Object objectPortion = s3Client.getObject(rangeObjectRequest);
-	            
+	            while (true) {
+	                String line = reader.readLine();
+	                if (line == null) break;
+
+	                System.out.println(line);
+	            }
+	            System.setOut(console);
 	            
 	        } catch (AmazonServiceException ase) {
 	            System.out.println("Caught an AmazonServiceException, which" +
@@ -168,14 +177,15 @@ public class CreateAccountPanel extends JPanel{
 	                    "communicate with S3, " +
 	                    "such as not being able to access the network.");
 	            System.out.println("Error Message: " + ace.getMessage());
-	        }
+	        } catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			
 			File f = new File("doctors.csv");
 			if(f.exists() && !f.isDirectory())
 			{
 				try {
 					FileWriter fw = new FileWriter("doctors.csv", true);
-					fw.append("\n");
 					fw.append(firstName);
 					fw.append(",");
 					fw.append(lastName);
@@ -257,7 +267,7 @@ public class CreateAccountPanel extends JPanel{
 	                    "communicate with S3, " +
 	                    "such as not being able to access the network.");
 	            System.out.println("Error Message: " + ace.getMessage());
-	        }
+	       	}
 			
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));

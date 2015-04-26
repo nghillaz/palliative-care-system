@@ -57,7 +57,8 @@ public class ForgotPasswordPanel extends JPanel{
 				message.setRecipients(Message.RecipientType.TO,
 						InternetAddress.parse(emailField.getText()));
 				message.setSubject("RPCS Email Recovery");
-				// TODO send doctor their password or a different message (like "see your account admin")
+				// TODO send doctor (first verify their email is in the list of doctors - if not, popup box with error message)
+				// their password or a different message (like "see your account admin")
 				message.setText("Test");
 	 
 				Transport.send(message);
