@@ -1,8 +1,14 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 
 public class CreateAccountPanel extends JPanel{
 	JTextField firstNameField;
@@ -13,6 +19,14 @@ public class CreateAccountPanel extends JPanel{
 	JTextField phoneNumberField;
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
+	
+	//AmazonS3 stuff
+	AWSCredentials credentials = new BasicAWSCredentials(
+			"AKIAJ6ESZAJPDCWD4MOA", 
+			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
+	String bucketName			= "rpcareapp";
+	String keyName				= "doctors.csv";
+	AmazonS3 s3Client = new AmazonS3Client(credentials);
 	
 	public CreateAccountPanel(Container contentPane){
 		//set to box layout
@@ -187,6 +201,30 @@ public class CreateAccountPanel extends JPanel{
 					e1.printStackTrace();
 				}
 			}
+			
+			try {
+	            System.out.println("Uploading a new object to S3 from a file\n");
+	            File file = new File("doctors.csv");
+	            s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
+
+	         } catch (AmazonServiceException ase) {
+	            System.out.println("Caught an AmazonServiceException, which " +
+	            		"means your request made it " +
+	                    "to Amazon S3, but was rejected with an error response" +
+	                    " for some reason.");
+	            System.out.println("Error Message:    " + ase.getMessage());
+	            System.out.println("HTTP Status Code: " + ase.getStatusCode());
+	            System.out.println("AWS Error Code:   " + ase.getErrorCode());
+	            System.out.println("Error Type:       " + ase.getErrorType());
+	            System.out.println("Request ID:       " + ase.getRequestId());
+	        } catch (AmazonClientException ace) {
+	            System.out.println("Caught an AmazonClientException, which " +
+	            		"means the client encountered " +
+	                    "an internal error while trying to " +
+	                    "communicate with S3, " +
+	                    "such as not being able to access the network.");
+	            System.out.println("Error Message: " + ace.getMessage());
+	        }
 			
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));
