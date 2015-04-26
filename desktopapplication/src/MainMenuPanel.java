@@ -75,7 +75,7 @@ public class MainMenuPanel extends JPanel{
 	}
 	
 	public String[] getPatientList(){
-		//needs finishing!!
+		// TODO needs finishing!!
 		//return the list of customers from the database
 		return new String[] {"harry", "sally", "tom"};
 	}

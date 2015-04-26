@@ -33,18 +33,15 @@ public class ForgotPasswordPanel extends JPanel{
 		}
 		public void actionPerformed(ActionEvent e){
 			
-	         // TODO finish this (try Yahoo instead of google)
 			final String username = "Team22CSE360@gmail.com";
 			final String password = "passwordTeam22CSE360";
 	 
 			Properties props = new Properties();
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.socketFactory.port", "465");
-			props.put("mail.smtp.socketFactory.class",
-					"javax.net.ssl.SSLSocketFactory");
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.port", "465");
-			props.put("mail.transport.protocol", "smtp");
+		    props.put("mail.smtp.auth", "true");
+		    props.put("mail.smtp.starttls.enable", "true");
+		    props.put("mail.smtp.host", "smtp.gmail.com");
+		    props.put("mail.smtp.port", "587");
+			//props.put("mail.transport.protocol", "smtp");
 	 
 			Session session = Session.getDefaultInstance(props,
 				new javax.mail.Authenticator() {
@@ -59,13 +56,14 @@ public class ForgotPasswordPanel extends JPanel{
 				message.setFrom(new InternetAddress(username));
 				message.setRecipients(Message.RecipientType.TO,
 						InternetAddress.parse(emailField.getText()));
-				message.setSubject("Testing Subject");
-				message.setText("Dear Mail Crawler," +
-						"\n\n No spam to my email, please!");
+				message.setSubject("RPCS Email Recovery");
+				// TODO send doctor their password or a different message (like "see your account admin")
+				message.setText("Test");
 	 
 				Transport.send(message);
-	 
-				System.out.println("Done");
+				
+				// TODO Popup box "Email Sent."
+				System.out.println("Email Sent.");
 	 
 			} catch (MessagingException me) {
 				throw new RuntimeException(me);

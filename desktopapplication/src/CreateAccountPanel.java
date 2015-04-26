@@ -170,7 +170,7 @@ public class CreateAccountPanel extends JPanel{
 	            System.out.println("Error Message: " + ace.getMessage());
 	        }
 			
-			/*File f = new File("doctors.csv");
+			File f = new File("doctors.csv");
 			if(f.exists() && !f.isDirectory())
 			{
 				try {
@@ -263,7 +263,7 @@ public class CreateAccountPanel extends JPanel{
 			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
-		*/}
+		}
 	}
 	public class BackListener implements ActionListener{
 		Container contentPane;

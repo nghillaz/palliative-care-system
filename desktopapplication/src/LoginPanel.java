@@ -61,7 +61,7 @@ public class LoginPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			//needs finishing!!
+			// TODO needs finishing!!
 			//check if they're in the database then log them in
 			contentPane.removeAll();
 			contentPane.add(new MainMenuPanel(contentPane));
