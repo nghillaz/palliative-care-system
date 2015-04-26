@@ -141,47 +141,9 @@ public class CreateAccountPanel extends JPanel{
 			// TODO We should verify if both passwords are equal
 			// TODO We should verify if all fields are filled in
 			
-			try {
-	            System.out.println("Downloading an object");
-	            S3Object s3object = s3Client.getObject(new GetObjectRequest(
-	            		bucketName, keyName));
-	            System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
-	            BufferedReader reader = new BufferedReader(new InputStreamReader(s3object.getObjectContent()));
-	            
-	            PrintStream outcsv = new PrintStream(new FileOutputStream("doctors.csv"));
-	            System.setOut(outcsv);
-	            
-	            // TODO line == null to inside the while condition
-	            while (true) {
-	                String line = reader.readLine();
-	                if (line == null) break;
-
-	                System.out.println(line);
-	            }
-	            System.setOut(console);
-	            
-	        } catch (AmazonServiceException ase) {
-	            System.out.println("Caught an AmazonServiceException, which" +
-	            		" means your request made it " +
-	                    "to Amazon S3, but was rejected with an error response" +
-	                    " for some reason.");
-	            System.out.println("Error Message:    " + ase.getMessage());
-	            System.out.println("HTTP Status Code: " + ase.getStatusCode());
-	            System.out.println("AWS Error Code:   " + ase.getErrorCode());
-	            System.out.println("Error Type:       " + ase.getErrorType());
-	            System.out.println("Request ID:       " + ase.getRequestId());
-	        } catch (AmazonClientException ace) {
-	            System.out.println("Caught an AmazonClientException, which means"+
-	            		" the client encountered " +
-	                    "an internal error while trying to " +
-	                    "communicate with S3, " +
-	                    "such as not being able to access the network.");
-	            System.out.println("Error Message: " + ace.getMessage());
-	        } catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			//right here, we use the database class to get the list of doctors
+			File f = Database.download("doctors.csv", console);
 			
-			File f = new File("doctors.csv");
 			if(f.exists() && !f.isDirectory())
 			{
 				try {
@@ -245,30 +207,8 @@ public class CreateAccountPanel extends JPanel{
 				}
 			}
 			
-			try {
-	            System.out.println("Uploading a new object to S3 from a file\n");
-	            File file = new File("doctors.csv");
-	            s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
-	            
-	            // TODO Popup box saying "Account Created"
-	         } catch (AmazonServiceException ase) {
-	            System.out.println("Caught an AmazonServiceException, which " +
-	            		"means your request made it " +
-	                    "to Amazon S3, but was rejected with an error response" +
-	                    " for some reason.");
-	            System.out.println("Error Message:    " + ase.getMessage());
-	            System.out.println("HTTP Status Code: " + ase.getStatusCode());
-	            System.out.println("AWS Error Code:   " + ase.getErrorCode());
-	            System.out.println("Error Type:       " + ase.getErrorType());
-	            System.out.println("Request ID:       " + ase.getRequestId());
-	        } catch (AmazonClientException ace) {
-	            System.out.println("Caught an AmazonClientException, which " +
-	            		"means the client encountered " +
-	                    "an internal error while trying to " +
-	                    "communicate with S3, " +
-	                    "such as not being able to access the network.");
-	            System.out.println("Error Message: " + ace.getMessage());
-	       	}
+			//here we use the database class to upload the file
+			Database.upload("doctors.csv", new File("doctors.csv"));
 			
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));
