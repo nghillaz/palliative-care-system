@@ -12,12 +12,14 @@ public class CreateAccountPanel extends JPanel{
 	JPasswordField passwordField;
 	JPasswordField cPasswordField;
 	JTextField phoneNumberField;
+	JRadioButton doctorRButton;
+	JRadioButton nurseRButton;
 	
 	public CreateAccountPanel(Container contentPane){
 		//set to box layout
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		//create the components and set them up
+		//create the components
 		JLabel firstNameLabel = new JLabel("First Name:");
 		JLabel lastNameLabel = new JLabel("Last Name:");
 		JLabel emailLabel = new JLabel("Email:");
@@ -32,6 +34,15 @@ public class CreateAccountPanel extends JPanel{
 		phoneNumberField = new JTextField(20);
 		JButton createAccountButton = new JButton("Create Account");
 		JButton backButton = new JButton("Back");
+		doctorRButton = new JRadioButton("Doctor");
+		nurseRButton = new JRadioButton("Nurse");
+		
+		//Group radio buttons
+		ButtonGroup group = new ButtonGroup();
+		group.add(doctorRButton);
+		group.add(nurseRButton);
+		
+		//Align
 		firstNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lastNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -46,6 +57,10 @@ public class CreateAccountPanel extends JPanel{
 		phoneNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		doctorRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		nurseRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		//set Max Size
 		firstNameField.setMaximumSize(new Dimension(200, 30));
 		lastNameField.setMaximumSize(new Dimension(200, 30));
 		emailField.setMaximumSize(new Dimension(200, 30));
@@ -81,9 +96,14 @@ public class CreateAccountPanel extends JPanel{
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(phoneNumberField);
 		add(Box.createRigidArea(new Dimension(0,2)));
+		add(doctorRButton);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(nurseRButton);
+		add(Box.createRigidArea(new Dimension(0,2)));
 		add(createAccountButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(backButton);
+		
 	
 		
 	}
@@ -101,12 +121,15 @@ public class CreateAccountPanel extends JPanel{
 			String email = emailField.getText();
 			String password = passwordField.getText();
 			String phoneNumber = phoneNumberField.getText();
+			Boolean docRButton = doctorRButton.isSelected();
+			Boolean nurRButton = nurseRButton.isSelected();
 			
 			File f = new File("doctors.csv");
 			if(f.exists() && !f.isDirectory())
 			{
 				try {
 					FileWriter fw = new FileWriter("doctors.csv", true);
+					fw.append("\n");
 					fw.append(firstName);
 					fw.append(",");
 					fw.append(lastName);
@@ -116,7 +139,10 @@ public class CreateAccountPanel extends JPanel{
 					fw.append(password);
 					fw.append(",");
 					fw.append(phoneNumber);
-					fw.append("\n");
+					fw.append(",");
+					fw.append(docRButton.toString());
+					fw.append(",");
+					fw.append(nurRButton.toString());
 					
 					fw.close();
 				} catch (IOException e1) {
@@ -128,7 +154,6 @@ public class CreateAccountPanel extends JPanel{
 				FileWriter fw;
 				try {
 					fw = new FileWriter("doctors.csv");
-					fw.append("\n");
 					fw.append("firstName");
 					fw.append(",");
 					fw.append("lastName");
@@ -138,7 +163,11 @@ public class CreateAccountPanel extends JPanel{
 					fw.append("password");
 					fw.append(",");
 					fw.append("phoneNumber");
-
+					fw.append(",");
+					fw.append("doctor");
+					fw.append(",");
+					fw.append("nurse");
+					
 					fw.append("\n");
 					fw.append(firstName);
 					fw.append(",");
@@ -149,7 +178,10 @@ public class CreateAccountPanel extends JPanel{
 					fw.append(password);
 					fw.append(",");
 					fw.append(phoneNumber);
-					fw.append("\n");
+					fw.append(",");
+					fw.append(docRButton.toString());
+					fw.append(",");
+					fw.append(nurRButton.toString());
 					
 					fw.close();
 				} catch (IOException e1) {

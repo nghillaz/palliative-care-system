@@ -1,0 +1,2 @@
+firstName,lastName,email,password,phoneNumber,doctor,nurse
+Bob,Hope,bHope@email.com,pass,5555554444,true,false
