@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+import javax.swing.*;
+import java.awt.*;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
@@ -35,7 +38,6 @@ public class Database {
             PrintStream outcsv = new PrintStream(new FileOutputStream("doctors.csv"));
             System.setOut(outcsv);
             
-            // TODO line == null to inside the while condition
             while (true) {
                 String line = reader.readLine();
                 if (line == null) break;
@@ -73,7 +75,12 @@ public class Database {
             System.out.println("Uploading a new object to S3 from a file\n");
             s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
             
-            // TODO Popup box saying "Completed Successfully"
+            JFrame completed = new JFrame();
+            JLabel messageLabel = new JLabel("Completed Successfully");
+            completed.getContentPane().add(messageLabel, BorderLayout.CENTER);
+            completed.setSize(200,100);
+            completed.setVisible(true);
+            
          } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which " +
             		"means your request made it " +
