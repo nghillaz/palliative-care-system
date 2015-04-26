@@ -1,8 +1,17 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.*;
 
 public class CreateAccountPanel extends JPanel{
+	JTextField firstNameField;
+	JTextField lastNameField;
+	JTextField emailField;
+	JPasswordField passwordField;
+	JPasswordField cPasswordField;
+	JTextField phoneNumberField;
 	
 	public CreateAccountPanel(Container contentPane){
 		//set to box layout
@@ -15,12 +24,12 @@ public class CreateAccountPanel extends JPanel{
 		JLabel passwordLabel = new JLabel("Password:");
 		JLabel cPasswordLabel = new JLabel("Confirm Password:");
 		JLabel phoneNumberLabel = new JLabel("Phone number:");
-		JTextField firstNameField = new JTextField(20);
-		JTextField lastNameField = new JTextField(20);
-		JTextField emailField = new JTextField(20);
-		JPasswordField passwordField = new JPasswordField(20);
-		JPasswordField cPasswordField = new JPasswordField(20);
-		JTextField phoneNumberField = new JTextField(20);
+		firstNameField = new JTextField(20);
+		lastNameField = new JTextField(20);
+		emailField = new JTextField(20);
+		passwordField = new JPasswordField(20);
+		cPasswordField = new JPasswordField(20);
+		phoneNumberField = new JTextField(20);
 		JButton createAccountButton = new JButton("Create Account");
 		JButton backButton = new JButton("Back");
 		firstNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -75,6 +84,7 @@ public class CreateAccountPanel extends JPanel{
 		add(createAccountButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(backButton);
+	
 		
 	}
 	
@@ -86,6 +96,68 @@ public class CreateAccountPanel extends JPanel{
 		public void actionPerformed(ActionEvent e){
 			//needs finishing!!
 			//create the account and put it in the database
+			String firstName = firstNameField.getText();
+			String lastName = lastNameField.getText();
+			String email = emailField.getText();
+			String password = passwordField.getText();
+			String phoneNumber = phoneNumberField.getText();
+			
+			File f = new File("doctors.csv");
+			if(f.exists() && !f.isDirectory())
+			{
+				try {
+					FileWriter fw = new FileWriter("doctors.csv", true);
+					fw.append(firstName);
+					fw.append(",");
+					fw.append(lastName);
+					fw.append(",");
+					fw.append(email);
+					fw.append(",");
+					fw.append(password);
+					fw.append(",");
+					fw.append(phoneNumber);
+					fw.append("\n");
+					
+					fw.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			else
+			{
+				FileWriter fw;
+				try {
+					fw = new FileWriter("doctors.csv");
+					fw.append("\n");
+					fw.append("firstName");
+					fw.append(",");
+					fw.append("lastName");
+					fw.append(",");
+					fw.append("email");
+					fw.append(",");
+					fw.append("password");
+					fw.append(",");
+					fw.append("phoneNumber");
+
+					fw.append("\n");
+					fw.append(firstName);
+					fw.append(",");
+					fw.append(lastName);
+					fw.append(",");
+					fw.append(email);
+					fw.append(",");
+					fw.append(password);
+					fw.append(",");
+					fw.append(phoneNumber);
+					fw.append("\n");
+					
+					fw.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
