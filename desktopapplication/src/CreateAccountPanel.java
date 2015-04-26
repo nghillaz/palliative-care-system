@@ -17,7 +17,6 @@ public class CreateAccountPanel extends JPanel{
 	JTextField firstNameField;
 	JTextField lastNameField;
 	JTextField emailField;
-	// TODO Might want to change these JPasswordFields to JTextFields so we can email the password out if needed
 	JPasswordField passwordField;
 	JPasswordField cPasswordField;
 	JTextField phoneNumberField;
@@ -152,6 +151,7 @@ public class CreateAccountPanel extends JPanel{
 	            PrintStream outcsv = new PrintStream(new FileOutputStream("doctors.csv"));
 	            System.setOut(outcsv);
 	            
+	            // TODO line == null to inside the while condition
 	            while (true) {
 	                String line = reader.readLine();
 	                if (line == null) break;
@@ -249,7 +249,8 @@ public class CreateAccountPanel extends JPanel{
 	            System.out.println("Uploading a new object to S3 from a file\n");
 	            File file = new File("doctors.csv");
 	            s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
-
+	            
+	            // TODO Popup box saying "Account Created"
 	         } catch (AmazonServiceException ase) {
 	            System.out.println("Caught an AmazonServiceException, which " +
 	            		"means your request made it " +
