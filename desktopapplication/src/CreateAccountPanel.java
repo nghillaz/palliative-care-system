@@ -9,6 +9,8 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 
 public class CreateAccountPanel extends JPanel{
 	JTextField firstNameField;
@@ -20,7 +22,6 @@ public class CreateAccountPanel extends JPanel{
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
 	
-	//AmazonS3 stuff
 	AWSCredentials credentials = new BasicAWSCredentials(
 			"AKIAJ6ESZAJPDCWD4MOA", 
 			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
@@ -127,8 +128,6 @@ public class CreateAccountPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			//needs finishing!!
-			//create the account and put it in the database
 			String firstName = firstNameField.getText();
 			String lastName = lastNameField.getText();
 			String email = emailField.getText();
@@ -137,7 +136,41 @@ public class CreateAccountPanel extends JPanel{
 			Boolean docRButton = doctorRButton.isSelected();
 			Boolean nurRButton = nurseRButton.isSelected();
 			
-			File f = new File("doctors.csv");
+			try {
+	            System.out.println("Downloading an object");
+	            S3Object s3object = s3Client.getObject(new GetObjectRequest(
+	            		bucketName, keyName));
+	            System.out.println("Content-Type: "  + 
+	            		s3object.getObjectMetadata().getContentType());
+	            
+	           // Get a range of bytes from an object.
+	            
+	            GetObjectRequest rangeObjectRequest = new GetObjectRequest(
+	            		bucketName, keyName);
+	            rangeObjectRequest.setRange(0, 10);
+	            S3Object objectPortion = s3Client.getObject(rangeObjectRequest);
+	            
+	            
+	        } catch (AmazonServiceException ase) {
+	            System.out.println("Caught an AmazonServiceException, which" +
+	            		" means your request made it " +
+	                    "to Amazon S3, but was rejected with an error response" +
+	                    " for some reason.");
+	            System.out.println("Error Message:    " + ase.getMessage());
+	            System.out.println("HTTP Status Code: " + ase.getStatusCode());
+	            System.out.println("AWS Error Code:   " + ase.getErrorCode());
+	            System.out.println("Error Type:       " + ase.getErrorType());
+	            System.out.println("Request ID:       " + ase.getRequestId());
+	        } catch (AmazonClientException ace) {
+	            System.out.println("Caught an AmazonClientException, which means"+
+	            		" the client encountered " +
+	                    "an internal error while trying to " +
+	                    "communicate with S3, " +
+	                    "such as not being able to access the network.");
+	            System.out.println("Error Message: " + ace.getMessage());
+	        }
+			
+			/*File f = new File("doctors.csv");
 			if(f.exists() && !f.isDirectory())
 			{
 				try {
@@ -230,9 +263,8 @@ public class CreateAccountPanel extends JPanel{
 			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
-		}
+		*/}
 	}
-	
 	public class BackListener implements ActionListener{
 		Container contentPane;
 		public BackListener(Container contentPane){
