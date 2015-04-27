@@ -110,7 +110,7 @@ public class ForgotPasswordPanel extends JPanel{
 					message.setRecipients(Message.RecipientType.TO,
 							InternetAddress.parse(emailField.getText()));
 					message.setSubject("RPCS Email Recovery");
-					message.setText("Test");
+					message.setText("Your password is " + passwordb + ".");
 		 
 					Transport.send(message);
 					

@@ -20,8 +20,8 @@ public class CreateAccountPanel extends JPanel{
 	JTextField firstNameField;
 	JTextField lastNameField;
 	JTextField emailField;
-	JPasswordField passwordField;
-	JPasswordField cPasswordField;
+	JTextField passwordField;
+	JTextField cPasswordField;
 	JTextField phoneNumberField;
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
@@ -153,14 +153,14 @@ public class CreateAccountPanel extends JPanel{
 			String firstName = firstNameField.getText();
 			String lastName = lastNameField.getText();
 			String email = emailField.getText();
-			char[] password = passwordField.getPassword();
-			char[] cPassword = cPasswordField.getPassword();
+			String password = passwordField.getText();
+			String cPassword = cPasswordField.getText();
 			String phoneNumber = phoneNumberField.getText();
 			Boolean docRButton = doctorRButton.isSelected();
 			Boolean nurRButton = nurseRButton.isSelected();
 			PrintStream console = System.out;
 			
-			if(!(Arrays.equals(password,cPassword)))
+			if(!(password.equals(cPassword)))
 			{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Passwords do not match.");
