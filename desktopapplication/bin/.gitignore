@@ -17,3 +17,5 @@
 /MainMenuPanel$EditDetailsListener.class
 /MainMenuPanel$RightPanel.class
 /MainMenuPanel.class
+/LoginPanel$LoginListener$CreateAccountListener.class
+/LoginPanel$LoginListener$ForgotPasswordListener.class

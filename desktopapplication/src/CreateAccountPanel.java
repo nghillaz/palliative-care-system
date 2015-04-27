@@ -173,6 +173,10 @@ public class CreateAccountPanel extends JPanel{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
 			}
+			else if(password.length() < 4){
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "Password must be 4 or more characters");
+			}
 			else
 			{
 			
