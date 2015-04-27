@@ -27,7 +27,6 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 
 public class EditPersonalDetailsPanel extends JPanel{
-	// TODO Make sure they enter all fields
 	// TODO jeffdmoore@live.com was not found in the database but nghillaz@gmail.com was found
 	// TODO Since the doctor is logged in already, they shouldn't have to enter their email address again
 	
@@ -176,11 +175,13 @@ public class EditPersonalDetailsPanel extends JPanel{
 				{
 					JFrame frame = new JFrame();
 					JOptionPane.showMessageDialog(frame, "Passwords do not match.");
+					return;
 				}
-				else if(anyFieldsEmpty() && (doctorRButton.isSelected() || nurseRButton.isSelected()))
+				else if(anyFieldsEmpty() || (!doctorRButton.isSelected() && !nurseRButton.isSelected()))
 				{
 					JFrame frame = new JFrame();
 					JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
+					return;
 				}
 				
 				//right here, we use the database class to get the list of doctors
@@ -203,6 +204,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 						}
 						buffer += scanner.next();
 						lineNumber++;
+						System.out.println("line number: " + lineNumber);
 					}
 					
 					if(!found){
