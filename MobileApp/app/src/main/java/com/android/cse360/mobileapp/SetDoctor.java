@@ -12,6 +12,9 @@ import android.widget.*;
 
 public class SetDoctor extends ActionBarActivity {
 
+    Button submitButton;
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,15 +29,7 @@ public class SetDoctor extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
-        addListenerOnButton();
-    }
 
-    public void addListenerOnButton() {
-
-
-        Button submitButton;
-
-        final Context context = this;
 
         submitButton = (Button) findViewById(R.id.submitButton);
 
@@ -49,12 +44,7 @@ public class SetDoctor extends ActionBarActivity {
                 finish();
             }
         });
-
     }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

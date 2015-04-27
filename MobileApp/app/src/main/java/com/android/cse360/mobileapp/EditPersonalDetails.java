@@ -12,26 +12,22 @@ import android.widget.Button;
 
 public class EditPersonalDetails extends ActionBarActivity {
 
+
+    Button saveButton;
+
+    final Context context = this;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_personal_details);
-        addListenerOnButton();
-    }
-
-    public void addListenerOnButton() {
-
-
-        Button saveButton;
-
-        final Context context = this;
 
         saveButton = (Button) findViewById(R.id.saveButton);
-
-
         saveButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
+
             public void onClick (View arg0){
 
                 Intent myIntent = new Intent(context, MainMenu.class);
@@ -39,7 +35,6 @@ public class EditPersonalDetails extends ActionBarActivity {
                 finish();
             }
         });
-
     }
 
 
