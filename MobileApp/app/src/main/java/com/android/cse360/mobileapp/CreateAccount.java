@@ -8,40 +8,65 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 
 public class CreateAccount extends ActionBarActivity {
+
+
+    Button createAccountButton;
+    EditText emailText;
+    EditText passwordText;
+    EditText firstNameText;
+    EditText lastNameText;
+    EditText phoneText;
+    EditText addressText;
+    Context context = this;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-        addListenerOnButton();
-    }
-
-    public void addListenerOnButton() {
-
-        Button createAccountButton;
-
-        final Context context = this;
-
         createAccountButton = (Button) findViewById(R.id.newAccountButton);
 
-
         createAccountButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                emailText = (EditText)findViewById(R.id.newEmail);
+                passwordText = (EditText)findViewById(R.id.newPassword);
+                firstNameText = (EditText)findViewById(R.id.newFirstName);
+                lastNameText = (EditText)findViewById(R.id.newLastName);
+                phoneText = (EditText) findViewById(R.id.newPhoneNumber);
+                addressText = (EditText)findViewById(R.id.newAddress);
 
-            @Override
-            public void onClick(View arg0) {
+                try {
+                    File newFile = new File("sampleFile.csv");
+                    FileOutputStream fOut = openFileOutput("sampleFile.csv", MODE_WORLD_WRITEABLE);
+
+                    OutputStreamWriter outStream = new OutputStreamWriter(fOut);
+
+                    outStream.write(emailText.getText().toString());
+                    outStream.flush();
+                    outStream.close();
+
+                }
+                catch  (IOException e)
+                {
+                    e.printStackTrace();
+                }
 
                 Intent myIntent = new Intent(context, MainMenu.class);
                 startActivity(myIntent);
             }
 
         });
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
