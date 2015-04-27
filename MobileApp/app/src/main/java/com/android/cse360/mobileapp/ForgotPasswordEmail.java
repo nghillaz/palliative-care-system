@@ -12,25 +12,16 @@ import android.widget.Button;
 
 public class ForgotPasswordEmail extends ActionBarActivity {
 
+    Button submitButton;
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_email);
-        addListenerOnButton();
-    }
 
-
-
-    public void addListenerOnButton() {
-
-
-        Button submitButton;
-
-        final Context context = this;
 
         submitButton = (Button) findViewById(R.id.submitButton);
-
-
         submitButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -42,6 +33,7 @@ public class ForgotPasswordEmail extends ActionBarActivity {
         });
 
     }
+
 
 
     @Override

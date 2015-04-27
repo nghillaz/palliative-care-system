@@ -13,18 +13,13 @@ import android.widget.Button;
 
 public class Login extends ActionBarActivity {
 
+    Button createAccountButton, forgotPasswordEmailButton, loginButton;
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        addListenerOnButton();
-    }
-
-    public void addListenerOnButton() {
-
-        Button createAccountButton, forgotPasswordEmailButton, loginButton;
-
-        final Context context = this;
 
         createAccountButton = (Button) findViewById(R.id.createAccountButton);
         forgotPasswordEmailButton = (Button) findViewById(R.id.forgotButton);
@@ -64,6 +59,8 @@ public class Login extends ActionBarActivity {
             }
 
         });
+
+
     }
 
     @Override
