@@ -151,6 +151,8 @@ public class CreateAccountPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
+			
+			// TODO We need to check if the email already exists in the database - otherwise we'd have 2 doctors with the same email address
 			String firstName = firstNameField.getText();
 			String lastName = lastNameField.getText();
 			String email = emailField.getText();

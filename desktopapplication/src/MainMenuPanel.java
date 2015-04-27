@@ -7,8 +7,7 @@ public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO maybe make it look nicer
-		// TODO create logout button
-		// TODO create edit details button (that means a new edit details panel)
+		// TODO create logout button (basically a back button)
 		// TODO create a list or graph of history of each patient somehow (low priority)
 		
 		//set to grid layout

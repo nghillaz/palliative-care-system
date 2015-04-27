@@ -27,6 +27,9 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 
 public class EditPersonalDetailsPanel extends JPanel{
+	// TODO Make sure they enter all fields
+	// TODO jeffdmoore@live.com was not found in the database but nghillaz@gmail.com was found
+	// TODO Since the doctor is logged in already, they shouldn't have to enter their email address again
 	
 	JTextField firstNameField;
 	JTextField lastNameField;
