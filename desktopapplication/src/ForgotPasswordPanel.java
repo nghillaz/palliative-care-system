@@ -56,9 +56,6 @@ public class ForgotPasswordPanel extends JPanel{
 		String passwordb;
 		public void actionPerformed(ActionEvent e){
 			
-			// TODO send doctor (first verify their email is in the list of doctors (meaning download the file and parse)
-			// - if not, popup box with error message)
-			// their password or a different message (like "see your account admin")
 			PrintStream console = System.out;
 			Database.download("doctors.csv", console);
 			
