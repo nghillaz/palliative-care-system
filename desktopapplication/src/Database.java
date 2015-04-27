@@ -45,6 +45,7 @@ public class Database {
                 System.out.println(line);
             }
             System.setOut(console);
+            reader.close();
             
         } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which" +

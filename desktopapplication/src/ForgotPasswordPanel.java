@@ -2,6 +2,9 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -50,50 +53,79 @@ public class ForgotPasswordPanel extends JPanel{
 		public SubmitButtonListener(Container contentPane){
 			this.contentPane = contentPane;
 		}
+		String passwordb;
 		public void actionPerformed(ActionEvent e){
 			
-			final String username = "Team22CSE360@gmail.com";
-			final String password = "passwordTeam22CSE360";
-	 
-			Properties props = new Properties();
-		    props.put("mail.smtp.auth", "true");
-		    props.put("mail.smtp.starttls.enable", "true");
-		    props.put("mail.smtp.host", "smtp.gmail.com");
-		    props.put("mail.smtp.port", "587");
-			//props.put("mail.transport.protocol", "smtp");
-	 
-			Session session = Session.getDefaultInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				});
-	 
+			// TODO send doctor (first verify their email is in the list of doctors (meaning download the file and parse)
+			// - if not, popup box with error message)
+			// their password or a different message (like "see your account admin")
+			PrintStream console = System.out;
+			Database.download("doctors.csv", console);
+			
 			try {
-	 
-				Message message = new MimeMessage(session);
-				message.setFrom(new InternetAddress(username));
-				message.setRecipients(Message.RecipientType.TO,
-						InternetAddress.parse(emailField.getText()));
-				message.setSubject("RPCS Email Recovery");
-				// TODO send doctor (first verify their email is in the list of doctors (meaning download the file and parse)
-				// - if not, popup box with error message)
-				// their password or a different message (like "see your account admin")
-				message.setText("Test");
-	 
-				Transport.send(message);
+				Scanner scanner = new Scanner(new File("doctors.csv"));
+				scanner.useDelimiter(",");
 				
-				// TODO Popup box "Email Sent."
-				System.out.println("Email Sent.");
-	 
-			} catch (MessagingException me) {
-				throw new RuntimeException(me);
+				while(scanner.hasNext())
+				{
+					if((scanner.next().equals(emailField.getText())))
+						passwordb = scanner.next().toString();
+				}
+				
+				scanner.close();
+				System.out.println("Scanner closed.");
+				
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
 			}
 			
-	        contentPane.removeAll();
-			contentPane.add(new LoginPanel(contentPane));
-			contentPane.invalidate();
-			contentPane.validate();
+			if(passwordb == null)
+			{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "Email not found in the database.");
+			}
+			else
+			{
+			
+				final String username = "Team22CSE360@gmail.com";
+				final String password = "passwordTeam22CSE360";
+		 
+				Properties props = new Properties();
+			    props.put("mail.smtp.auth", "true");
+			    props.put("mail.smtp.starttls.enable", "true");
+			    props.put("mail.smtp.host", "smtp.gmail.com");
+			    props.put("mail.smtp.port", "587");
+		 
+				Session session = Session.getDefaultInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(username, password);
+						}
+					});
+		 
+				try {
+		 
+					Message message = new MimeMessage(session);
+					message.setFrom(new InternetAddress(username));
+					message.setRecipients(Message.RecipientType.TO,
+							InternetAddress.parse(emailField.getText()));
+					message.setSubject("RPCS Email Recovery");
+					message.setText("Test");
+		 
+					Transport.send(message);
+					
+					JFrame frame = new JFrame();
+					JOptionPane.showMessageDialog(frame, "Email Sent.");
+		 
+				} catch (MessagingException me) {
+					throw new RuntimeException(me);
+				}
+				
+		        contentPane.removeAll();
+				contentPane.add(new LoginPanel(contentPane));
+				contentPane.invalidate();
+				contentPane.validate();
+			}
 		}
 	}
 	
