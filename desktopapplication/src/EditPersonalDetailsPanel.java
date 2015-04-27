@@ -214,7 +214,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 						scanner = new Scanner(f);
 						scanner.useDelimiter("\n");
 						
-						for(int i = 0; i <= lineNumber; i++){
+						for(int i = 0; i < lineNumber; i++){
 							buffer += scanner.next();
 						}
 						scanner.next();
