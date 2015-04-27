@@ -18,7 +18,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-//TODO comment code
+
 public class Database {
 	
 	static AWSCredentials credentials = new BasicAWSCredentials(
@@ -36,7 +36,7 @@ public class Database {
             System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
             BufferedReader reader = new BufferedReader(new InputStreamReader(s3object.getObjectContent()));
             
-            PrintStream outcsv = new PrintStream(new FileOutputStream("doctors.csv"));
+            PrintStream outcsv = new PrintStream(new FileOutputStream(keyName));
             System.setOut(outcsv);
             
             while (true) {
@@ -70,7 +70,7 @@ public class Database {
 		}
 		
 		//a reference to the newly downloaded file
-		return new File("doctors.csv");
+		return new File(keyName);
 	}
 	
 	//method for uploading to the server of string keyname
@@ -79,6 +79,7 @@ public class Database {
             System.out.println("Uploading a new object to S3 from a file\n");
             s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
             
+            //if the upload is successful, tell the user
             JFrame frame = new JFrame();
 			JOptionPane.showMessageDialog(frame, "Completed Successfully.");
             

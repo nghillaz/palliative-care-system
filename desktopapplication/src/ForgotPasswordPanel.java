@@ -21,7 +21,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-//TODO comment code
+
 public class ForgotPasswordPanel extends JPanel{
 	JTextField emailField;
 	
@@ -48,6 +48,7 @@ public class ForgotPasswordPanel extends JPanel{
 		add(backButton);
 	}
 	
+	//the listener for the submit button
 	public class SubmitButtonListener implements ActionListener{
 		Container contentPane;
 		public SubmitButtonListener(Container contentPane){
@@ -56,6 +57,7 @@ public class ForgotPasswordPanel extends JPanel{
 		String passwordb;
 		public void actionPerformed(ActionEvent e){
 			
+			//get the list of doctors
 			PrintStream console = System.out;
 			Database.download("doctors.csv", console);
 			
@@ -63,6 +65,7 @@ public class ForgotPasswordPanel extends JPanel{
 				Scanner scanner = new Scanner(new File("doctors.csv"));
 				scanner.useDelimiter(",");
 				
+				//check to see if the email is in the database
 				while(scanner.hasNext())
 				{
 					if((scanner.next().equals(emailField.getText())))
@@ -71,11 +74,13 @@ public class ForgotPasswordPanel extends JPanel{
 				
 				scanner.close();
 				System.out.println("Scanner closed.");
-				
+			
+			//if the file can't be found
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
 			
+			//if the password doesn't exist
 			if(passwordb == null)
 			{
 				JFrame frame = new JFrame();
@@ -83,7 +88,7 @@ public class ForgotPasswordPanel extends JPanel{
 			}
 			else
 			{
-			
+				//send the email to the user
 				final String username = "Team22CSE360@gmail.com";
 				final String password = "passwordTeam22CSE360";
 		 
@@ -118,6 +123,7 @@ public class ForgotPasswordPanel extends JPanel{
 					throw new RuntimeException(me);
 				}
 				
+				//load the login panel
 		        contentPane.removeAll();
 				contentPane.add(new LoginPanel(contentPane));
 				contentPane.invalidate();
@@ -126,6 +132,7 @@ public class ForgotPasswordPanel extends JPanel{
 		}
 	}
 	
+	//listener for the back button
 	public class BackButtonListener implements ActionListener{
 		Container contentPane;
 		public BackButtonListener(Container contentPane){

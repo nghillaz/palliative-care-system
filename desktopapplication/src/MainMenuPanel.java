@@ -2,7 +2,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-//TODO comment code
+
 public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){

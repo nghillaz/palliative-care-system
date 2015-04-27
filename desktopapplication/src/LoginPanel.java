@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
-//TODO comment code
+
 public class LoginPanel extends JPanel{
 	
 	JLabel emailLabel;
@@ -28,6 +28,7 @@ public class LoginPanel extends JPanel{
 		Image img = new ImageIcon(this.getClass().getResource("/RPCSIcon.jpg")).getImage();
 		RPCSIconLabel.setIcon(new ImageIcon(img));
 		
+		//all of the labels and fields
 		emailLabel = new JLabel("Email:");
 		emailField = new JTextField(20);
 		passwordLabel = new JLabel("Password:");
@@ -74,7 +75,7 @@ public class LoginPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			// TODO check if they're in the database then go to MainMenuPanel
+			
 			//right here, we use the database class to get the list of doctors
 			PrintStream console = System.out;
 			File f = Database.download("doctors.csv", console);
@@ -87,12 +88,14 @@ public class LoginPanel extends JPanel{
 				scanner.useDelimiter("\n");
 				int lineNumber = 0;
 				System.out.println("text: " + emailField.getText());
+				//check to see if the email and password are valid
 				if(emailField.getText().length() < 4 || passwordField.getText().length() < 4){
 					JFrame frame = new JFrame();
 					JOptionPane.showMessageDialog(frame, "Account not found in database");
 					scanner.close();
 					return;
 				}
+				//search for the email and password in the account
 				while(scanner.hasNext())
 				{
 					String temp = scanner.next().toLowerCase();
@@ -104,12 +107,14 @@ public class LoginPanel extends JPanel{
 					}
 					lineNumber++;
 				}
+				//the account could not be found
 				if(!found){
 					JFrame frame = new JFrame();
 					JOptionPane.showMessageDialog(frame, "Account not found in the database.");
 					scanner.close();
 					return;
 				}
+				//the account could be found
 				scanner.close();
 				contentPane.removeAll();
 				contentPane.add(new MainMenuPanel(contentPane));
@@ -122,6 +127,7 @@ public class LoginPanel extends JPanel{
 		}
 	}
 	
+	//listener on the button to recover password
 	public class ForgotPasswordListener implements ActionListener{
 		Container contentPane;
 		public ForgotPasswordListener(Container contentPane){
@@ -135,6 +141,7 @@ public class LoginPanel extends JPanel{
 		}
 	}
 	
+	//listener for the button to create an account
 	public class CreateAccountListener implements ActionListener{
 		Container contentPane;
 		public CreateAccountListener(Container contentPane){

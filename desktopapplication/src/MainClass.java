@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class MainClass {
 	public static void main(String[] args){
 		//this is the first panel of the program, the entry point
