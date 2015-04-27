@@ -9,6 +9,7 @@ public class MainMenuPanel extends JPanel{
 		// TODO maybe make it look nicer
 		// TODO create logout button (basically a back button)
 		// TODO create a list or graph of history of each patient somehow (low priority)
+		// TODO grab patients list with details
 		
 		//set to grid layout
 		super(new GridLayout(1,2));
