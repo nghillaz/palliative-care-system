@@ -26,7 +26,7 @@ public class MainMenuPanel extends JPanel{
 		Container contentPane;
 		public RightPanel(Container contentPane){
 			//set up with a grid layout
-			super(new GridLayout(11,2));
+			super(new GridLayout(12,2));
 			this.contentPane = contentPane;
 			
 			//set up the labels that won't be changing, they simply say what symptom it is
@@ -38,7 +38,7 @@ public class MainMenuPanel extends JPanel{
 			//these labels will display whether the symptom is selected or not, and what the pain level is
 			JLabel[] symptomRatingLabels = new JLabel[11];
 			for(int i = 0; i < symptomRatingLabels.length; i++){
-				symptomRatingLabels[i] = new JLabel();
+				symptomRatingLabels[i] = new JLabel("placeholder " + i);
 			}
 			
 			//these labels will never change from these values
@@ -56,14 +56,18 @@ public class MainMenuPanel extends JPanel{
 			
 			//set up the panel so that the labels are in the correct spots
 			//it's some weird math, but the logic makes them alternate left/right filling up all 22 spots
-			for(int i = 1; i < symptomLabels.length * 2 - 4; i++){
-				if(i%2 == 1){
+			for(int i = 0; i < symptomLabels.length * 2; i++){
+				if(i%2 == 0){
 					add(symptomLabels[(int) Math.floor(i/2)]);
 				}
-				if(i%2 == 0){
+				if(i%2 == 1){
 					add(symptomRatingLabels[(int) Math.floor(i/2)]);
 				}
 			}
+			
+			JButton editDetails = new JButton("Edit Personal Details");
+			editDetails.addActionListener(new EditDetailsListener(contentPane));
+			add(editDetails);
 					
 		}
 		
@@ -77,6 +81,19 @@ public class MainMenuPanel extends JPanel{
 //			}
 //		}
 		
+	}
+	
+	public class EditDetailsListener implements ActionListener{
+		Container contentPane;
+		public EditDetailsListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent e){
+			contentPane.removeAll();
+			contentPane.add(new EditPersonalDetailsPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
+		}
 	}
 	
 	public String[] getPatientList(){
