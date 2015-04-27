@@ -3,6 +3,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.AmazonClientException;
@@ -29,6 +32,24 @@ public class CreateAccountPanel extends JPanel{
 	String bucketName			= "rpcareapp";
 	String keyName				= "doctors.csv";
 	AmazonS3 s3Client = new AmazonS3Client(credentials);
+	
+	final ArrayList<JTextField> textFields = new ArrayList<>();
+	
+	public boolean anyFieldsEmpty() {
+		textFields.add(firstNameField);
+		textFields.add(lastNameField);
+		textFields.add(emailField);
+		textFields.add(passwordField);
+		textFields.add(cPasswordField);
+		textFields.add(phoneNumberField);
+		
+        for (JTextField textbox : textFields) {
+            if (textbox.getText().trim().isEmpty() ) {
+                return true;
+            }
+        }
+        return false;
+    }
 	
 	public CreateAccountPanel(Container contentPane){
 		//set to box layout
@@ -133,87 +154,99 @@ public class CreateAccountPanel extends JPanel{
 			String lastName = lastNameField.getText();
 			String email = emailField.getText();
 			char[] password = passwordField.getPassword();
+			char[] cPassword = cPasswordField.getPassword();
 			String phoneNumber = phoneNumberField.getText();
 			Boolean docRButton = doctorRButton.isSelected();
 			Boolean nurRButton = nurseRButton.isSelected();
 			PrintStream console = System.out;
 			
-			// TODO We should verify if both passwords are equal
-			// TODO We should verify if all fields are filled in
-			
-			//right here, we use the database class to get the list of doctors
-			File f = Database.download("doctors.csv", console);
-			
-			if(f.exists() && !f.isDirectory())
+			if(!(Arrays.equals(password,cPassword)))
 			{
-				try {
-					FileWriter fw = new FileWriter("doctors.csv", true);
-					fw.append(firstName);
-					fw.append(",");
-					fw.append(lastName);
-					fw.append(",");
-					fw.append(email);
-					fw.append(",");
-					fw.append(password.toString());
-					fw.append(",");
-					fw.append(phoneNumber);
-					fw.append(",");
-					fw.append(docRButton.toString());
-					fw.append(",");
-					fw.append(nurRButton.toString());
-					
-					fw.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "Passwords do not match.");
+			}
+			else if(anyFieldsEmpty() && (doctorRButton.isSelected() || nurseRButton.isSelected()))
+			{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
 			}
 			else
 			{
-				FileWriter fw;
-				try {
-					fw = new FileWriter("doctors.csv");
-					fw.append("firstName");
-					fw.append(",");
-					fw.append("lastName");
-					fw.append(",");
-					fw.append("email");
-					fw.append(",");
-					fw.append("password");
-					fw.append(",");
-					fw.append("phoneNumber");
-					fw.append(",");
-					fw.append("doctor");
-					fw.append(",");
-					fw.append("nurse");
-					
-					fw.append("\n");
-					fw.append(firstName);
-					fw.append(",");
-					fw.append(lastName);
-					fw.append(",");
-					fw.append(email);
-					fw.append(",");
-					fw.append(password.toString());
-					fw.append(",");
-					fw.append(phoneNumber);
-					fw.append(",");
-					fw.append(docRButton.toString());
-					fw.append(",");
-					fw.append(nurRButton.toString());
-					
-					fw.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+			
+				//right here, we use the database class to get the list of doctors
+				File f = Database.download("doctors.csv", console);
+				
+				if(f.exists() && !f.isDirectory())
+				{
+					try {
+						FileWriter fw = new FileWriter("doctors.csv", true);
+						fw.append(firstName);
+						fw.append(",");
+						fw.append(lastName);
+						fw.append(",");
+						fw.append(email);
+						fw.append(",");
+						fw.append(password.toString());
+						fw.append(",");
+						fw.append(phoneNumber);
+						fw.append(",");
+						fw.append(docRButton.toString());
+						fw.append(",");
+						fw.append(nurRButton.toString());
+						
+						fw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
+				else
+				{
+					FileWriter fw;
+					try {
+						fw = new FileWriter("doctors.csv");
+						fw.append("firstName");
+						fw.append(",");
+						fw.append("lastName");
+						fw.append(",");
+						fw.append("email");
+						fw.append(",");
+						fw.append("password");
+						fw.append(",");
+						fw.append("phoneNumber");
+						fw.append(",");
+						fw.append("doctor");
+						fw.append(",");
+						fw.append("nurse");
+						
+						fw.append("\n");
+						fw.append(firstName);
+						fw.append(",");
+						fw.append(lastName);
+						fw.append(",");
+						fw.append(email);
+						fw.append(",");
+						fw.append(password.toString());
+						fw.append(",");
+						fw.append(phoneNumber);
+						fw.append(",");
+						fw.append(docRButton.toString());
+						fw.append(",");
+						fw.append(nurRButton.toString());
+						
+						fw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				//here we use the database class to upload the file
+				Database.upload("doctors.csv", new File("doctors.csv"));
+				
+				contentPane.removeAll();
+				contentPane.add(new LoginPanel(contentPane));
+				contentPane.invalidate();
+				contentPane.validate();
 			}
-			
-			//here we use the database class to upload the file
-			Database.upload("doctors.csv", new File("doctors.csv"));
-			
-			contentPane.removeAll();
-			contentPane.add(new LoginPanel(contentPane));
-			contentPane.invalidate();
-			contentPane.validate();
 		}
 	}
 	public class BackListener implements ActionListener{
