@@ -14,6 +14,10 @@ import android.widget.Spinner;
 
 public class EnterSymptoms extends ActionBarActivity {
 
+
+    Button submitButton;
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,19 +29,7 @@ public class EnterSymptoms extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        addListenerOnButton();
-    }
-
-
-    public void addListenerOnButton() {
-
-
-        Button submitButton;
-
-        final Context context = this;
-
         submitButton = (Button) findViewById(R.id.submitButton);
-
 
         submitButton.setOnClickListener(new View.OnClickListener() {
 
@@ -51,6 +43,7 @@ public class EnterSymptoms extends ActionBarActivity {
         });
 
     }
+
 
 
     @Override

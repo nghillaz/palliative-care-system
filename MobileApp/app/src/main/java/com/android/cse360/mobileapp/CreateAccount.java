@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -46,12 +45,12 @@ public class CreateAccount extends ActionBarActivity {
                 addressText = (EditText)findViewById(R.id.newAddress);
 
                 try {
-                    File newFile = new File("sampleFile.csv");
                     FileOutputStream fOut = openFileOutput("sampleFile.csv", MODE_WORLD_WRITEABLE);
 
                     OutputStreamWriter outStream = new OutputStreamWriter(fOut);
 
                     outStream.write(emailText.getText().toString());
+
                     outStream.flush();
                     outStream.close();
 

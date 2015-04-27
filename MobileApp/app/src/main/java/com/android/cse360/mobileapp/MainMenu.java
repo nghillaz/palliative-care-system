@@ -13,20 +13,14 @@ import android.widget.Button;
 
 public class MainMenu extends ActionBarActivity {
 
+
+    Button setDoctorButton, enterSymptomsButton, editPersonalDetails, logoutButton;
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        addListenerOnButton();
-    }
-
-    public void addListenerOnButton() {
-
-
-        Button setDoctorButton, enterSymptomsButton, editPersonalDetails, logoutButton;
-
-        final Context context = this;
-
         setDoctorButton = (Button) findViewById(R.id.setDoctorButton);
         enterSymptomsButton = (Button) findViewById(R.id.symptomButton);
         editPersonalDetails = (Button) findViewById(R.id.editDetailsButton);
@@ -72,11 +66,7 @@ public class MainMenu extends ActionBarActivity {
                 startActivity(myIntent);
             }
         });
-
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
