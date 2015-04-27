@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+//TODO comment code
 public class LoginPanel extends JPanel{
 	
 	public LoginPanel(Container contentPane){
@@ -61,8 +61,7 @@ public class LoginPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			// TODO needs finishing!!
-			//check if they're in the database then log them in
+			// TODO check if they're in the database then go to MainMenuPanel
 			contentPane.removeAll();
 			contentPane.add(new MainMenuPanel(contentPane));
 			contentPane.invalidate();

@@ -2,10 +2,15 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-
+//TODO comment code
 public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
+		// TODO maybe make it look nicer
+		// TODO create logout button
+		// TODO create edit details button (that means a new edit details panel)
+		// TODO create a list or graph of history of each patient somehow (low priority)
+		
 		//set to grid layout
 		super(new GridLayout(1,2));
 		
@@ -75,8 +80,7 @@ public class MainMenuPanel extends JPanel{
 	}
 	
 	public String[] getPatientList(){
-		// TODO needs finishing!!
-		//return the list of customers from the database
+		// TODO return the list of patients from the database
 		return new String[] {"harry", "sally", "tom"};
 	}
 }
