@@ -27,6 +27,7 @@ public class Database {
 	static String bucketName			= "rpcareapp";
 	static AmazonS3 s3Client = new AmazonS3Client(credentials);
 	
+	//method for downloading a file from the server of string keyname
 	public static File download(String keyName, PrintStream console){
 		try {
             System.out.println("Downloading an object");
@@ -68,9 +69,11 @@ public class Database {
 			e1.printStackTrace();
 		}
 		
+		//a reference to the newly downloaded file
 		return new File("doctors.csv");
 	}
 	
+	//method for uploading to the server of string keyname
 	public static void upload(String keyName, File file){
 		try {
             System.out.println("Uploading a new object to S3 from a file\n");

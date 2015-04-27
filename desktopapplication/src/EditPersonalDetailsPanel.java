@@ -36,16 +36,19 @@ public class EditPersonalDetailsPanel extends JPanel{
 	JTextField phoneNumberField;
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
-		
+	
+	//these are the credentials for the s3 server
 	AWSCredentials credentials = new BasicAWSCredentials(
 			"AKIAJ6ESZAJPDCWD4MOA", 
 			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
 	String bucketName			= "rpcareapp";
 	String keyName				= "doctors.csv";
 	AmazonS3 s3Client = new AmazonS3Client(credentials);
-		
+	
+	//this holds all the text fields
 	final ArrayList<JTextField> textFields = new ArrayList<>();
-		
+	
+	//check if any fields are left empty
 	public boolean anyFieldsEmpty() {
 		textFields.add(firstNameField);
 		textFields.add(lastNameField);
@@ -61,197 +64,210 @@ public class EditPersonalDetailsPanel extends JPanel{
 	    }
 	    return false;
 	}
-		
+	
+	//constructor
 	public EditPersonalDetailsPanel(Container contentPane){
-			//set to box layout
-			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-			
-			//create the components
-			JLabel firstNameLabel = new JLabel("First Name:");
-			JLabel lastNameLabel = new JLabel("Last Name:");
-			JLabel emailLabel = new JLabel("Email:");
-			JLabel passwordLabel = new JLabel("Password:");
-			JLabel cPasswordLabel = new JLabel("Confirm Password:");
-			JLabel phoneNumberLabel = new JLabel("Phone number:");
-			firstNameField = new JTextField(20);
-			lastNameField = new JTextField(20);
-			emailField = new JTextField(20);
-			emailField.setText("Account lookup is through Email");
-			passwordField = new JPasswordField(20);
-			cPasswordField = new JPasswordField(20);
-			phoneNumberField = new JTextField(20);
-			JButton createAccountButton = new JButton("Update Details");
-			JButton backButton = new JButton("Back");
-			doctorRButton = new JRadioButton("Doctor");
-			nurseRButton = new JRadioButton("Nurse");
-			
-			//Group radio buttons
-			ButtonGroup group = new ButtonGroup();
-			group.add(doctorRButton);
-			group.add(nurseRButton);
-			
-			//Align
-			firstNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			lastNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			cPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			phoneNumberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			firstNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			lastNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			cPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			phoneNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			doctorRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			nurseRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			
-			//set Max Size
-			firstNameField.setMaximumSize(new Dimension(200, 30));
-			lastNameField.setMaximumSize(new Dimension(200, 30));
-			emailField.setMaximumSize(new Dimension(200, 30));
-			passwordField.setMaximumSize(new Dimension(200, 30));
-			cPasswordField.setMaximumSize(new Dimension(200, 30));
-			phoneNumberField.setMaximumSize(new Dimension(200, 30));
-			createAccountButton.addActionListener(new SubmitListener(contentPane));
-			backButton.addActionListener(new BackListener(contentPane));
-			
-			//add the components to the panel
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(emailLabel);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(emailField);
-			add(Box.createRigidArea(new Dimension(0,10)));
-			add(firstNameLabel);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(firstNameField);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(lastNameLabel);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(lastNameField);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(passwordLabel);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(passwordField);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(cPasswordLabel);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(cPasswordField);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(phoneNumberLabel);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(phoneNumberField);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(doctorRButton);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(nurseRButton);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(createAccountButton);
-			add(Box.createRigidArea(new Dimension(0,2)));
-			add(backButton);
-		}
+		//set to box layout
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		public class SubmitListener implements ActionListener{
-			Container contentPane;
-			public SubmitListener(Container contentPane){
-				this.contentPane = contentPane;
-			}
-			public void actionPerformed(ActionEvent e){
-				String firstName = firstNameField.getText();
-				String lastName = lastNameField.getText();
-				String email = emailField.getText();
-				String password = passwordField.getText();
-				String cPassword = cPasswordField.getText();
-				String phoneNumber = phoneNumberField.getText();
-				Boolean docRButton = doctorRButton.isSelected();
-				Boolean nurRButton = nurseRButton.isSelected();
-				PrintStream console = System.out;
-				
-				if(!(password.equals(cPassword)))
-				{
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Passwords do not match.");
-				}
-				else if(anyFieldsEmpty() && (doctorRButton.isSelected() || nurseRButton.isSelected()))
-				{
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
-				}
-				
-				//right here, we use the database class to get the list of doctors
-				File f = Database.download("doctors.csv", console);
-				String buffer = "";
-				
-				Database.download("doctors.csv", console);
-						
-				try {
-					boolean found = false;
-					Scanner scanner = new Scanner(f);
-					scanner.useDelimiter("\n");
-					int lineNumber = 0;
-					while(scanner.hasNext())
-					{
-						if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
-							found = true;
-							System.out.println("line number is: " + lineNumber);
-							break;
-						}
-						lineNumber++;
-					}
-					
-					if(!found){
-						buffer = "";
-						JFrame frame = new JFrame();
-						JOptionPane.showMessageDialog(frame, "Email not found in the database.");
-						scanner.close();
-						return;
-					}
-					else{
-						buffer = "";
-						scanner.close();
-						scanner = new Scanner(f);
-						scanner.useDelimiter("\n");
-						
-						for(int i = 0; i < lineNumber; i++){
-							buffer += scanner.next();
-						}
-						scanner.next();
-						buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+","+docRButton.toString()+","+nurRButton.toString()+"\n";
-						while(scanner.hasNext()){
-							buffer += scanner.next();
-						}
-						System.out.println("buffer is: " + buffer);
-						
-						try {
-							FileWriter fw = new FileWriter(f, false);
-							fw.append(buffer);
-							fw.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						Database.upload("doctors.csv", f);
-					}
-					
-					scanner.close();
-					System.out.println("Scanner closed.");
-							
-				} catch (FileNotFoundException e1) {
-							e1.printStackTrace();
-				}
-			}
+		//create the components
+		JLabel firstNameLabel = new JLabel("First Name:");
+		JLabel lastNameLabel = new JLabel("Last Name:");
+		JLabel emailLabel = new JLabel("Email:");
+		JLabel passwordLabel = new JLabel("Password:");
+		JLabel cPasswordLabel = new JLabel("Confirm Password:");
+		JLabel phoneNumberLabel = new JLabel("Phone number:");
+		firstNameField = new JTextField(20);
+		lastNameField = new JTextField(20);
+		emailField = new JTextField(20);
+		emailField.setText("Account lookup is through Email");
+		passwordField = new JPasswordField(20);
+		cPasswordField = new JPasswordField(20);
+		phoneNumberField = new JTextField(20);
+		JButton createAccountButton = new JButton("Update Details");
+		JButton backButton = new JButton("Back");
+		doctorRButton = new JRadioButton("Doctor");
+		nurseRButton = new JRadioButton("Nurse");
+		
+		//Group radio buttons
+		ButtonGroup group = new ButtonGroup();
+		group.add(doctorRButton);
+		group.add(nurseRButton);
+		
+		//Align
+		firstNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lastNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		phoneNumberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		firstNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lastNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		phoneNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		doctorRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		nurseRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		//set Max Size
+		firstNameField.setMaximumSize(new Dimension(200, 30));
+		lastNameField.setMaximumSize(new Dimension(200, 30));
+		emailField.setMaximumSize(new Dimension(200, 30));
+		passwordField.setMaximumSize(new Dimension(200, 30));
+		cPasswordField.setMaximumSize(new Dimension(200, 30));
+		phoneNumberField.setMaximumSize(new Dimension(200, 30));
+		createAccountButton.addActionListener(new SubmitListener(contentPane));
+		backButton.addActionListener(new BackListener(contentPane));
+		
+		//add the components to the panel
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(emailLabel);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(emailField);
+		add(Box.createRigidArea(new Dimension(0,10)));
+		add(firstNameLabel);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(firstNameField);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(lastNameLabel);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(lastNameField);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(passwordLabel);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(passwordField);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(cPasswordLabel);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(cPasswordField);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(phoneNumberLabel);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(phoneNumberField);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(doctorRButton);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(nurseRButton);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(createAccountButton);
+		add(Box.createRigidArea(new Dimension(0,2)));
+		add(backButton);
+	}
+	
+		
+	//listener for the submit button
+	public class SubmitListener implements ActionListener{
+		Container contentPane;
+		public SubmitListener(Container contentPane){
+			this.contentPane = contentPane;
 		}
-		public class BackListener implements ActionListener{
-			Container contentPane;
-			public BackListener(Container contentPane){
-				this.contentPane = contentPane;
+		public void actionPerformed(ActionEvent e){
+			//grab the text from the fields
+			String firstName = firstNameField.getText();
+			String lastName = lastNameField.getText();
+			String email = emailField.getText();
+			String password = passwordField.getText();
+			String cPassword = cPasswordField.getText();
+			String phoneNumber = phoneNumberField.getText();
+			Boolean docRButton = doctorRButton.isSelected();
+			Boolean nurRButton = nurseRButton.isSelected();
+			PrintStream console = System.out;
+			
+			//check if the password matches the confirm password and if any errors in filling out the form occur
+			if(!(password.equals(cPassword)))
+			{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "Passwords do not match.");
+				return;
 			}
-			public void actionPerformed(ActionEvent e){
-				contentPane.removeAll();
-				contentPane.add(new MainMenuPanel(contentPane));
-				contentPane.invalidate();
-				contentPane.validate();
+			else if(anyFieldsEmpty() || !(doctorRButton.isSelected() || nurseRButton.isSelected()))
+			{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
+				return;
+			}
+			
+			//right here, we use the database class to get the list of doctors
+			File f = Database.download("doctors.csv", console);
+			String buffer = "";
+			
+			Database.download("doctors.csv", console);
+					
+			try {
+				boolean found = false;
+				Scanner scanner = new Scanner(f);
+				scanner.useDelimiter("\n");
+				int lineNumber = 0;
+				
+				//scan for the account
+				while(scanner.hasNext())
+				{
+					if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
+						found = true;
+						System.out.println("line number is: " + lineNumber);
+						break;
+					}
+					lineNumber++;
+				}
+				
+				//not in the database
+				if(!found){
+					buffer = "";
+					JFrame frame = new JFrame();
+					JOptionPane.showMessageDialog(frame, "Email not found in the database.");
+					scanner.close();
+					return;
+				}
+				//is in the database
+				else{
+					buffer = "";
+					scanner.close();
+					scanner = new Scanner(f);
+					scanner.useDelimiter("\n");
+					
+					for(int i = 0; i < lineNumber; i++){
+						buffer += scanner.next();
+					}
+					scanner.next();
+					buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+","+docRButton.toString()+","+nurRButton.toString()+"\n";
+					while(scanner.hasNext()){
+						buffer += scanner.next();
+					}
+					System.out.println("buffer is: " + buffer);
+					
+					try {
+						FileWriter fw = new FileWriter(f, false);
+						fw.append(buffer);
+						fw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					Database.upload("doctors.csv", f);
+					}
+					
+				scanner.close();
+				System.out.println("Scanner closed.");
+						
+			} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
 			}
 		}
 	}
+	
+	//listener for the back button
+	public class BackListener implements ActionListener{
+		Container contentPane;
+		public BackListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent e){
+			contentPane.removeAll();
+			contentPane.add(new MainMenuPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
+		}
+	}
+}

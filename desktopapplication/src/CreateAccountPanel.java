@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -15,7 +16,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-// TODO comment code
+
 public class CreateAccountPanel extends JPanel{
 	
 	JTextField firstNameField;
@@ -27,6 +28,7 @@ public class CreateAccountPanel extends JPanel{
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
 	
+	//credentials for the s3 database
 	AWSCredentials credentials = new BasicAWSCredentials(
 			"AKIAJ6ESZAJPDCWD4MOA", 
 			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
@@ -34,6 +36,7 @@ public class CreateAccountPanel extends JPanel{
 	String keyName				= "doctors.csv";
 	AmazonS3 s3Client = new AmazonS3Client(credentials);
 	
+	//holds the textfields for making an account
 	final ArrayList<JTextField> textFields = new ArrayList<>();
 	
 	public boolean anyFieldsEmpty() {
@@ -168,7 +171,7 @@ public class CreateAccountPanel extends JPanel{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Passwords do not match.");
 			}
-			else if(anyFieldsEmpty() && (doctorRButton.isSelected() || nurseRButton.isSelected()))
+			else if(anyFieldsEmpty() || !(doctorRButton.isSelected() || nurseRButton.isSelected()))
 			{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
@@ -185,6 +188,28 @@ public class CreateAccountPanel extends JPanel{
 				
 				if(f.exists() && !f.isDirectory())
 				{
+					//check to see if the email address is already in the database
+					try {
+						Scanner scanner = new Scanner(f);
+						scanner.useDelimiter("\n");
+						System.out.println("text: " + emailField.getText());
+						while(scanner.hasNext())
+						{
+							String temp = scanner.next().toLowerCase();
+							if(temp.contains(emailField.getText().toLowerCase())){
+								JFrame frame = new JFrame();
+								JOptionPane.showMessageDialog(frame, "An account with that email already exists");
+								scanner.close();
+								return;
+							}
+						}
+						scanner.close();
+					}
+					catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					//it's a new account, create it
 					try {
 						FileWriter fw = new FileWriter("doctors.csv", true);
 						fw.append(firstName);

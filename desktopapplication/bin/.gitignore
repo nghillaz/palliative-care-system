@@ -19,3 +19,4 @@
 /MainMenuPanel.class
 /LoginPanel$LoginListener$CreateAccountListener.class
 /LoginPanel$LoginListener$ForgotPasswordListener.class
+/CreateAccountPanel$SubmitListener$BackListener.class

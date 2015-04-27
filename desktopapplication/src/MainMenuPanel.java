@@ -15,12 +15,14 @@ public class MainMenuPanel extends JPanel{
 		
 		contentPane.setPreferredSize(new Dimension(1000,480));
 		
+		//the list of patients, on a panel on the left
 		String[] patientNames = getPatientList();
 		JList<String> customerList = new JList<String>(patientNames);
 		add(customerList);
 		add(new RightPanel(contentPane));
 	}
 	
+	//the panel that handles displaying the patient data
 	public class RightPanel extends JPanel{
 		Container contentPane;
 		public RightPanel(Container contentPane){
@@ -71,7 +73,8 @@ public class MainMenuPanel extends JPanel{
 		}
 		
 		
-		
+		//TODO use the patient csv files to update patient data everytime a new patient is selected
+		//this code is probably not right, just the right idea maybe
 //		public void updateSymptoms(int[] symptoms){
 //			pain.setText("Pain: " + symptoms[0]);
 //			for(int i = 1; i < symptoms.length; i++){
@@ -82,6 +85,7 @@ public class MainMenuPanel extends JPanel{
 		
 	}
 	
+	//listener for the buttom that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{
 		Container contentPane;
 		public EditDetailsListener(Container contentPane){
