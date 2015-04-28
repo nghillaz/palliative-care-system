@@ -5,22 +5,10 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
-
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
 
 public class ForgotPasswordPanel extends JPanel{
 	JTextField emailField;
@@ -33,13 +21,6 @@ public class ForgotPasswordPanel extends JPanel{
 		JButton backButton = new JButton("Back");
 		submitButton.addActionListener(new SubmitButtonListener(contentPane));
 		backButton.addActionListener(new BackButtonListener(contentPane));
-		
-		AWSCredentials credentials = new BasicAWSCredentials(
-				"AKIAJ6ESZAJPDCWD4MOA", 
-				"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
-		String bucketName			= "rpcareapp";
-		String keyName				= "doctors.csv";
-		AmazonS3 s3Client = new AmazonS3Client(credentials);
 		
 		//add the components to the panel
 		add(emailLabel);

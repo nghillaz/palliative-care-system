@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class LoginPanel extends JPanel{
-	// TODO nurses?
+	
 	JLabel emailLabel;
 	JTextField emailField;
 	JLabel passwordLabel;
