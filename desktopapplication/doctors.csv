@@ -1,0 +1,10 @@
+firstName,lastName,email,password,phoneNumber,doctor,nurse
+asdf,asdf,nghillaz@gmail.com,asdf,123,true,false
+nathan,hill,asdf@asdf,asdf,asdf,true,false
+nathan,hill,rcare@live.com,asdf,asdf,true,false
+asdf,asdf,nghillaz@asdf.com,asdf,asdf,false,false
+,,asdf@asdf.com,asdfasdf,,false,false
+nathan,nathan,nghillaz@asdfasdf.com,asdf,asd,false,false
+nathan,hill,nghillaz@gmail.com.com,asdf,asd,true,false
+Jeffrey,Moore,jeffdmoore@live.com,asdf,23456543,true,false
+Ashwath,Segu,ashwath.segu@gmail.com,qwerty,4089338799,true,false

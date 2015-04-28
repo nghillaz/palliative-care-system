@@ -4,10 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-
 import javax.swing.*;
-
-import java.awt.*;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
