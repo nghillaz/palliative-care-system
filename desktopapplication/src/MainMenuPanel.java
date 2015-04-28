@@ -2,14 +2,20 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity
 		// TODO create a list or graph of history of each patient somehow (low priority)
-		// TODO grab patients list
 		// TODO when a patient is selected, show recent symptom entries
 		
 		//set to grid layout
@@ -33,29 +39,28 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 			
 			//set up the labels that won't be changing, they simply say what symptom it is
-			JLabel[] symptomLabels = new JLabel[11];
+			JLabel[] symptomLabels = new JLabel[10];
 			for(int i = 0; i < symptomLabels.length; i++){
 				symptomLabels[i] = new JLabel();
 			}
 			
 			//these labels will display whether the symptom is selected or not, and what the pain level is
-			JLabel[] symptomRatingLabels = new JLabel[11];
+			JLabel[] symptomRatingLabels = new JLabel[10];
 			for(int i = 0; i < symptomRatingLabels.length; i++){
 				symptomRatingLabels[i] = new JLabel("placeholder " + i);
 			}
 			
 			//these labels will never change from these values
 			symptomLabels[0].setText("Pain:");
-			symptomLabels[1].setText("Nausea:");
-			symptomLabels[2].setText("Fatigue:");
-			symptomLabels[3].setText("Anxiety:");
-			symptomLabels[4].setText("Depression:");
-			symptomLabels[5].setText("Constipation:");
-			symptomLabels[6].setText("Diarrhea:");
-			symptomLabels[7].setText("Cough:");
-			symptomLabels[8].setText("Sore Throat:");
-			symptomLabels[9].setText("Vomiting:");
-			symptomLabels[10].setText("Fever:");
+			symptomLabels[1].setText("Tiredness:");
+			symptomLabels[2].setText("Nausea:");
+			symptomLabels[3].setText("Depression:");
+			symptomLabels[4].setText("Anxiety:");
+			symptomLabels[5].setText("Drowsiness:");
+			symptomLabels[6].setText("Appetite:");
+			symptomLabels[7].setText("Wellbeing:");
+			symptomLabels[8].setText("Shortness of breath:");
+			symptomLabels[9].setText("Other:");
 			
 			//set up the panel so that the labels are in the correct spots
 			//it's some weird math, but the logic makes them alternate left/right filling up all 22 spots
@@ -118,12 +123,40 @@ public class MainMenuPanel extends JPanel{
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	public String[] getPatientList(){
 		PrintStream console = System.out;
-		Database.download("patients.csv", console);
+		File f = Database.download("patients.csv", console);
 		
-		
-		
-		return new String[] {"harry", "sally", "tom"};
+		if(f.exists() && !f.isDirectory())
+		{
+			BufferedReader br;
+			@SuppressWarnings("unused")
+			String head;
+			String line;
+			String[] patientNames;
+			try {
+				patientNames = new String[100];
+				int i = 0;
+				br = new BufferedReader(new FileReader(f));
+				head = br.readLine();
+				while ((line = br.readLine()) != null) {
+				    String[] pNames = line.split(",");
+					patientNames[i] = pNames[1] + ", " + pNames[0];
+					i++;
+				}
+				return patientNames;
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else // patients.csv doesn't exist on the server or locally
+		{
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame, "No patients were found.");
+			return new String[] {"---"};
+		}
+		return null;
 	}
 }
