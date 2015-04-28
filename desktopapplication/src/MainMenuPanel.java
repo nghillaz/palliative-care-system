@@ -9,7 +9,8 @@ public class MainMenuPanel extends JPanel{
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity
 		// TODO create a list or graph of history of each patient somehow (low priority)
-		// TODO grab patients list with details
+		// TODO grab patients list
+		// TODO when a patient is selected, show recent symptom entries
 		
 		//set to grid layout
 		super(new GridLayout(1,2));
@@ -118,11 +119,8 @@ public class MainMenuPanel extends JPanel{
 	}
 	
 	public String[] getPatientList(){
-		// TODO return the list of patients from the database
 		PrintStream console = System.out;
 		Database.download("patients.csv", console);
-		
-		
 		
 		
 		
