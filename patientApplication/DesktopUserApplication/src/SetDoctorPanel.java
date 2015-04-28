@@ -14,7 +14,6 @@ public class SetDoctorPanel extends JPanel{
 	JLabel setDoctor;
 	JComboBox selectDoctor;
 	
-	//checking to see if git works
 	
 	
 	public SetDoctorPanel(Container contentPane) {
