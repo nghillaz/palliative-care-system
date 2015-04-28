@@ -14,6 +14,8 @@ public class SetDoctorPanel extends JPanel{
 	JLabel setDoctor;
 	JComboBox selectDoctor;
 	
+	String [] settingDoctor = {"a", "b", "c"};
+	
 	public SetDoctorPanel(Container contentPane) {
 		//setting to box layout
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -25,16 +27,16 @@ public class SetDoctorPanel extends JPanel{
 		setDoctor.setAlignmentX(Component.CENTER_ALIGNMENT);
 		selectDoctor.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		//adding componenets to panel
+		//adding components to panel
 		add(Box.createRigidArea(new Dimension(0,150)));
-		add(JLabel);
+		add(setDoctor);
 		add(Box.createRigidArea(new Dimension(0,10)));
-		add(JComboBox);
+		add(selectDoctor);
 		
 	}
 	
 	//setDoctorPanel Listener
-	public class setDoctorPanelListener implements ActionListener{
+	/*public class setDoctorPanelListener implements ActionListener{
 		Container contentPane;
 		public LoginListener(Container contentPane){
 			this.contentPane = contentPane;
@@ -53,5 +55,5 @@ public class SetDoctorPanel extends JPanel{
 			}
 			
 		}
-	}
+	}*/
 }
