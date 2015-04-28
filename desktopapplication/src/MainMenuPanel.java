@@ -2,12 +2,12 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.PrintStream;
 
 public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
-		// TODO maybe make it look nicer
-		// TODO create logout button (basically a back button)
+		// TODO prioritize patients based on severity
 		// TODO create a list or graph of history of each patient somehow (low priority)
 		// TODO grab patients list with details
 		
@@ -90,7 +90,7 @@ public class MainMenuPanel extends JPanel{
 		
 	}
 	
-	//listener for the buttom that takes you to edit personal details panel
+	//listener for the button that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{
 		Container contentPane;
 		public EditDetailsListener(Container contentPane){
@@ -119,6 +119,13 @@ public class MainMenuPanel extends JPanel{
 	
 	public String[] getPatientList(){
 		// TODO return the list of patients from the database
+		PrintStream console = System.out;
+		Database.download("patients.csv", console);
+		
+		
+		
+		
+		
 		return new String[] {"harry", "sally", "tom"};
 	}
 }
