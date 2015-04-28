@@ -4,8 +4,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 
 public class CreateAccountPanel extends JPanel{
 	//TODO lots of changes to be made...
@@ -15,9 +25,16 @@ public class CreateAccountPanel extends JPanel{
 	JTextField passwordField;
 	JTextField cPasswordField;
 	JTextField phoneNumberField;
-
-
-
+	JRadioButton doctorRButton;
+	JRadioButton nurseRButton;
+	
+	//credentials for the s3 database
+	AWSCredentials credentials = new BasicAWSCredentials(
+			"AKIAJ6ESZAJPDCWD4MOA", 
+			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
+	String bucketName			= "rpcareapp";
+	String keyName				= "doctors.csv";
+	AmazonS3 s3Client = new AmazonS3Client(credentials);
 	
 	//holds the textfields for making an account
 	final ArrayList<JTextField> textFields = new ArrayList<>();
@@ -29,7 +46,6 @@ public class CreateAccountPanel extends JPanel{
 		textFields.add(passwordField);
 		textFields.add(cPasswordField);
 		textFields.add(phoneNumberField);
-
 		
         for (JTextField textbox : textFields) {
             if (textbox.getText().trim().isEmpty() ) {
@@ -50,21 +66,21 @@ public class CreateAccountPanel extends JPanel{
 		JLabel passwordLabel = new JLabel("Password:");
 		JLabel cPasswordLabel = new JLabel("Confirm Password:");
 		JLabel phoneNumberLabel = new JLabel("Phone number:");
-
 		firstNameField = new JTextField(20);
 		lastNameField = new JTextField(20);
 		emailField = new JTextField(20);
 		passwordField = new JPasswordField(20);
 		cPasswordField = new JPasswordField(20);
 		phoneNumberField = new JTextField(20);
-
 		JButton createAccountButton = new JButton("Create Account");
 		JButton backButton = new JButton("Back");
-
+		doctorRButton = new JRadioButton("Doctor");
+		nurseRButton = new JRadioButton("Nurse");
 		
 		//Group radio buttons
 		ButtonGroup group = new ButtonGroup();
-
+		group.add(doctorRButton);
+		group.add(nurseRButton);
 		
 		//Align
 		firstNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -73,17 +89,16 @@ public class CreateAccountPanel extends JPanel{
 		passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phoneNumberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 		firstNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lastNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phoneNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 		createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+		doctorRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		nurseRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		//set Max Size
 		firstNameField.setMaximumSize(new Dimension(200, 30));
@@ -121,7 +136,9 @@ public class CreateAccountPanel extends JPanel{
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(phoneNumberField);
 		add(Box.createRigidArea(new Dimension(0,2)));
+		add(doctorRButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
+		add(nurseRButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(createAccountButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
@@ -144,7 +161,8 @@ public class CreateAccountPanel extends JPanel{
 			String password = passwordField.getText();
 			String cPassword = cPasswordField.getText();
 			String phoneNumber = phoneNumberField.getText();
-
+			Boolean docRButton = doctorRButton.isSelected();
+			Boolean nurRButton = nurseRButton.isSelected();
 			PrintStream console = System.out;
 			
 			if(!(password.equals(cPassword)))
@@ -152,7 +170,7 @@ public class CreateAccountPanel extends JPanel{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Passwords do not match.");
 			}
-			else if(anyFieldsEmpty())
+			else if(anyFieldsEmpty() || !(doctorRButton.isSelected() || nurseRButton.isSelected()))
 			{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
@@ -164,8 +182,8 @@ public class CreateAccountPanel extends JPanel{
 			else
 			{
 			
-				//right here, we use the database class to get the list of patients
-				File f = Database.download("patients.csv", console);
+				//right here, we use the database class to get the list of doctors
+				File f = Database.download("doctors.csv", console);
 				
 				if(f.exists() && !f.isDirectory())
 				{
@@ -192,7 +210,7 @@ public class CreateAccountPanel extends JPanel{
 					
 					//it's a new account, create it
 					try {
-						FileWriter fw = new FileWriter("patients.csv", true);
+						FileWriter fw = new FileWriter("doctors.csv", true);
 						fw.append(firstName);
 						fw.append(",");
 						fw.append(lastName);
@@ -202,7 +220,10 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(password.toString());
 						fw.append(",");
 						fw.append(phoneNumber);
-
+						fw.append(",");
+						fw.append(docRButton.toString());
+						fw.append(",");
+						fw.append(nurRButton.toString());
 						
 						fw.close();
 					} catch (IOException e1) {
@@ -213,7 +234,7 @@ public class CreateAccountPanel extends JPanel{
 				{
 					FileWriter fw;
 					try {
-						fw = new FileWriter("patients.csv");
+						fw = new FileWriter("doctors.csv");
 						fw.append("firstName");
 						fw.append(",");
 						fw.append("lastName");
@@ -225,6 +246,8 @@ public class CreateAccountPanel extends JPanel{
 						fw.append("phoneNumber");
 						fw.append(",");
 						fw.append("doctor");
+						fw.append(",");
+						fw.append("nurse");
 						
 						fw.append("\n");
 						fw.append(firstName);
@@ -236,7 +259,10 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(password.toString());
 						fw.append(",");
 						fw.append(phoneNumber);
-
+						fw.append(",");
+						fw.append(docRButton.toString());
+						fw.append(",");
+						fw.append(nurRButton.toString());
 						
 						fw.close();
 					} catch (IOException e1) {
@@ -245,7 +271,7 @@ public class CreateAccountPanel extends JPanel{
 				}
 				
 				//here we use the database class to upload the file
-				Database.upload("patients.csv", new File("patients.csv"));
+				Database.upload("doctors.csv", new File("doctors.csv"));
 				
 				contentPane.removeAll();
 				contentPane.add(new LoginPanel(contentPane));
