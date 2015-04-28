@@ -16,15 +16,6 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
 
 public class EditPersonalDetailsPanel extends JPanel{
 	//TODO some changes
@@ -34,16 +25,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 	JTextField passwordField;
 	JTextField cPasswordField;
 	JTextField phoneNumberField;
-	JRadioButton doctorRButton;
-	JRadioButton nurseRButton;
-	
-	//these are the credentials for the s3 server
-	AWSCredentials credentials = new BasicAWSCredentials(
-			"AKIAJ6ESZAJPDCWD4MOA", 
-			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
-	String bucketName			= "rpcareapp";
-	String keyName				= "doctors.csv";
-	AmazonS3 s3Client = new AmazonS3Client(credentials);
+
 	
 	//this holds all the text fields
 	final ArrayList<JTextField> textFields = new ArrayList<>();
@@ -86,13 +68,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 		phoneNumberField = new JTextField(20);
 		JButton createAccountButton = new JButton("Update Details");
 		JButton backButton = new JButton("Back");
-		doctorRButton = new JRadioButton("Doctor");
-		nurseRButton = new JRadioButton("Nurse");
-		
-		//Group radio buttons
-		ButtonGroup group = new ButtonGroup();
-		group.add(doctorRButton);
-		group.add(nurseRButton);
+
 		
 		//Align
 		firstNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -109,9 +85,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 		phoneNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		doctorRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		nurseRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+
 		//set Max Size
 		firstNameField.setMaximumSize(new Dimension(200, 30));
 		lastNameField.setMaximumSize(new Dimension(200, 30));
@@ -148,9 +122,9 @@ public class EditPersonalDetailsPanel extends JPanel{
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(phoneNumberField);
 		add(Box.createRigidArea(new Dimension(0,2)));
-		add(doctorRButton);
+
 		add(Box.createRigidArea(new Dimension(0,2)));
-		add(nurseRButton);
+
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(createAccountButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
@@ -172,8 +146,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 			String password = passwordField.getText();
 			String cPassword = cPasswordField.getText();
 			String phoneNumber = phoneNumberField.getText();
-			Boolean docRButton = doctorRButton.isSelected();
-			Boolean nurRButton = nurseRButton.isSelected();
+
 			PrintStream console = System.out;
 			
 			//check if the password matches the confirm password and if any errors in filling out the form occur
@@ -183,18 +156,18 @@ public class EditPersonalDetailsPanel extends JPanel{
 				JOptionPane.showMessageDialog(frame, "Passwords do not match.");
 				return;
 			}
-			else if(anyFieldsEmpty() || !(doctorRButton.isSelected() || nurseRButton.isSelected()))
+			else if(anyFieldsEmpty())
 			{
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
 				return;
 			}
 			
-			//right here, we use the database class to get the list of doctors
-			File f = Database.download("doctors.csv", console);
+			//right here, we use the database class to get the list of patients
+			File f = Database.download("patients.csv", console);
 			String buffer = "";
 			
-			Database.download("doctors.csv", console);
+			Database.download("patients.csv", console);
 					
 			try {
 				boolean found = false;
@@ -232,7 +205,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 						buffer += scanner.next();
 					}
 					scanner.next();
-					buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+","+docRButton.toString()+","+nurRButton.toString()+"\n";
+					buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+"\n";
 					while(scanner.hasNext()){
 						buffer += scanner.next();
 					}
@@ -245,7 +218,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					Database.upload("doctors.csv", f);
+					Database.upload("patients.csv", f);
 					}
 					
 				scanner.close();
