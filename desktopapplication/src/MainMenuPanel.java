@@ -70,6 +70,10 @@ public class MainMenuPanel extends JPanel{
 			JButton editDetails = new JButton("Edit Personal Details");
 			editDetails.addActionListener(new EditDetailsListener(contentPane));
 			add(editDetails);
+			
+			JButton logoutButton = new JButton("Logout");
+			logoutButton.addActionListener(new BackListener(contentPane));
+			add(logoutButton);
 					
 		}
 		
@@ -95,6 +99,19 @@ public class MainMenuPanel extends JPanel{
 		public void actionPerformed(ActionEvent e){
 			contentPane.removeAll();
 			contentPane.add(new EditPersonalDetailsPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
+		}
+	}
+	
+	public class BackListener implements ActionListener{
+		Container contentPane;
+		public BackListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent e){
+			contentPane.removeAll();
+			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
 		}

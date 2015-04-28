@@ -250,7 +250,11 @@ public class EditPersonalDetailsPanel extends JPanel{
 					
 				scanner.close();
 				System.out.println("Scanner closed.");
-						
+				
+				contentPane.removeAll();
+				contentPane.add(new MainMenuPanel(contentPane));
+				contentPane.invalidate();
+				contentPane.validate();
 			} catch (FileNotFoundException e1) {
 						e1.printStackTrace();
 			}

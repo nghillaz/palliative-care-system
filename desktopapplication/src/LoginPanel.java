@@ -102,10 +102,8 @@ public class LoginPanel extends JPanel{
 					if(temp.contains(emailField.getText().toLowerCase())
 							&& temp.contains(passwordField.getText().toLowerCase())){
 						found = true;
-						System.out.println("line number is: " + lineNumber);
 						break;
 					}
-					lineNumber++;
 				}
 				//the account could not be found
 				if(!found){
