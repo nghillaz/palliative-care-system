@@ -76,7 +76,7 @@ public class LoginPanel extends JPanel{
 		}
 		public void actionPerformed(ActionEvent e){
 			
-			//right here, we use the database class to get the list of doctors
+			//right here, we use the database class to get the list of patients
 			PrintStream console = System.out;
 			File f = Database.download("patients.csv", console);
 			

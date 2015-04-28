@@ -1,104 +1,216 @@
 import javax.swing.*;
 
-import java.awt.*;
+		import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Scanner;
 
 public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
-		// TODO change everything, turn into entersymptomspanel but keep same name
-		
-		//set to grid layout
-		super(new GridLayout(1,2));
-		
-		contentPane.setPreferredSize(new Dimension(1000,480));
-		
-		//the list of patients, on a panel on the left
-		String[] patientNames = getPatientList();
-		JList<String> customerList = new JList<String>(patientNames);
-		add(customerList);
-		add(new RightPanel(contentPane));
-	}
+
+			JButton enterSymptomsButton;		
+			JButton editDetailsButton;
+			JButton setDoctorButton;
+			JButton logOutButton;
+			
+			
+				//set to box layout
+				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				
+				//create the components and set them up
+				//all of the buttons
+				enterSymptomsButton = new JButton("Enter Symptoms/Pain Level");		
+				editDetailsButton = new JButton("Edit Details");
+				setDoctorButton = new JButton("Set Doctor");
+				logOutButton = new JButton("Log Out");
+				
+				//button listeners
+				enterSymptomsButton.addActionListener(new EnterSymptomsListener(contentPane));
+				editDetailsButton.addActionListener(new EditDetailsListener(contentPane));
+				setDoctorButton.addActionListener(new setDoctorListener(contentPane));
+				logOutButton.addActionListener(new logOutListener(contentPane));
+				
+				//setting the position of the buttons
+				enterSymptomsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+				editDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+				setDoctorButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+				logOutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+				
+				
+				//add the components to the panel
+				add(Box.createRigidArea(new Dimension(0,150)));
+				add(enterSymptomsButton);
+				add(Box.createRigidArea(new Dimension(0,10)));
+				add(editDetailsButton);
+				add(Box.createRigidArea(new Dimension(0,10)));
+				add(setDoctorButton);
+				add(Box.createRigidArea(new Dimension(0,100)));
+				add(logOutButton);
+			}
 	
-	//the panel that handles displaying the patient data
-	public class RightPanel extends JPanel{
+	
+
+	
+	//implementing action listeners for each button
+	public class EnterSymptomsListener implements ActionListener{
 		Container contentPane;
-		public RightPanel(Container contentPane){
-			//set up with a grid layout
-			super(new GridLayout(12,2));
+		public EnterSymptomsListener(Container contentPane){
 			this.contentPane = contentPane;
+		}
+	
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO
+			contentPane.removeAll();
+			//contentPane.add(new EnterSymptomsPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
 			
-			//set up the labels that won't be changing, they simply say what symptom it is
-			JLabel[] symptomLabels = new JLabel[11];
-			for(int i = 0; i < symptomLabels.length; i++){
-				symptomLabels[i] = new JLabel();
-			}
-			
-			//these labels will display whether the symptom is selected or not, and what the pain level is
-			JLabel[] symptomRatingLabels = new JLabel[11];
-			for(int i = 0; i < symptomRatingLabels.length; i++){
-				symptomRatingLabels[i] = new JLabel("placeholder " + i);
-			}
-			
-			//these labels will never change from these values
-			symptomLabels[0].setText("Pain:");
-			symptomLabels[1].setText("Nausea:");
-			symptomLabels[2].setText("Fatigue:");
-			symptomLabels[3].setText("Anxiety:");
-			symptomLabels[4].setText("Depression:");
-			symptomLabels[5].setText("Constipation:");
-			symptomLabels[6].setText("Diarrhea:");
-			symptomLabels[7].setText("Cough:");
-			symptomLabels[8].setText("Sore Throat:");
-			symptomLabels[9].setText("Vomiting:");
-			symptomLabels[10].setText("Fever:");
-			
-			//set up the panel so that the labels are in the correct spots
-			//it's some weird math, but the logic makes them alternate left/right filling up all 22 spots
-			for(int i = 0; i < symptomLabels.length * 2; i++){
-				if(i%2 == 0){
-					add(symptomLabels[(int) Math.floor(i/2)]);
-				}
-				if(i%2 == 1){
-					add(symptomRatingLabels[(int) Math.floor(i/2)]);
-				}
-			}
-			
-			JButton editDetails = new JButton("Edit Personal Details");
-			editDetails.addActionListener(new EditDetailsListener(contentPane));
-			add(editDetails);
-					
 		}
 		
-		
-		//TODO use the patient csv files to update patient data everytime a new patient is selected
-		//this code is probably not right, just the right idea maybe
-//		public void updateSymptoms(int[] symptoms){
-//			pain.setText("Pain: " + symptoms[0]);
-//			for(int i = 1; i < symptoms.length; i++){
-//				if(symptoms[i]  == 1)
-					
-//			}
-//		}
-		
 	}
 	
-	//listener for the buttom that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{
 		Container contentPane;
 		public EditDetailsListener(Container contentPane){
 			this.contentPane = contentPane;
 		}
-		public void actionPerformed(ActionEvent e){
+	
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO
 			contentPane.removeAll();
 			contentPane.add(new EditPersonalDetailsPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
+			
 		}
+		
 	}
 	
-	public String[] getPatientList(){
-		// TODO return the list of patients from the database
-		return new String[] {"harry", "sally", "tom"};
+	public class setDoctorListener implements ActionListener{
+		Container contentPane;
+		public setDoctorListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+	
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO
+			contentPane.removeAll();
+			contentPane.add(new SetDoctorPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
+			
+		}
+		
 	}
-}
+	
+	public class logOutListener implements ActionListener{
+		Container contentPane;
+		public logOutListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+	
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO
+			contentPane.removeAll();
+			contentPane.add(new LoginPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
+			
+		}
+		
+	}
+	
+	
+	
+	
+			/*
+			public class LoginListener implements ActionListener{
+				Container contentPane;
+				public LoginListener(Container contentPane){
+					this.contentPane = contentPane;
+				}
+				public void actionPerformed(ActionEvent e){
+					
+					//right here, we use the database class to get the list of patients
+					PrintStream console = System.out;
+					File f = Database.download("patients.csv", console);
+					
+					Database.download("patients.csv", console);
+							
+					try {
+						boolean found = false;
+						Scanner scanner = new Scanner(f);
+						scanner.useDelimiter("\n");
+						int lineNumber = 0;
+						System.out.println("text: " + emailField.getText());
+						//check to see if the email and password are valid
+						if(emailField.getText().length() < 4 || passwordField.getText().length() < 4){
+							JFrame frame = new JFrame();
+							JOptionPane.showMessageDialog(frame, "Account not found in database");
+							scanner.close();
+							return;
+						}
+						//search for the email and password in the account
+						while(scanner.hasNext())
+						{
+							String temp = scanner.next().toLowerCase();
+							if(temp.contains(emailField.getText().toLowerCase())
+									&& temp.contains(passwordField.getText().toLowerCase())){
+								found = true;
+								break;
+							}
+						}
+						//the account could not be found
+						if(!found){
+							JFrame frame = new JFrame();
+							JOptionPane.showMessageDialog(frame, "Account not found in the database.");
+							scanner.close();
+							return;
+						}
+						//the account could be found
+						scanner.close();
+						contentPane.removeAll();
+						contentPane.add(new MainMenuPanel(contentPane));
+						contentPane.invalidate();
+						contentPane.validate();
+					}
+					catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			
+			//listener on the button to recover password
+			public class ForgotPasswordListener implements ActionListener{
+				Container contentPane;
+				public ForgotPasswordListener(Container contentPane){
+					this.contentPane = contentPane;
+				}
+				public void actionPerformed(ActionEvent e){
+					contentPane.removeAll();
+					contentPane.add(new ForgotPasswordPanel(contentPane));
+					contentPane.invalidate();
+					contentPane.validate();
+				}
+			}
+			
+			//listener for the button to create an account
+			public class CreateAccountListener implements ActionListener{
+				Container contentPane;
+				public CreateAccountListener(Container contentPane){
+					this.contentPane = contentPane;
+				}
+				public void actionPerformed(ActionEvent e){
+					contentPane.removeAll();
+					contentPane.add(new CreateAccountPanel(contentPane));
+					contentPane.invalidate();
+					contentPane.validate();
+				}
+			}*/
+		
+		
+		
+	}
