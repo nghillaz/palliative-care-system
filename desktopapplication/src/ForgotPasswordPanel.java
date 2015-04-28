@@ -1,5 +1,4 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -8,7 +7,6 @@ import java.io.PrintStream;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-
 
 public class ForgotPasswordPanel extends JPanel{
 	JTextField emailField;

@@ -1,21 +1,9 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
 
 public class CreateAccountPanel extends JPanel{
 	
@@ -27,14 +15,6 @@ public class CreateAccountPanel extends JPanel{
 	JTextField phoneNumberField;
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
-	
-	//credentials for the s3 database
-	AWSCredentials credentials = new BasicAWSCredentials(
-			"AKIAJ6ESZAJPDCWD4MOA", 
-			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
-	String bucketName			= "rpcareapp";
-	String keyName				= "doctors.csv";
-	AmazonS3 s3Client = new AmazonS3Client(credentials);
 	
 	//holds the textfields for making an account
 	final ArrayList<JTextField> textFields = new ArrayList<>();

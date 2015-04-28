@@ -1,30 +1,9 @@
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
 import java.util.Scanner;
-
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
 
 public class EditPersonalDetailsPanel extends JPanel{
 	
@@ -36,14 +15,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 	JTextField phoneNumberField;
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
-	
-	//these are the credentials for the s3 server
-	AWSCredentials credentials = new BasicAWSCredentials(
-			"AKIAJ6ESZAJPDCWD4MOA", 
-			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
-	String bucketName			= "rpcareapp";
-	String keyName				= "doctors.csv";
-	AmazonS3 s3Client = new AmazonS3Client(credentials);
 	
 	//this holds all the text fields
 	final ArrayList<JTextField> textFields = new ArrayList<>();
