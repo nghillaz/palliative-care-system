@@ -18,9 +18,18 @@ public class MainMenuPanel extends JPanel{
 	protected JLabel[] symptomRatingLabels;
 	
 	public MainMenuPanel(Container contentPane){
+		// TODO doctor needs to be able to set a pain threshold
+		// TODO		- create a painThreshold column for each doctor
+		// TODO		- modify the createAccountPanel to create a new column and default value for painThreshold
+		// TODO		- modify the edit personal details to allow the doctor to edit their painThreshold
+		// TODO What should actually happen is if the patient doesn't have a history, don't add (remove) it to the patientNames list.
+		
+		// TODO	if the pain is 2 above the threshold, the patients' symptoms are problematic
+		// TODO if the pain is 3 above the threshold, the patients' symptoms are significantly problematic
 		// TODO prioritize patients based on severity
+		
 		// TODO create a list or graph of history of each patient somehow (low priority)
-		// TODO when a patient is selected, show recent symptom entries
+		// TODO we could try to make it to where the doctor can send an email to the patient (low priority)
 		
 		//set to grid layout
 		super(new GridLayout(1,2));
@@ -169,6 +178,10 @@ public class MainMenuPanel extends JPanel{
 	    		{
 	    			JFrame frame = new JFrame();
 	    			JOptionPane.showMessageDialog(frame, "The patient has yet to submit symptoms.");
+	    			for(int i = 0; i < symptomRatingLabels.length; i++)
+					{
+						symptomRatingLabels[i].setText("---");
+					}
 	    			return;
 	    		}
 	        }
