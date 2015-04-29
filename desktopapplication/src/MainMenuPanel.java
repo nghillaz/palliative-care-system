@@ -10,8 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 
 public class MainMenuPanel extends JPanel{
@@ -108,7 +106,8 @@ public class MainMenuPanel extends JPanel{
 		public void valueChanged(ListSelectionEvent listSelectionEvent) {
 	        if(!listSelectionEvent.getValueIsAdjusting())
 	        {
-	        	JList<String> pList = (JList<String>) listSelectionEvent.getSource();
+	        	@SuppressWarnings("unchecked")
+				JList<String> pList = (JList<String>) listSelectionEvent.getSource();
 	        	String selectionValue = pList.getSelectedValue();
 	        	String[] Name = selectionValue.replaceAll("\\s", "").split(",");
 	        	System.out.println(Name[0]);
@@ -139,9 +138,9 @@ public class MainMenuPanel extends JPanel{
 					
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
-	    			} catch (IOException e) {
-	    				e.printStackTrace();
-	    			}
+	    			} //catch (IOException e) {
+	    				//e.printStackTrace();
+	    			//}
 	    		}
 	    		else // file doesn't exist on the server or locally
 	    		{
@@ -168,15 +167,26 @@ public class MainMenuPanel extends JPanel{
 								System.out.println("Pain Level = " + painLevel);
 								if(!temp.contains("pain"))
 								{
+									// TODO change the 5 to painThreshold and maybe bring them to the top? or do something to prioritize?
+									// TODO if pain level is 2 above painThreshold - problematic
+									// TODO if pain level is 3 above - significantly problematic
 									tempArray = temp.replaceAll("\\s", "").split(",");
-									if(painLevel > 6)
+									if(painLevel > (5 + 3))
 									{
-										// TODO change the 6 to painThreshold and maybe bring them to the top? or do something to prioritize?
+										
 										for(int i = 0; i < symptomRatingLabels.length; i++)
 										{
 											symptomRatingLabels[i].setText(" " + tempArray[i]);
 										}
 										symptomRatingLabels[0].setForeground(Color.RED);
+									}
+									else if(painLevel > (5 + 2))
+									{
+										for(int i = 0; i < symptomRatingLabels.length; i++)
+										{
+											symptomRatingLabels[i].setText(" " + tempArray[i]);
+										}
+										symptomRatingLabels[0].setForeground(Color.ORANGE);
 									}
 									else
 									{
@@ -186,13 +196,13 @@ public class MainMenuPanel extends JPanel{
 										}
 										symptomRatingLabels[0].setForeground(Color.BLACK);
 									}
-									
 								}
+								
 							} catch (NumberFormatException e) {
 								//e.printStackTrace();
 							}	
 						}
-						
+						scanner.close();	
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -239,7 +249,6 @@ public class MainMenuPanel extends JPanel{
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	public String[] getPatientList(){
 		PrintStream console = System.out;
 		File f = Database.download("patients.csv", console);
@@ -265,6 +274,7 @@ public class MainMenuPanel extends JPanel{
 					}
 				}
 				System.out.println(line);
+				br.close();
 				return patientNames;
 				
 			} catch (IOException e) {
