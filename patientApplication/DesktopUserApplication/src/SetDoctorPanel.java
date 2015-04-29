@@ -131,7 +131,6 @@ public class SetDoctorPanel extends JPanel{
 			//TODO Add functionality of button
 			
 			
-			
 			contentPane.invalidate();
 			contentPane.validate();
 		}

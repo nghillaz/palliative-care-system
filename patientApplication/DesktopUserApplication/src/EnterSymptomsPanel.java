@@ -130,7 +130,7 @@ public class EnterSymptomsPanel extends JPanel{
 		
 		
 		//button listeners
-		submit.addActionListener(new SubmitListener(contentPane));
+		//submit.addActionListener(new SubmitListener(contentPane));
 		back.addActionListener(new BackListener(contentPane));
 		
 		
@@ -257,21 +257,57 @@ public class EnterSymptomsPanel extends JPanel{
 		
 	}
 	
+	/*
 	public class SubmitListener implements ActionListener{
 		Container contentPane;
 		public SubmitListener(Container contenetPane){
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent arg0){
-			contentPane.removeAll();
+			int painValue = 0;
+			int tirednessValue = 0;
+			int nauseaValue = 0;
+			int depressionValue = 0;
+			int anxietyValue = 0;
+			int drowsinessValue = 0;
+			int appetiteValue = 0;
+			int wellbeingValue = 0;
+			int sobValue = 0;
 			
-			//TODO Add functionality of button
+			PrintStream console = System.out;
 			
+			//will have to create or search for patient file here
 			
-			contentPane.invalidate();
-			contentPane.validate();
-		}
+			File f = Database.download("patients.csv", console);
+			String buffer = "";
+			
+			try{
+				boolean found = false;
+				Scanner scanner = new Scanner(f);
+				scanner.useDelimiter("\n");
+				int lineNumber = 0;
+				
+				//scan for the account
+				while(scanner.hasNextLine()){
+					
+				}
+				
+				
+				
+				scanner.close();
+				System.out.println("Scanner closed.");
+				
+				contentPane.removeAll();
+				contentPane.add(new MainMenuPanel(contentPane));
+				contentPane.invalidate();
+				contentPane.validate();
+			}catch (FileNotFoundException e1) {
+				e1.printStackTrace();
 	}
+			
+			
+		}
+	}*/
 	
 	public class BackListener implements ActionListener{
 		Container contentPane;
