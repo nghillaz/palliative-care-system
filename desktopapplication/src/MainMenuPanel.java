@@ -180,7 +180,7 @@ public class MainMenuPanel extends JPanel{
 										}
 										symptomRatingLabels[0].setForeground(Color.RED);
 									}
-									else if(painLevel > (5 + 2))
+									else if(painLevel >= (5 + 2) && painLevel < (5 + 3))
 									{
 										for(int i = 0; i < symptomRatingLabels.length; i++)
 										{
