@@ -1,4 +1,5 @@
-import java.awt.Container;
+import java.awt.*;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -13,8 +14,10 @@ public class SetDoctorPanel extends JPanel{
 
 	JLabel setDoctor;
 	JComboBox selectDoctor;
+	JButton setAsDoctor;
+	JButton back;
 	
-	String [] settingDoctor = {"a", "b", "c"};
+	String [] settingDoctor = {""};
 	
 	public SetDoctorPanel(Container contentPane) {
 		//setting to box layout
@@ -24,15 +27,28 @@ public class SetDoctorPanel extends JPanel{
 		//labels and combo box
 		setDoctor = new JLabel("Set Doctor:");
 		selectDoctor = new JComboBox(settingDoctor);
+		setAsDoctor = new JButton("Set as Doctor");
+		back = new JButton("Back");
+		
+		//button listeners
+		setAsDoctor.addActionListener(new SetAsDoctorListener(contentPane));
+		back.addActionListener(new BackListener(contentPane));
+		
+		//setting alignment
 		setDoctor.setAlignmentX(Component.CENTER_ALIGNMENT);
 		selectDoctor.setAlignmentX(Component.CENTER_ALIGNMENT);
+		setAsDoctor.setAlignmentX(Component.CENTER_ALIGNMENT);
+		back.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		//adding components to panel
 		add(Box.createRigidArea(new Dimension(0,150)));
 		add(setDoctor);
+		contentPane.add(selectDoctor);
 		add(Box.createRigidArea(new Dimension(0,10)));
 		add(selectDoctor);
-		
+		add(Box.createRigidArea(new Dimension(0,0)));
+		add(setAsDoctor);
+		add(Box.createRigidArea(new Dimension(0,10)));
+		add(back);
 	}
 	
 	//setDoctorPanel Listener
@@ -56,4 +72,42 @@ public class SetDoctorPanel extends JPanel{
 			
 		}
 	}*/
+	
+	
+	
+	public class SetAsDoctorListener implements ActionListener{
+		Container contentPane;
+		public SetAsDoctorListener(Container contenetPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent arg0){
+			contentPane.removeAll();
+			
+			//TODO Add functionality of button
+			
+			
+			
+			contentPane.invalidate();
+			contentPane.validate();
+		}
+	}
+	
+	
+	public class BackListener implements ActionListener{
+		Container contentPane;
+		public BackListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+	
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO
+			contentPane.removeAll();
+			contentPane.add(new MainMenuPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
+			
+		}
+	}
+	
+	
 }
