@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -257,7 +258,7 @@ public class EnterSymptomsPanel extends JPanel{
 		
 	}
 	
-	/*
+	//TODO rest of this method implementation
 	public class SubmitListener implements ActionListener{
 		Container contentPane;
 		public SubmitListener(Container contenetPane){
@@ -273,6 +274,7 @@ public class EnterSymptomsPanel extends JPanel{
 			int appetiteValue = 0;
 			int wellbeingValue = 0;
 			int sobValue = 0;
+			String email = "";
 			
 			PrintStream console = System.out;
 			
@@ -287,12 +289,51 @@ public class EnterSymptomsPanel extends JPanel{
 				scanner.useDelimiter("\n");
 				int lineNumber = 0;
 				
+				
+				//TODO specific changes to method functionality
 				//scan for the account
 				while(scanner.hasNextLine()){
-					
+					if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
+						found = true;
+						System.out.println("line number is: " + lineNumber);
+						break;
+					}
+					lineNumber++;
+				}if(!found){
+					buffer = "";
+					JFrame frame = new JFrame();
+					JOptionPane.showMessageDialog(frame, "Email not found in the database.");
+					scanner.close();
+					return;
 				}
-				
-				
+				//is in the database
+				else{
+					buffer = "";
+					scanner.close();
+					scanner = new Scanner(f);
+					scanner.useDelimiter("\n");
+					
+					for(int i = 0; i < lineNumber; i++){
+						buffer += scanner.next();
+					}
+					scanner.next();
+					buffer += painValue+","+tirednessValue+","+nauseaValue+","
+							+ ""+depressionValue+","+anxietyValue+","+drowsinessValue+","
+							+appetiteValue+","+wellbeingValue+","+sobValue+"\n";
+					while(scanner.hasNext()){
+						buffer += scanner.next();
+					}
+					System.out.println("buffer is: " + buffer);
+					
+					try {
+						FileWriter fw = new FileWriter(f, false);
+						fw.append(buffer);
+						fw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					Database.upload("patients.csv", f);
+				}
 				
 				scanner.close();
 				System.out.println("Scanner closed.");
@@ -303,11 +344,11 @@ public class EnterSymptomsPanel extends JPanel{
 				contentPane.validate();
 			}catch (FileNotFoundException e1) {
 				e1.printStackTrace();
-	}
+				}
 			
 			
 		}
-	}*/
+	}
 	
 	public class BackListener implements ActionListener{
 		Container contentPane;

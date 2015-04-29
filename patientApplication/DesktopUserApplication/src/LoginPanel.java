@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class LoginPanel extends JPanel{
 
 	JLabel emailLabel;
-	JTextField emailField;
+	static JTextField emailField;
 	JLabel passwordLabel;
 	JTextField passwordField;
 	JButton loginButton;		
@@ -151,5 +151,9 @@ public class LoginPanel extends JPanel{
 			contentPane.invalidate();
 			contentPane.validate();
 		}
+	}
+	
+	public static String getEmail(){
+		return emailField.getText();
 	}
 }
