@@ -16,40 +16,38 @@ public class MainMenuPanel extends JPanel{
 			JButton setDoctorButton;
 			JButton logOutButton;
 			
+			//set to box layout
+			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 			
-				//set to box layout
-				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			//create the components and set them up
+			//all of the buttons
+			enterSymptomsButton = new JButton("Enter Symptoms/Pain Level");						editDetailsButton = new JButton("Edit Details");
+			setDoctorButton = new JButton("Set Doctor");
+			logOutButton = new JButton("Log Out");
 				
-				//create the components and set them up
-				//all of the buttons
-				enterSymptomsButton = new JButton("Enter Symptoms/Pain Level");		
-				editDetailsButton = new JButton("Edit Details");
-				setDoctorButton = new JButton("Set Doctor");
-				logOutButton = new JButton("Log Out");
+			//button listeners
+			enterSymptomsButton.addActionListener(new EnterSymptomsListener(contentPane));		
+			editDetailsButton.addActionListener(new EditDetailsListener(contentPane));
+			setDoctorButton.addActionListener(new setDoctorListener(contentPane));
+			logOutButton.addActionListener(new logOutListener(contentPane));
 				
-				//button listeners
-				enterSymptomsButton.addActionListener(new EnterSymptomsListener(contentPane));
-				editDetailsButton.addActionListener(new EditDetailsListener(contentPane));
-				setDoctorButton.addActionListener(new setDoctorListener(contentPane));
-				logOutButton.addActionListener(new logOutListener(contentPane));
-				
-				//setting the position of the buttons
-				enterSymptomsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-				editDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-				setDoctorButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-				logOutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			//setting the position of the buttons
+			enterSymptomsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			editDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			setDoctorButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			logOutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 				
 				
-				//add the components to the panel
-				add(Box.createRigidArea(new Dimension(0,150)));
-				add(enterSymptomsButton);
-				add(Box.createRigidArea(new Dimension(0,10)));
-				add(editDetailsButton);
-				add(Box.createRigidArea(new Dimension(0,10)));
-				add(setDoctorButton);
-				add(Box.createRigidArea(new Dimension(0,100)));
-				add(logOutButton);
-			}
+			//add the components to the panel
+			add(Box.createRigidArea(new Dimension(0,150)));
+			add(enterSymptomsButton);
+			add(Box.createRigidArea(new Dimension(0,10)));
+			add(editDetailsButton);
+			add(Box.createRigidArea(new Dimension(0,10)));
+			add(setDoctorButton);
+			add(Box.createRigidArea(new Dimension(0,100)));
+			add(logOutButton);
+		}
 	
 	
 
@@ -64,7 +62,7 @@ public class MainMenuPanel extends JPanel{
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO
 			contentPane.removeAll();
-			//contentPane.add(new EnterSymptomsPanel(contentPane));
+			contentPane.add(new EnterSymptomsPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
 			
