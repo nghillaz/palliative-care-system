@@ -64,23 +64,23 @@ public class EnterSymptomsPanel extends JPanel{
 		
 		//sliders
 		JSlider painSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider tirednessSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider nauseaSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider depressionSlider = new JSlider(JSlider.HORIZONTAL,
-                        0, 10, 1);
+                        0, 10, 0);
 		JSlider anxietySlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider drowsinessSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider appetiteSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider wellbeingSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		JSlider sobSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 10, 1);
+                0, 10, 0);
 		
 		
 		//setting paint ticks and labels
@@ -88,50 +88,59 @@ public class EnterSymptomsPanel extends JPanel{
 		painSlider.setMinorTickSpacing(1);
 		painSlider.setPaintTicks(true);
 		painSlider.setPaintLabels(true);
+		painSlider.setSnapToTicks(true);
 		
 		tirednessSlider.setMajorTickSpacing(1);
 		tirednessSlider.setMinorTickSpacing(1);
 		tirednessSlider.setPaintTicks(true);
 		tirednessSlider.setPaintLabels(true);
+		painSlider.setSnapToTicks(true);
 		
 		nauseaSlider.setMajorTickSpacing(1);
 		nauseaSlider.setMinorTickSpacing(1);
 		nauseaSlider.setPaintTicks(true);
 		nauseaSlider.setPaintLabels(true);
+		nauseaSlider.setSnapToTicks(true);
 		
 		depressionSlider.setMajorTickSpacing(1);
 		depressionSlider.setMinorTickSpacing(1);
 		depressionSlider.setPaintTicks(true);
 		depressionSlider.setPaintLabels(true);
+		depressionSlider.setSnapToTicks(true);
 		
 		anxietySlider.setMajorTickSpacing(1);
 		anxietySlider.setMinorTickSpacing(1);
 		anxietySlider.setPaintTicks(true);
 		anxietySlider.setPaintLabels(true);
+		anxietySlider.setSnapToTicks(true);
 		
 		drowsinessSlider.setMajorTickSpacing(1);
 		drowsinessSlider.setMinorTickSpacing(1);
 		drowsinessSlider.setPaintTicks(true);
 		drowsinessSlider.setPaintLabels(true);
+		drowsinessSlider.setSnapToTicks(true);
 		
 		appetiteSlider.setMajorTickSpacing(1);
 		appetiteSlider.setMinorTickSpacing(1);
 		appetiteSlider.setPaintTicks(true);
 		appetiteSlider.setPaintLabels(true);
+		appetiteSlider.setSnapToTicks(true);
 		
 		wellbeingSlider.setMajorTickSpacing(1);
 		wellbeingSlider.setMinorTickSpacing(1);
 		wellbeingSlider.setPaintTicks(true);
 		wellbeingSlider.setPaintLabels(true);
+		appetiteSlider.setSnapToTicks(true);
 		
 		sobSlider.setMajorTickSpacing(1);
 		sobSlider.setMinorTickSpacing(1);
 		sobSlider.setPaintTicks(true);
 		sobSlider.setPaintLabels(true);
+		sobSlider.setSnapToTicks(true);
 		
 		
 		//button listeners
-		//submit.addActionListener(new SubmitListener(contentPane));
+		submit.addActionListener(new SubmitListener(contentPane));
 		back.addActionListener(new BackListener(contentPane));
 		
 		
@@ -207,56 +216,13 @@ public class EnterSymptomsPanel extends JPanel{
 		add(submit);
 		add(back);
 		
-		
-		//adding components in box layout
-		/*
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(pain);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(painSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(tiredness);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(tirednessSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(nausea);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(nauseaSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(depression);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(depressionSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(anxiety);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(anxietySlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(drowsiness);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(drowsinessSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(appetite);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(appetiteSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(wellbeing);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(wellbeingSlider);
-		
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(sob);
-		add(Box.createRigidArea(new Dimension(0,10)));
-		add(sobSlider);*/
-		
-		
 	}
+	
+	//test method
+	public int getValue(){
+		return painSlider.getValue();
+	}
+	
 	
 	//TODO rest of this method implementation
 	public class SubmitListener implements ActionListener{
@@ -265,15 +231,15 @@ public class EnterSymptomsPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent arg0){
-			int painValue = 0;
-			int tirednessValue = 0;
-			int nauseaValue = 0;
-			int depressionValue = 0;
-			int anxietyValue = 0;
-			int drowsinessValue = 0;
-			int appetiteValue = 0;
-			int wellbeingValue = 0;
-			int sobValue = 0;
+			int painValue = painSlider.getValue();
+			int tirednessValue = tirednessSlider.getValue();
+			int nauseaValue = nauseaSlider.getValue();
+			int depressionValue = depressionSlider.getValue();
+			int anxietyValue = anxietySlider.getValue();
+			int drowsinessValue = drowsinessSlider.getValue();
+			int appetiteValue = appetiteSlider.getValue();
+			int wellbeingValue = wellbeingSlider.getValue();
+			int sobValue = sobSlider.getValue();
 			String email = "";
 			
 			PrintStream console = System.out;
