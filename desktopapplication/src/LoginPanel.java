@@ -78,9 +78,7 @@ public class LoginPanel extends JPanel{
 			//right here, we use the database class to get the list of doctors
 			PrintStream console = System.out;
 			File f = Database.download("doctors.csv", console);
-			
-			Database.download("doctors.csv", console);
-					
+				
 			try {
 				boolean found = false;
 				Scanner scanner = new Scanner(f);

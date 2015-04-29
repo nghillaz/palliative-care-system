@@ -25,8 +25,8 @@ public class MainMenuPanel extends JPanel{
 		
 		//the list of patients, on a panel on the left
 		String[] patientNames = getPatientList();
-		JList<String> customerList = new JList<String>(patientNames);
-		add(customerList);
+		final JList<String> patientList = new JList<String>(patientNames);
+		add(patientList);
 		add(new RightPanel(contentPane));
 	}
 	
@@ -39,16 +39,22 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 			
 			//set up the labels that won't be changing, they simply say what symptom it is
-			JLabel[] symptomLabels = new JLabel[10];
+			JLabel[] symptomLabels = new JLabel[11];
 			for(int i = 0; i < symptomLabels.length; i++){
 				symptomLabels[i] = new JLabel();
 			}
 			
 			//these labels will display whether the symptom is selected or not, and what the pain level is
-			JLabel[] symptomRatingLabels = new JLabel[10];
+			JLabel[] symptomRatingLabels = new JLabel[11];
 			for(int i = 0; i < symptomRatingLabels.length; i++){
-				symptomRatingLabels[i] = new JLabel("placeholder " + i);
+				symptomRatingLabels[i] = new JLabel("---");
 			}
+			
+			// TODO will go inside the click listener later
+			/*for(int i = 0; i < symptomRatingLabels.length; i++){
+				Integer value = updateSymptom(i);
+				symptomRatingLabels[i] = new JLabel(value.toString());
+			}*/
 			
 			//these labels will never change from these values
 			symptomLabels[0].setText("Pain:");
@@ -61,6 +67,7 @@ public class MainMenuPanel extends JPanel{
 			symptomLabels[7].setText("Wellbeing:");
 			symptomLabels[8].setText("Shortness of breath:");
 			symptomLabels[9].setText("Other:");
+			symptomLabels[10].setText("Submitted On:");
 			
 			//set up the panel so that the labels are in the correct spots
 			//it's some weird math, but the logic makes them alternate left/right filling up all 22 spots
@@ -80,21 +87,32 @@ public class MainMenuPanel extends JPanel{
 			JButton logoutButton = new JButton("Logout");
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
-					
+			
+				
 		}
 		
-		
-		//TODO use the patient csv files to update patient data everytime a new patient is selected
-		//this code is probably not right, just the right idea maybe
-//		public void updateSymptoms(int[] symptoms){
-//			pain.setText("Pain: " + symptoms[0]);
-//			for(int i = 1; i < symptoms.length; i++){
-//				if(symptoms[i]  == 1)
-					
-//			}
-//		}
-		
+		// TODO Needs to update via a selection of a patient and returns the value of the symptom
+		public int updateSymptom(int symptoms)
+		{
+			
+			
+			return 0;
+		}	
+	
 	}
+	
+	MouseListener mListener = new MouseAdapter()
+	{
+		public void mouseClicked(MouseEvent e)
+		{
+			if(e.getClickCount() == 1)
+			{
+				String selected = (String) patientList.getSelectedValue();
+				
+			}
+		}
+	};
+	patientList.addMouseListener(mListener);
 	
 	//listener for the button that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{

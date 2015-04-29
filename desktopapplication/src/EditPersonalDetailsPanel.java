@@ -165,8 +165,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 			File f = Database.download("doctors.csv", console);
 			String buffer = "";
 			
-			Database.download("doctors.csv", console);
-					
 			try {
 				boolean found = false;
 				Scanner scanner = new Scanner(f);

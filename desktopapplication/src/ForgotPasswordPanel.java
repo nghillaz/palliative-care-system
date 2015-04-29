@@ -38,6 +38,8 @@ public class ForgotPasswordPanel extends JPanel{
 			
 			//get the list of doctors
 			PrintStream console = System.out;
+			// TODO What if the file doesn't exist in the database or locally?
+			// TODO Check if the file exists (if(f.exists() && !f.isDirectory())).
 			Database.download("doctors.csv", console);
 			
 			try {
