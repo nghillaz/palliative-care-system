@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class LoginPanel extends JPanel{
 	
 	JLabel emailLabel;
-	JTextField emailField;
+	static JTextField emailField;
 	JLabel passwordLabel;
 	JTextField passwordField;
 	JButton loginButton;		
@@ -78,7 +78,7 @@ public class LoginPanel extends JPanel{
 			//right here, we use the database class to get the list of doctors
 			PrintStream console = System.out;
 			File f = Database.download("doctors.csv", console);
-				
+			// TODO what if doctors.csv doesn't exist in the database or locally? this needs to have a if(exists)else block	
 			try {
 				boolean found = false;
 				Scanner scanner = new Scanner(f);
@@ -147,5 +147,10 @@ public class LoginPanel extends JPanel{
 			contentPane.invalidate();
 			contentPane.validate();
 		}
+	}
+	
+	public static String getEmail()
+	{
+		return emailField.getText();
 	}
 }

@@ -10,20 +10,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainMenuPanel extends JPanel{
 	
 	protected String[] tempArray;
 	protected JLabel[] symptomRatingLabels;
+	JList<String> patientList;
+	String[] patientNames;
 	
 	public MainMenuPanel(Container contentPane){
-		// TODO doctor needs to be able to set a pain threshold
-		// TODO		- create a painThreshold column for each doctor
-		// TODO		- modify the createAccountPanel to create a new column and default value for painThreshold
-		// TODO		- modify the edit personal details to allow the doctor to edit their painThreshold
-		// TODO What should actually happen is if the patient doesn't have a history, don't add (remove) it to the patientNames list.
-		
 		// TODO	if the pain is 2 above the threshold, the patients' symptoms are problematic
 		// TODO if the pain is 3 above the threshold, the patients' symptoms are significantly problematic
 		// TODO prioritize patients based on severity
@@ -37,11 +35,12 @@ public class MainMenuPanel extends JPanel{
 		contentPane.setPreferredSize(new Dimension(1000,480));
 		
 		//the list of patients, on a panel on the left
-		String[] patientNames = getPatientList();
-		final JList<String> patientList = new JList<String>(patientNames);
+		patientNames = getPatientList();
+		patientList = new JList<String>(patientNames);
 		patientList.addListSelectionListener(lSelectionListener);
 		add(patientList);
 		add(new RightPanel(contentPane));
+		
 	}
 	
 	//the panel that handles displaying the patient data
@@ -95,20 +94,25 @@ public class MainMenuPanel extends JPanel{
 			JButton logoutButton = new JButton("Logout");
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
+			
+			/*for(int i = 0; i < patientNames.length; i++)
+			{
+				patientList.setSelectedValue(patientNames[i], true);
+			}*/
 		}	
 	}
+	
 	
 	ListSelectionListener lSelectionListener = new ListSelectionListener()
 	{
 		public void valueChanged(ListSelectionEvent listSelectionEvent) {
 	        if(!listSelectionEvent.getValueIsAdjusting())
 	        {
-	        	JList<String> patientList = (JList<String>) listSelectionEvent.getSource();
-	        	String selectionValue = patientList.getSelectedValue();
+	        	JList<String> pList = (JList<String>) listSelectionEvent.getSource();
+	        	String selectionValue = pList.getSelectedValue();
 	        	String[] Name = selectionValue.replaceAll("\\s", "").split(",");
 	        	System.out.println(Name[0]);
 	        	System.out.println(Name[1]);
-	        	
 	        	
 	        	PrintStream console = System.out;
 	    		File f = Database.download("patients.csv", console);
@@ -125,8 +129,8 @@ public class MainMenuPanel extends JPanel{
 							if(temp.contains(Name[0]) && temp.contains(Name[1]))
 							{
 								String[] tempArray = temp.replaceAll("\\s", "").split(",");
-								patientEmail = tempArray[5];
-								System.out.println(tempArray[5]);
+								patientEmail = tempArray[2];
+								System.out.println(tempArray[2]);
 								scanner.close();
 								break;
 							}
@@ -150,24 +154,43 @@ public class MainMenuPanel extends JPanel{
 	    		
 	    		if(patientf.exists() && !patientf.isDirectory())
 	    		{
-	    			// TODO update the symptomRatingLabels with the patientf file
-	    			
 					try {
 						Scanner scanner = new Scanner(patientf);
 						scanner.useDelimiter("\n");
 						while(scanner.hasNext())
 						{
 							String temp = scanner.next();
-							//tempArray = null;
-							if(!temp.contains("pain"))
-							{
-								tempArray = temp.replaceAll("\\s", "").split(",");
-								System.out.println(tempArray[10]);
-								for(int i = 0; i < symptomRatingLabels.length; i++)
+							String[] tempArray = temp.split(",", 2);
+							System.out.println(tempArray[0]);
+							Integer painLevel;
+							try {
+								painLevel = Integer.valueOf(tempArray[0]);
+								System.out.println("Pain Level = " + painLevel);
+								if(!temp.contains("pain"))
 								{
-									symptomRatingLabels[i].setText(" " + tempArray[i]);
+									tempArray = temp.replaceAll("\\s", "").split(",");
+									if(painLevel > 6)
+									{
+										// TODO change the 6 to painThreshold and maybe bring them to the top? or do something to prioritize?
+										for(int i = 0; i < symptomRatingLabels.length; i++)
+										{
+											symptomRatingLabels[i].setText(" " + tempArray[i]);
+										}
+										symptomRatingLabels[0].setForeground(Color.RED);
+									}
+									else
+									{
+										for(int i = 0; i < symptomRatingLabels.length; i++)
+										{
+											symptomRatingLabels[i].setText(" " + tempArray[i]);
+										}
+										symptomRatingLabels[0].setForeground(Color.BLACK);
+									}
+									
 								}
-							}		
+							} catch (NumberFormatException e) {
+								//e.printStackTrace();
+							}	
 						}
 						
 					} catch (FileNotFoundException e) {
@@ -234,10 +257,14 @@ public class MainMenuPanel extends JPanel{
 				br = new BufferedReader(new FileReader(f));
 				head = br.readLine();
 				while ((line = br.readLine()) != null) {
-				    String[] pNames = line.split(",");
-					patientNames[i] = pNames[1] + ", " + pNames[0];
-					i++;
+					if(line.contains(LoginPanel.getEmail()))
+					{
+						String[] pNames = line.split(",");
+						patientNames[i] = pNames[1] + ", " + pNames[0];
+						i++;
+					}
 				}
+				System.out.println(line);
 				return patientNames;
 				
 			} catch (IOException e) {
