@@ -8,12 +8,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
 public class MainMenuPanel extends JPanel{
+	
+	protected String[] tempArray;
+	protected JLabel[] symptomRatingLabels;
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity
@@ -48,11 +50,10 @@ public class MainMenuPanel extends JPanel{
 			}
 			
 			//these labels will display whether the symptom is selected or not, and what the pain level is
-			JLabel[] symptomRatingLabels = new JLabel[11];
+			symptomRatingLabels = new JLabel[11];
 			for(int i = 0; i < symptomRatingLabels.length; i++){
 				symptomRatingLabels[i] = new JLabel("---");
 			}
-			
 			
 			//these labels will never change from these values
 			symptomLabels[0].setText("Pain:");
@@ -85,17 +86,7 @@ public class MainMenuPanel extends JPanel{
 			JButton logoutButton = new JButton("Logout");
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
-			
-				
-		}
-		
-		public int updateSymptom(int symptoms)
-		{
-			
-			
-			return 0;
 		}	
-	
 	}
 	
 	ListSelectionListener lSelectionListener = new ListSelectionListener()
@@ -121,14 +112,14 @@ public class MainMenuPanel extends JPanel{
 						scanner.useDelimiter("\n");
 						while(scanner.hasNext())
 						{
-							String temp = scanner.next().toLowerCase();
-							if(temp.contains(Name[0].toLowerCase()) && temp.contains(Name[1].toLowerCase()))
+							String temp = scanner.next();
+							if(temp.contains(Name[0]) && temp.contains(Name[1]))
 							{
 								String[] tempArray = temp.replaceAll("\\s", "").split(",");
 								patientEmail = tempArray[5];
 								System.out.println(tempArray[5]);
 								scanner.close();
-								return;
+								break;
 							}
 						}
 						scanner.close();
@@ -148,13 +139,31 @@ public class MainMenuPanel extends JPanel{
 	    		
 	    		File patientf = Database.download(patientEmail + ".csv", console);
 	    		
-	    		if(f.exists() && !f.isDirectory())
+	    		if(patientf.exists() && !patientf.isDirectory())
 	    		{
-	    			for(int i = 0; i < symptomRatingLabels.length; i++)
-	    			{
-	    				Integer value = updateSymptom(i);
-	    				symptomRatingLabels[i] = new JLabel(value.toString());
-	    			}
+	    			// TODO update the symptomRatingLabels with the patientf file
+	    			
+					try {
+						Scanner scanner = new Scanner(patientf);
+						scanner.useDelimiter("\n");
+						while(scanner.hasNext())
+						{
+							String temp = scanner.next();
+							//tempArray = null;
+							if(!temp.contains("pain"))
+							{
+								tempArray = temp.replaceAll("\\s", "").split(",");
+								System.out.println(tempArray[10]);
+								for(int i = 0; i < symptomRatingLabels.length; i++)
+								{
+									symptomRatingLabels[i].setText(" " + tempArray[i]);
+								}
+							}		
+						}
+						
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
 	    		}
 	    		else
 	    		{
@@ -162,10 +171,10 @@ public class MainMenuPanel extends JPanel{
 	    			JOptionPane.showMessageDialog(frame, "The patient has yet to submit symptoms.");
 	    			return;
 	    		}
-
 	        }
 		}
 	};
+	
 	
 	//listener for the button that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{

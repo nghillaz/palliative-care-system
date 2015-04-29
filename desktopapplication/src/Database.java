@@ -27,7 +27,7 @@ public class Database {
 	//method for downloading a file from the server of string keyname
 	public static File download(String keyName, PrintStream console){
 		try {
-            System.out.println("Downloading an object");
+            System.out.println("Downloading \"" + keyName + "\"...");
             S3Object s3object = s3Client.getObject(new GetObjectRequest(
             		bucketName, keyName));
             System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
@@ -46,7 +46,10 @@ public class Database {
             reader.close();
             
         } catch (AmazonServiceException ase) {
-            System.out.println("Caught an AmazonServiceException, which" +
+        	//JFrame frame = new JFrame();
+			//JOptionPane.showMessageDialog(frame, "Database Error - maybe the patient has yet to submit symptoms.");
+        	
+        	System.out.println("Caught an AmazonServiceException, which" +
             		" means your request made it " +
                     "to Amazon S3, but was rejected with an error response" +
                     " for some reason.");
@@ -56,6 +59,9 @@ public class Database {
             System.out.println("Error Type:       " + ase.getErrorType());
             System.out.println("Request ID:       " + ase.getRequestId());
         } catch (AmazonClientException ace) {
+        	//JFrame frame = new JFrame();
+			//JOptionPane.showMessageDialog(frame, "Database Error - maybe the patient has yet to submit symptoms.");
+			
             System.out.println("Caught an AmazonClientException, which means"+
             		" the client encountered " +
                     "an internal error while trying to " +
@@ -73,7 +79,7 @@ public class Database {
 	//method for uploading to the server of string keyname
 	public static void upload(String keyName, File file){
 		try {
-            System.out.println("Uploading a new object to S3 from a file\n");
+            System.out.println("Uploading \"" + keyName + "\"...");
             s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
             
             //if the upload is successful, tell the user
@@ -81,6 +87,9 @@ public class Database {
 			JOptionPane.showMessageDialog(frame, "Completed Successfully.");
             
          } catch (AmazonServiceException ase) {
+        	//JFrame frame = new JFrame();
+ 			//JOptionPane.showMessageDialog(frame, "Database Error - maybe the patient has yet to submit symptoms.");
+ 			
             System.out.println("Caught an AmazonServiceException, which " +
             		"means your request made it " +
                     "to Amazon S3, but was rejected with an error response" +
@@ -91,6 +100,9 @@ public class Database {
             System.out.println("Error Type:       " + ase.getErrorType());
             System.out.println("Request ID:       " + ase.getRequestId());
         } catch (AmazonClientException ace) {
+        	//JFrame frame = new JFrame();
+			//JOptionPane.showMessageDialog(frame, "Database Error - maybe the patient has yet to submit symptoms.");
+			
             System.out.println("Caught an AmazonClientException, which " +
             		"means the client encountered " +
                     "an internal error while trying to " +

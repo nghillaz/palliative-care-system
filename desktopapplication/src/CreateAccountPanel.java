@@ -168,6 +168,7 @@ public class CreateAccountPanel extends JPanel{
 				if(f.exists() && !f.isDirectory())
 				{
 					//check to see if the email address is already in the database
+					// TODO We also can't have duplicate first name and last names
 					try {
 						Scanner scanner = new Scanner(f);
 						scanner.useDelimiter("\n");
