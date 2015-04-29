@@ -171,7 +171,6 @@ public class CreateAccountPanel extends JPanel{
 					try {
 						Scanner scanner = new Scanner(f);
 						scanner.useDelimiter("\n");
-						System.out.println("text: " + emailField.getText());
 						while(scanner.hasNext())
 						{
 							String temp = scanner.next().toLowerCase();

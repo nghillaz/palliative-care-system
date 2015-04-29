@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -26,6 +28,7 @@ public class MainMenuPanel extends JPanel{
 		//the list of patients, on a panel on the left
 		String[] patientNames = getPatientList();
 		final JList<String> patientList = new JList<String>(patientNames);
+		patientList.addListSelectionListener(lSelectionListener);
 		add(patientList);
 		add(new RightPanel(contentPane));
 	}
@@ -50,11 +53,6 @@ public class MainMenuPanel extends JPanel{
 				symptomRatingLabels[i] = new JLabel("---");
 			}
 			
-			// TODO will go inside the click listener later
-			/*for(int i = 0; i < symptomRatingLabels.length; i++){
-				Integer value = updateSymptom(i);
-				symptomRatingLabels[i] = new JLabel(value.toString());
-			}*/
 			
 			//these labels will never change from these values
 			symptomLabels[0].setText("Pain:");
@@ -91,7 +89,6 @@ public class MainMenuPanel extends JPanel{
 				
 		}
 		
-		// TODO Needs to update via a selection of a patient and returns the value of the symptom
 		public int updateSymptom(int symptoms)
 		{
 			
@@ -101,18 +98,74 @@ public class MainMenuPanel extends JPanel{
 	
 	}
 	
-	MouseListener mListener = new MouseAdapter()
+	ListSelectionListener lSelectionListener = new ListSelectionListener()
 	{
-		public void mouseClicked(MouseEvent e)
-		{
-			if(e.getClickCount() == 1)
-			{
-				String selected = (String) patientList.getSelectedValue();
-				
-			}
+		public void valueChanged(ListSelectionEvent listSelectionEvent) {
+	        if(!listSelectionEvent.getValueIsAdjusting())
+	        {
+	        	JList<String> patientList = (JList<String>) listSelectionEvent.getSource();
+	        	String selectionValue = patientList.getSelectedValue();
+	        	String[] Name = selectionValue.replaceAll("\\s", "").split(",");
+	        	System.out.println(Name[0]);
+	        	System.out.println(Name[1]);
+	        	
+	        	
+	        	PrintStream console = System.out;
+	    		File f = Database.download("patients.csv", console);
+	    		String patientEmail = null;
+	    		if(f.exists() && !f.isDirectory())
+	    		{
+	    			try
+	    			{
+	    				Scanner scanner = new Scanner(f);
+						scanner.useDelimiter("\n");
+						while(scanner.hasNext())
+						{
+							String temp = scanner.next().toLowerCase();
+							if(temp.contains(Name[0].toLowerCase()) && temp.contains(Name[1].toLowerCase()))
+							{
+								String[] tempArray = temp.replaceAll("\\s", "").split(",");
+								patientEmail = tempArray[5];
+								System.out.println(tempArray[5]);
+								scanner.close();
+								return;
+							}
+						}
+						scanner.close();
+					
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+	    		else // file doesn't exist on the server or locally
+	    		{
+	    			JFrame frame = new JFrame();
+	    			JOptionPane.showMessageDialog(frame, "No patients were found.");
+	    			return;
+	    		}
+	    		
+	    		File patientf = Database.download(patientEmail + ".csv", console);
+	    		
+	    		if(f.exists() && !f.isDirectory())
+	    		{
+	    			for(int i = 0; i < symptomRatingLabels.length; i++)
+	    			{
+	    				Integer value = updateSymptom(i);
+	    				symptomRatingLabels[i] = new JLabel(value.toString());
+	    			}
+	    		}
+	    		else
+	    		{
+	    			JFrame frame = new JFrame();
+	    			JOptionPane.showMessageDialog(frame, "The patient has yet to submit symptoms.");
+	    			return;
+	    		}
+
+	        }
 		}
 	};
-	patientList.addMouseListener(mListener);
 	
 	//listener for the button that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{
