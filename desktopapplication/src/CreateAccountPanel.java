@@ -1,10 +1,12 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@SuppressWarnings("serial")
 public class CreateAccountPanel extends JPanel{
 	
 	JTextField firstNameField;
@@ -167,8 +169,7 @@ public class CreateAccountPanel extends JPanel{
 				
 				if(f.exists() && !f.isDirectory())
 				{
-					//check to see if the email address is already in the database
-					// TODO We also can't have duplicate first name and last names
+					//check to see if the email address for name is already in the database
 					try {
 						Scanner scanner = new Scanner(f);
 						scanner.useDelimiter("\n");
@@ -178,6 +179,12 @@ public class CreateAccountPanel extends JPanel{
 							if(temp.contains(emailField.getText().toLowerCase())){
 								JFrame frame = new JFrame();
 								JOptionPane.showMessageDialog(frame, "An account with that email already exists");
+								scanner.close();
+								return;
+							}
+							if((temp.contains(firstNameField.getText().toLowerCase()) && (temp.contains(lastNameField.getText().toLowerCase())))){
+								JFrame frame = new JFrame();
+								JOptionPane.showMessageDialog(frame, "An account with that name already exists");
 								scanner.close();
 								return;
 							}

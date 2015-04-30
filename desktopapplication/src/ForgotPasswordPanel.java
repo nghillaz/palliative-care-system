@@ -1,10 +1,12 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.*;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -38,11 +40,11 @@ public class ForgotPasswordPanel extends JPanel{
 			
 			//get the list of doctors
 			PrintStream console = System.out;
-			// TODO What if the file doesn't exist in the database or locally?
-			// TODO Check if the file exists (if(f.exists() && !f.isDirectory())).
-			Database.download("doctors.csv", console);
+			File f = Database.download("doctors.csv", console);
 			
-			try {
+			if(f.exists() && !f.isDirectory())
+    		{
+				try {
 				Scanner scanner = new Scanner(new File("doctors.csv"));
 				scanner.useDelimiter(",");
 				
@@ -56,60 +58,71 @@ public class ForgotPasswordPanel extends JPanel{
 				scanner.close();
 				System.out.println("Scanner closed.");
 			
-			//if the file can't be found
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			
-			//if the password doesn't exist
-			if(passwordb == null)
-			{
-				JFrame frame = new JFrame();
-				JOptionPane.showMessageDialog(frame, "Email not found in the database.");
-			}
-			else
-			{
-				//send the email to the user
-				final String username = "Team22CSE360@gmail.com";
-				final String password = "passwordTeam22CSE360";
-		 
-				Properties props = new Properties();
-			    props.put("mail.smtp.auth", "true");
-			    props.put("mail.smtp.starttls.enable", "true");
-			    props.put("mail.smtp.host", "smtp.gmail.com");
-			    props.put("mail.smtp.port", "587");
-		 
-				Session session = Session.getDefaultInstance(props,
-					new javax.mail.Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(username, password);
-						}
-					});
-		 
-				try {
-		 
-					Message message = new MimeMessage(session);
-					message.setFrom(new InternetAddress(username));
-					message.setRecipients(Message.RecipientType.TO,
-							InternetAddress.parse(emailField.getText()));
-					message.setSubject("RPCS Email Recovery");
-					message.setText("Your password is " + passwordb + ".");
-		 
-					Transport.send(message);
-					
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Email Sent.");
-		 
-				} catch (MessagingException me) {
-					throw new RuntimeException(me);
+				//if the file can't be found
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
 				}
 				
-				//load the login panel
-		        contentPane.removeAll();
+				//if the password doesn't exist
+				if(passwordb == null)
+				{
+					JFrame frame = new JFrame();
+					JOptionPane.showMessageDialog(frame, "Email not found in the database.");
+				}
+				else
+				{
+					//send the email to the user
+					final String username = "Team22CSE360@gmail.com";
+					final String password = "passwordTeam22CSE360";
+			 
+					Properties props = new Properties();
+				    props.put("mail.smtp.auth", "true");
+				    props.put("mail.smtp.starttls.enable", "true");
+				    props.put("mail.smtp.host", "smtp.gmail.com");
+				    props.put("mail.smtp.port", "587");
+			 
+					Session session = Session.getDefaultInstance(props,
+						new javax.mail.Authenticator() {
+							protected PasswordAuthentication getPasswordAuthentication() {
+								return new PasswordAuthentication(username, password);
+							}
+						});
+			 
+					try {
+			 
+						Message message = new MimeMessage(session);
+						message.setFrom(new InternetAddress(username));
+						message.setRecipients(Message.RecipientType.TO,
+								InternetAddress.parse(emailField.getText()));
+						message.setSubject("RPCS Email Recovery");
+						message.setText("Your password is " + passwordb + ".");
+			 
+						Transport.send(message);
+						
+						JFrame frame = new JFrame();
+						JOptionPane.showMessageDialog(frame, "Email Sent.");
+			 
+					} catch (MessagingException me) {
+						throw new RuntimeException(me);
+					}
+					
+					//load the login panel
+			        contentPane.removeAll();
+					contentPane.add(new LoginPanel(contentPane));
+					contentPane.invalidate();
+					contentPane.validate();
+				}
+    		}
+			else
+			{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "No doctors were found - please create an account.");
+				contentPane.removeAll();
 				contentPane.add(new LoginPanel(contentPane));
 				contentPane.invalidate();
 				contentPane.validate();
 			}
+			
 		}
 	}
 	
