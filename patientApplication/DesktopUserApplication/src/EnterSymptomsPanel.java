@@ -2,6 +2,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
+
 
 public class EnterSymptomsPanel extends JPanel{
 	
@@ -55,25 +57,25 @@ public class EnterSymptomsPanel extends JPanel{
 		backButton = new JButton("Back");
 		
 		//sliders
-		JSlider painSlider = new JSlider(JSlider.HORIZONTAL,
+		painSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider tirednessSlider = new JSlider(JSlider.HORIZONTAL,
+		tirednessSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider nauseaSlider = new JSlider(JSlider.HORIZONTAL,
+		nauseaSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider depressionSlider = new JSlider(JSlider.HORIZONTAL,
+		depressionSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider anxietySlider = new JSlider(JSlider.HORIZONTAL,
+		anxietySlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider drowsinessSlider = new JSlider(JSlider.HORIZONTAL,
+		drowsinessSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider appetiteSlider = new JSlider(JSlider.HORIZONTAL,
+		appetiteSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider wellbeingSlider = new JSlider(JSlider.HORIZONTAL,
+		wellbeingSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider sobSlider = new JSlider(JSlider.HORIZONTAL,
+		sobSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		JSlider oSlider = new JSlider(JSlider.HORIZONTAL,
+		oSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
 		
 		//setting paint ticks and labels
@@ -239,15 +241,13 @@ public class EnterSymptomsPanel extends JPanel{
 			Integer sobValue = sobSlider.getValue();
 			Integer oValue = oSlider.getValue();
 			
+			Calendar calendar = new GregorianCalendar();
 			
-			// TODO what if the patients.csv file does not exist? We need a check if it exists (if(.exists and !.isDirectory)
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			int month = calendar.get(Calendar.MONTH);
+			int year = calendar.get(Calendar.YEAR);
 			
-			// TODO So what this should do is:
-			//		1. Grab their email address
-			//		2. create/check a csv file of their email address
-			//			a. if the file exists, append (including a date)
-			//			b. if it does not, create the header line and append (including a date)
-			//		3. upload that file
+			String date = "" + day+ "/" + (month += 1) + "/" + year;
 			String pEmail = LoginPanel.getEmail();
 			
 			PrintStream console = System.out;
@@ -257,7 +257,7 @@ public class EnterSymptomsPanel extends JPanel{
 			{
 				FileWriter fw;
 				try {
-					fw = new FileWriter(pEmail + ".csv");
+					fw = new FileWriter(pEmail + ".csv", true);
 					fw.append(painValue.toString());
 					fw.append(",");
 					fw.append(tirednessValue.toString());
@@ -277,6 +277,8 @@ public class EnterSymptomsPanel extends JPanel{
 					fw.append(sobValue.toString());
 					fw.append(",");
 					fw.append(oValue.toString());
+					fw.append(",");
+					fw.append(date);
 				
 					fw.close();
 				} catch (IOException e1) {
@@ -307,6 +309,8 @@ public class EnterSymptomsPanel extends JPanel{
 					fw.append("shortnessOfBreath");
 					fw.append(",");
 					fw.append("other");
+					fw.append(",");
+					fw.append("date");
 					
 					fw.append("\n");
 					fw.append(painValue.toString());
@@ -328,6 +332,8 @@ public class EnterSymptomsPanel extends JPanel{
 					fw.append(sobValue.toString());
 					fw.append(",");
 					fw.append(oValue.toString());
+					fw.append(",");
+					fw.append(date);
 					
 					fw.close();
 				} catch (IOException e1) {
@@ -338,7 +344,7 @@ public class EnterSymptomsPanel extends JPanel{
 			Database.upload(pEmail + ".csv", new File(pEmail + ".csv"));
 			
 			contentPane.removeAll();
-			contentPane.add(new LoginPanel(contentPane));
+			contentPane.add(new MainMenuPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
 		}
