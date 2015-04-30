@@ -1,5 +1,7 @@
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -255,32 +257,30 @@ public class EnterSymptomsPanel extends JPanel{
 			
 			if(f.exists() && !f.isDirectory())
 			{
-				FileWriter fw;
-				try {
-					fw = new FileWriter(pEmail + ".csv", true);
-					fw.append(painValue.toString());
-					fw.append(",");
-					fw.append(tirednessValue.toString());
-					fw.append(",");
-					fw.append(nauseaValue.toString());
-					fw.append(",");
-					fw.append(depressionValue.toString());
-					fw.append(",");
-					fw.append(anxietyValue.toString());
-					fw.append(",");
-					fw.append(drowsinessValue.toString());
-					fw.append(",");
-					fw.append(appetiteValue.toString());
-					fw.append(",");
-					fw.append(wellbeingValue.toString());
-					fw.append(",");
-					fw.append(sobValue.toString());
-					fw.append(",");
-					fw.append(oValue.toString());
-					fw.append(",");
-					fw.append(date);
 				
+				try {
+					String buffer = "";
+					
+					Scanner scanner = new Scanner(f);
+					scanner.useDelimiter("\n");
+					
+					//add the header line to the buffer
+					buffer += scanner.nextLine();
+					//add the new line after the header
+					buffer += painValue.toString() + "," + tirednessValue.toString() + "," + nauseaValue.toString() + "," + depressionValue.toString() + ","
+							+ anxietyValue.toString() + "," + drowsinessValue.toString() + "," + appetiteValue.toString() + "," + wellbeingValue.toString() + ","
+							+ sobValue.toString() + "," + oValue.toString() + "," + date + "\n";
+					//add the rest of the lines
+					while(scanner.hasNext()){
+						buffer += scanner.nextLine();
+					}
+					scanner.close();
+					
+					FileWriter fw = new FileWriter(pEmail + ".csv", false);
+					
+					fw.append(buffer);
 					fw.close();
+					
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
