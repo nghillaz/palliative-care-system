@@ -56,7 +56,6 @@ public class MainMenuPanel extends JPanel{
 		}
 	
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO
 			contentPane.removeAll();
 			contentPane.add(new EnterSymptomsPanel(contentPane));
 			contentPane.invalidate();
@@ -73,7 +72,6 @@ public class MainMenuPanel extends JPanel{
 		}
 	
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO
 			contentPane.removeAll();
 			contentPane.add(new EditPersonalDetailsPanel(contentPane));
 			contentPane.invalidate();

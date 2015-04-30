@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EditPersonalDetailsPanel extends JPanel{
-	// TODO Change "Account lookup is through Email"?
+
 	JTextField firstNameField;
 	JTextField lastNameField;
 	JTextField emailField;

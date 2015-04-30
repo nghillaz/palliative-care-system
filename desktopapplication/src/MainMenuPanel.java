@@ -20,8 +20,6 @@ public class MainMenuPanel extends JPanel{
 	String[] patientNames;
 	
 	public MainMenuPanel(Container contentPane){
-		// TODO	if the pain is 2 above the threshold, the patients' symptoms are problematic
-		// TODO if the pain is 3 above the threshold, the patients' symptoms are significantly problematic
 		// TODO prioritize patients based on severity
 		
 		// TODO create a list or graph of history of each patient somehow (low priority)

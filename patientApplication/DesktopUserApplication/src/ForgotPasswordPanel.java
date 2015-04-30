@@ -27,7 +27,7 @@ public class ForgotPasswordPanel extends JPanel{
 		
 		//add the components to the panel
 		add(emailLabel);
-		add(emailField); // TODO should our loginPanel have a static "emailField"?
+		add(emailField);
 		add(submitButton);
 		add(backButton);
 	}
