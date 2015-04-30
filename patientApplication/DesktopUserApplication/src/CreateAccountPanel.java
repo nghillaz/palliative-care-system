@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -16,7 +17,7 @@ public class CreateAccountPanel extends JPanel{
 	JTextField cPasswordField;
 	JTextField phoneNumberField;
 
-
+	String assignRandomDoctor = randomDoctor();
 
 	
 	//holds the textfields for making an account
@@ -131,6 +132,53 @@ public class CreateAccountPanel extends JPanel{
 		
 	}
 	
+	@SuppressWarnings("resource")
+	public String randomDoctor(){
+		PrintStream console = System.out;
+		File f = Database.download("doctors.csv", console);
+		
+		if(f.exists() && !f.isDirectory())
+		{
+			BufferedReader br;
+			@SuppressWarnings("unused")
+			String head;
+			String line;
+			String[] doctorNames;
+			try {
+				doctorNames = new String[100];
+				int i = 0;
+				br = new BufferedReader(new FileReader(f));
+				head = br.readLine();
+				while ((line = br.readLine()) != null) {
+				    String[] dNames = line.split(",");
+					doctorNames[i] = dNames[2];
+					i++;
+				}
+				
+				//checks number of doctors in string array
+				int doctorArraySize = 0;
+				for (String ob : doctorNames) {
+					  if (ob != null) {
+					   doctorArraySize+=1;
+					  }else{
+						  break;
+					  }
+					}
+				System.out.println(doctorArraySize);
+				return doctorNames[new Random().nextInt(doctorArraySize)];
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else // doctors.csv doesn't exist on the server or locally
+		{
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame, "No doctors were found.");
+		}
+		return null;
+	}
+	
 	public class SubmitListener implements ActionListener{
 		Container contentPane;
 		public SubmitListener(Container contentPane){
@@ -203,6 +251,8 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(",");
 						fw.append(phoneNumber);
 						// TODO We need to append a default doctor or something
+						fw.append(",");
+						fw.append(assignRandomDoctor);
 						
 						fw.close();
 					} catch (IOException e1) {
@@ -237,6 +287,8 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(",");
 						fw.append(phoneNumber);
 						// TODO We need to append a default doctor or something
+						fw.append(",");
+						fw.append(assignRandomDoctor);
 
 						fw.close();
 					} catch (IOException e1) {
