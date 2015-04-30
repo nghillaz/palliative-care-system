@@ -15,7 +15,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 	JTextField phoneNumberField;
 	JRadioButton doctorRButton;
 	JRadioButton nurseRButton;
-	JTextField painTField;
 	
 	//this holds all the text fields
 	final ArrayList<JTextField> textFields = new ArrayList<>();
@@ -28,7 +27,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 		textFields.add(passwordField);
 		textFields.add(cPasswordField);
 		textFields.add(phoneNumberField);
-		textFields.add(painTField);
 			
 	    for (JTextField textbox : textFields) {
 	        if (textbox.getText().trim().isEmpty() ) {
@@ -50,7 +48,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 		JLabel passwordLabel = new JLabel("Password:");
 		JLabel cPasswordLabel = new JLabel("Confirm Password:");
 		JLabel phoneNumberLabel = new JLabel("Phone number:");
-		JLabel painTLabel = new JLabel("Pain Threshold (0 - 10):");
 		firstNameField = new JTextField(20);
 		lastNameField = new JTextField(20);
 		emailField = new JTextField(20);
@@ -58,7 +55,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 		passwordField = new JPasswordField(20);
 		cPasswordField = new JPasswordField(20);
 		phoneNumberField = new JTextField(20);
-		painTField = new JTextField(20);
 		JButton createAccountButton = new JButton("Update Details");
 		JButton backButton = new JButton("Back");
 		doctorRButton = new JRadioButton("Doctor");
@@ -76,14 +72,12 @@ public class EditPersonalDetailsPanel extends JPanel{
 		passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phoneNumberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		painTLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		firstNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lastNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phoneNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
-		painTField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		doctorRButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -96,7 +90,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 		passwordField.setMaximumSize(new Dimension(200, 30));
 		cPasswordField.setMaximumSize(new Dimension(200, 30));
 		phoneNumberField.setMaximumSize(new Dimension(200, 30));
-		painTField.setMaximumSize(new Dimension(200, 30));
 		createAccountButton.addActionListener(new SubmitListener(contentPane));
 		backButton.addActionListener(new BackListener(contentPane));
 		
@@ -126,10 +119,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(phoneNumberField);
 		add(Box.createRigidArea(new Dimension(0,2)));
-		add(painTLabel);
-		add(Box.createRigidArea(new Dimension(0,2)));
-		add(painTField);
-		add(Box.createRigidArea(new Dimension(0,2)));
 		add(doctorRButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(nurseRButton);
@@ -154,7 +143,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 			String password = passwordField.getText();
 			String cPassword = cPasswordField.getText();
 			String phoneNumber = phoneNumberField.getText();
-			String painThreshold = painTField.getText();
 			Boolean docRButton = doctorRButton.isSelected();
 			Boolean nurRButton = nurseRButton.isSelected();
 			PrintStream console = System.out;
@@ -213,7 +201,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 						buffer += scanner.next();
 					}
 					scanner.next();
-					buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+","+docRButton.toString()+","+nurRButton.toString()+","+painThreshold+"\n";
+					buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+","+docRButton.toString()+","+nurRButton.toString()+"\n";
 					while(scanner.hasNext()){
 						buffer += scanner.next();
 					}

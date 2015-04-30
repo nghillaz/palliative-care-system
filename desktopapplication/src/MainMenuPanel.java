@@ -93,10 +93,10 @@ public class MainMenuPanel extends JPanel{
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
 			
-			/*for(int i = 0; i < patientNames.length; i++)
+			for(int i = 0; i < patientNames.length; i++)
 			{
 				patientList.setSelectedValue(patientNames[i], true);
-			}*/
+			}
 		}	
 	}
 	
@@ -167,9 +167,6 @@ public class MainMenuPanel extends JPanel{
 								System.out.println("Pain Level = " + painLevel);
 								if(!temp.contains("pain"))
 								{
-									// TODO change the 5 to painThreshold and maybe bring them to the top? or do something to prioritize?
-									// TODO if pain level is 2 above painThreshold - problematic
-									// TODO if pain level is 3 above - significantly problematic
 									tempArray = temp.replaceAll("\\s", "").split(",");
 									if(painLevel > (5 + 3))
 									{

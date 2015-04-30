@@ -204,8 +204,6 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(docRButton.toString());
 						fw.append(",");
 						fw.append(nurRButton.toString());
-						fw.append(",");
-						fw.append("5"); // default painThreshold
 						
 						fw.close();
 					} catch (IOException e1) {
@@ -230,8 +228,6 @@ public class CreateAccountPanel extends JPanel{
 						fw.append("doctor");
 						fw.append(",");
 						fw.append("nurse");
-						fw.append(",");
-						fw.append("painThreshold");
 						
 						fw.append("\n");
 						fw.append(firstName);
@@ -247,8 +243,6 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(docRButton.toString());
 						fw.append(",");
 						fw.append(nurRButton.toString());
-						fw.append(",");
-						fw.append("5"); // default painThreshold
 						
 						fw.close();
 					} catch (IOException e1) {
