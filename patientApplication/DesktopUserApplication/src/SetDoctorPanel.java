@@ -15,7 +15,7 @@ public class SetDoctorPanel extends JPanel{
 	JButton setAsDoctor;
 	JButton back;
 	
-	String [] settingDoctor = getDoctorList();
+	String[] settingDoctor = getDoctorList();
 	
 	public SetDoctorPanel(Container contentPane) {
 		//setting to box layout
@@ -82,7 +82,7 @@ public class SetDoctorPanel extends JPanel{
 				e.printStackTrace();
 			}
 		}
-		else // patients.csv doesn't exist on the server or locally
+		else // doctors.csv doesn't exist on the server or locally
 		{
 			JFrame frame = new JFrame();
 			JOptionPane.showMessageDialog(frame, "No doctors were found.");
@@ -114,20 +114,17 @@ public class SetDoctorPanel extends JPanel{
 	}*/
 	
 	
-	
 	public class SetAsDoctorListener implements ActionListener{
 		Container contentPane;
 		public SetAsDoctorListener(Container contenetPane){
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent arg0){
-			contentPane.removeAll();
-			
-			// TODO Add functionality of button
-			// TODO append to patient's file
-			
-			contentPane.invalidate();
-			contentPane.validate();
+			// TODO 1. Grab the email of the patient
+			// TODO 2. Locate the patient in the patients.csv file
+			// TODO 3. Append the doctor's email address
+			// TODO 4. Upload patient.csv
+			// TODO 5. add MainMenuPanel contentPane
 		}
 	}
 	
