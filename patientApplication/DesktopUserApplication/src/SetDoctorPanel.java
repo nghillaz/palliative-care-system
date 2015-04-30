@@ -90,11 +90,11 @@ public class SetDoctorPanel extends JPanel{
 					
 					//now we ignore the rest of the line
 					scanner.useDelimiter("\n");
-					
-					//and set it back to parsing through as commas for the next doctor
+					scanner.nextLine();
 					scanner.useDelimiter(",");
-					System.out.println(doctorNames[lineNumber] + ", " + doctorEmails[lineNumber]);
-					scanner.next();
+					
+					lineNumber++;
+					
 				}
 				return doctorNames;				
 			} catch (IOException e) {
@@ -123,58 +123,92 @@ public class SetDoctorPanel extends JPanel{
 			// TODO 5. add MainMenuPanel contentPane
 			
 			PrintStream console = System.out;
-			File f1 = Database.download("doctors.csv", console);
-			File f2 = Database.download("patients.csv", console);
 			
 			String selectedDoctor = (String)selectDoctor.getSelectedItem();
 			
-			if(f1.exists() && !f1.isDirectory() && f2.exists() && !f2.isDirectory())
+			File f = Database.download("doctors.csv", console);
+			
+			if(f.exists() && !f.isDirectory())
 			{
-				
-				BufferedReader br1;
-				BufferedReader br2;
-				FileWriter fw1;
-				FileWriter fw2;
+				FileWriter fw;
 				
 				@SuppressWarnings("unused")
-				String head;
-				String line;
-				String patientEmail;
-				String doctorEmail = "";
 				String buffer = "";
 				
 				try {
-					   patientEmail = LoginPanel.getEmail();
-					   System.out.println(patientEmail + selectedDoctor);
-					   
-					   	br1 = new BufferedReader(new FileReader(f1));
-						br2 = new BufferedReader(new FileReader(f2));
-						fw1 = new FileWriter("patients.csv", true);
-						head = br1.readLine();
-						while ((line = br1.readLine()) != null ) {
-						    String[] dNames = line.split(",");
-							if(selectedDoctor.equals(dNames[1  ] + ", " + dNames[0])){
-								doctorEmail = dNames[2];
-								System.out.println(line);
-								
-								
-							}
-						}
-						while((line = br2.readLine()) != null){
-								String[] pNames = line.split(",");
-								if(pNames[2].equals(patientEmail)){
-								buffer += pNames[0]+","+pNames[1]+","+pNames[2]+","+pNames[3]+","+pNames[4]+","+doctorEmail+"\n";
-								
-								}
-								
-						}
-					br1.close();
-					System.out.println(buffer);
-					fw1.append(buffer);
-				
+					f = Database.download("patients.csv", console);
 					
-				} catch (IOException e) {
-					e.printStackTrace();
+					String patientEmail = LoginPanel.getEmail();
+					System.out.println(patientEmail + selectedDoctor);
+					
+					boolean found = false;
+					Scanner scanner = new Scanner(f);
+					scanner.useDelimiter("\n");
+					int lineNumber = 0;					
+					
+					//scan for the account
+					while(scanner.hasNext())
+					{
+						if((scanner.next().toLowerCase()).contains(patientEmail.toLowerCase())){
+								found = true;
+								System.out.println("line number is: " + lineNumber);
+								break;
+							}
+							lineNumber++;
+						}
+						
+						//not in the database
+						if(!found){
+							buffer = "";
+							JFrame frame = new JFrame();
+							JOptionPane.showMessageDialog(frame, "Could not find account in database");
+							scanner.close();
+							return;
+						}
+						//is in the database
+						else{
+							buffer = "";
+							scanner.close();
+							scanner = new Scanner(f);
+							scanner.useDelimiter("\n");
+							System.out.println("lineNumber is: " + lineNumber);
+							//scan in all the unchanged accounts
+							for(int i = 0; i < lineNumber; i++){
+								buffer += scanner.next();
+							}
+							scanner.useDelimiter(",");
+							//name
+							buffer += scanner.next() + ",";
+							buffer += scanner.next() + ",";
+							//email
+							buffer += scanner.next() + ",";
+							//password
+							buffer += scanner.next() + ",";
+							//phonenumber
+							buffer += scanner.next() + ",";
+							//add in the new doctor on the line
+							System.out.println("this is what i'm putting in the email slot: " + doctorEmails[selectDoctor.getSelectedIndex()]);
+							buffer += doctorEmails[selectDoctor.getSelectedIndex()] + "\n";
+							
+							//scan in the rest of the patients
+							scanner.nextLine();
+							scanner.useDelimiter("\n");
+							while(scanner.hasNext()){
+								buffer += scanner.next();
+							}
+							System.out.println("buffer is: " + buffer);
+							
+							try {
+								fw = new FileWriter(f, false);
+								fw.append(buffer);
+								fw.close();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							Database.upload("doctors.csv", f);
+						}
+					}catch (IOException e1) {
+						e1.printStackTrace();
 				}
 			}
 			else // doctors.csv doesn't exist on the server or locally
