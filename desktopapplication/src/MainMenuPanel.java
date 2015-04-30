@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
@@ -11,6 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainMenuPanel extends JPanel{
 	
@@ -18,6 +19,7 @@ public class MainMenuPanel extends JPanel{
 	protected JLabel[] symptomRatingLabels;
 	JList<String> patientList;
 	String[] patientNames;
+	Timer timer;
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity
@@ -34,6 +36,7 @@ public class MainMenuPanel extends JPanel{
 		
 		//the list of patients, on a panel on the left
 		patientNames = getPatientList();
+		
 		patientList = new JList<String>(patientNames);
 		patientList.addListSelectionListener(lSelectionListener);
 		add(patientList);
@@ -93,7 +96,18 @@ public class MainMenuPanel extends JPanel{
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
 			
-			updateSymptomsValues();
+			timer = new Timer();
+			long delay = 0;
+			long intervalPeriod = 30 * 1000; // 30 second interval
+			TimerTask task = new TimerTask()
+			{
+				@Override
+			    public void run()
+				{
+					updateSymptomsValues();
+			    }
+			};
+			timer.scheduleAtFixedRate(task, delay, intervalPeriod);
 		}	
 	}
 	
@@ -126,7 +140,6 @@ public class MainMenuPanel extends JPanel{
 							{
 								String[] tempArray = temp.replaceAll("\\s", "").split(",");
 								patientEmail = tempArray[2];
-								System.out.println(tempArray[2]);
 								scanner.close();
 								break;
 							}
@@ -153,13 +166,12 @@ public class MainMenuPanel extends JPanel{
 					try {
 						Scanner scanner = new Scanner(patientf);
 						scanner.useDelimiter("\n");
-						//int i = 0;
-						String[] painLevels, dates, painLevelsb, datesb;
+						int j = 0, k = 0;
+						String[] painLevels = new String[50], dates = new String[50], painLevelsb = new String[50], datesb = new String[50];
 						while(scanner.hasNext())
 						{
 							String temp = scanner.next();
 							String[] tempArray = temp.split(",", 2);
-							System.out.println(tempArray[0]);
 							Integer painLevel;
 							try {
 								painLevel = Integer.valueOf(tempArray[0]);
@@ -175,9 +187,9 @@ public class MainMenuPanel extends JPanel{
 											symptomRatingLabels[i].setText(" " + tempArray[i]);
 										}
 										symptomRatingLabels[0].setForeground(Color.RED);
-										//painLevels[i] = painLevel.toString();
-										//dates[i] = tempArray[10];
-										//i++;
+										painLevels[j] = painLevel.toString();
+										dates[j] = tempArray[10];
+										j++;
 									}
 									else if(painLevel >= (5 + 2) && painLevel < (5 + 3))
 									{
@@ -186,9 +198,9 @@ public class MainMenuPanel extends JPanel{
 											symptomRatingLabels[i].setText(" " + tempArray[i]);
 										}
 										symptomRatingLabels[0].setForeground(Color.ORANGE);
-										//painLevelsb[i] = painLevel.toString();
-										//datesb[i] = tempArray[10];
-										//i++;
+										painLevelsb[k] = painLevel.toString();
+										datesb[k] = tempArray[10];
+										k++;
 									}
 									else
 									{
@@ -204,12 +216,25 @@ public class MainMenuPanel extends JPanel{
 								//e.printStackTrace();
 							}	
 						}
-						//String message = 
-						//JFrame frame = new JFrame();
-		    			//JOptionPane.showMessageDialog(frame, message);
 						
-						
-						
+						if(j != 0)
+						{
+							String message = "";
+							for(int l = 0; l < j; l++)
+							{
+								message += "\n" + Name[1] + " " + Name[0] + " was significantly problematic with a pain level of " + painLevels[l] + " on " + dates[l];
+							}
+							if(k != 0)
+							{
+								for(int l = 0; l < j; l++)
+								{
+									message += "\n" + Name[1] + " " + Name[0] + " was problematic with a pain level of " + painLevelsb[l] + " on " + datesb[l];
+								}	
+							}
+							
+							JFrame frame = new JFrame();
+							JOptionPane.showMessageDialog(frame, message);
+						}
 						scanner.close();	
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
@@ -217,8 +242,8 @@ public class MainMenuPanel extends JPanel{
 	    		}
 	    		else
 	    		{
-	    			JFrame frame = new JFrame();
-	    			JOptionPane.showMessageDialog(frame, "The patient has yet to submit symptoms.");
+	    			//JFrame frame = new JFrame();
+	    			//JOptionPane.showMessageDialog(frame, Name[1] + " " + Name[0] + " has yet to submit symptoms.");
 	    			for(int i = 0; i < symptomRatingLabels.length; i++)
 					{
 						symptomRatingLabels[i].setText("---");
@@ -250,6 +275,7 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
+			timer.cancel();
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
@@ -276,12 +302,12 @@ public class MainMenuPanel extends JPanel{
 				while ((line = br.readLine()) != null) {
 					if(line.contains(LoginPanel.getEmail()))
 					{
+						System.out.println("line = " + line);
 						String[] pNames = line.split(",");
 						patientNames[i] = pNames[1] + ", " + pNames[0];
 						i++;
 					}
 				}
-				System.out.println(line);
 				br.close();
 				return patientNames;
 				
