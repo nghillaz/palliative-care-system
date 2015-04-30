@@ -1,10 +1,9 @@
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.io.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Scanner;
 
 public class EnterSymptomsPanel extends JPanel{
@@ -317,14 +316,16 @@ public class EnterSymptomsPanel extends JPanel{
 	
 	public class BackListener implements ActionListener{
 		Container contentPane;
-		public BackListener(Container contenetPane){
+		public BackListener(Container contentPane){
 			this.contentPane = contentPane;
 		}
-		public void actionPerformed(ActionEvent arg0){
+	
+		public void actionPerformed(ActionEvent arg0) {
 			contentPane.removeAll();
 			contentPane.add(new MainMenuPanel(contentPane));
 			contentPane.invalidate();
 			contentPane.validate();
+			
 		}
 	}
 

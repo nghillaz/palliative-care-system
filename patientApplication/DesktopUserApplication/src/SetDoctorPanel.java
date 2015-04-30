@@ -139,7 +139,6 @@ public class SetDoctorPanel extends JPanel{
 		}
 	
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO this does not work
 			contentPane.removeAll();
 			contentPane.add(new MainMenuPanel(contentPane));
 			contentPane.invalidate();
