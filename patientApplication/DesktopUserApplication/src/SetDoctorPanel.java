@@ -132,7 +132,7 @@ public class SetDoctorPanel extends JPanel{
 					   patientEmail = LoginPanel.getEmail();
 					   System.out.println(patientEmail + selectedDoctor);
 					   
-						br1 = new BufferedReader(new FileReader(f1));
+					   	br1 = new BufferedReader(new FileReader(f1));
 						br2 = new BufferedReader(new FileReader(f2));
 						fw1 = new FileWriter("patients.csv", true);
 						head = br1.readLine();

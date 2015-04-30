@@ -21,9 +21,11 @@ public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity
+		// TODO create a local textfield so the doctor can submit their painThreshold
+		// TODO create a time interval object to update numbers (put updateNumbers into a method)
+		
 		
 		// TODO create a list or graph of history of each patient somehow (low priority)
-		// TODO we could try to make it to where the doctor can send an email to the patient (low priority)
 		
 		//set to grid layout
 		super(new GridLayout(1,2));
@@ -91,10 +93,7 @@ public class MainMenuPanel extends JPanel{
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
 			
-			for(int i = 0; i < patientNames.length; i++)
-			{
-				patientList.setSelectedValue(patientNames[i], true);
-			}
+			updateSymptomsValues();
 		}	
 	}
 	
@@ -154,6 +153,8 @@ public class MainMenuPanel extends JPanel{
 					try {
 						Scanner scanner = new Scanner(patientf);
 						scanner.useDelimiter("\n");
+						//int i = 0;
+						String[] painLevels, dates, painLevelsb, datesb;
 						while(scanner.hasNext())
 						{
 							String temp = scanner.next();
@@ -174,6 +175,9 @@ public class MainMenuPanel extends JPanel{
 											symptomRatingLabels[i].setText(" " + tempArray[i]);
 										}
 										symptomRatingLabels[0].setForeground(Color.RED);
+										//painLevels[i] = painLevel.toString();
+										//dates[i] = tempArray[10];
+										//i++;
 									}
 									else if(painLevel >= (5 + 2) && painLevel < (5 + 3))
 									{
@@ -182,6 +186,9 @@ public class MainMenuPanel extends JPanel{
 											symptomRatingLabels[i].setText(" " + tempArray[i]);
 										}
 										symptomRatingLabels[0].setForeground(Color.ORANGE);
+										//painLevelsb[i] = painLevel.toString();
+										//datesb[i] = tempArray[10];
+										//i++;
 									}
 									else
 									{
@@ -197,6 +204,12 @@ public class MainMenuPanel extends JPanel{
 								//e.printStackTrace();
 							}	
 						}
+						//String message = 
+						//JFrame frame = new JFrame();
+		    			//JOptionPane.showMessageDialog(frame, message);
+						
+						
+						
 						scanner.close();	
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
@@ -283,5 +296,13 @@ public class MainMenuPanel extends JPanel{
 			return new String[] {"---"};
 		}
 		return null;
+	}
+	
+	public void updateSymptomsValues()
+	{
+		for(int i = 0; i < patientNames.length; i++)
+		{
+			patientList.setSelectedValue(patientNames[i], true);
+		}
 	}
 }
