@@ -23,6 +23,7 @@ public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity/list history
+		// TODO threshold for every symptom?
 		// TODO create a local textfield so the doctor can submit their painThreshold
 
 		//set to grid layout
@@ -213,7 +214,6 @@ public class MainMenuPanel extends JPanel{
 						
 						if(k != 0 || j != 0) // message popup
 						{
-							System.out.println("j = " + j + "\nk = " + k);
 							String message = "";
 							if(k == 0 && j != 0) // sig problematic but not probl
 							{
