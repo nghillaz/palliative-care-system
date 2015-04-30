@@ -17,6 +17,7 @@ public class MainMenuPanel extends JPanel{
 	
 	protected String[] tempArray;
 	protected JLabel[] symptomRatingLabels;
+	int threshold = 5;
 	JList<String> patientList;
 	String[] patientNames;
 	Timer timer;
@@ -46,7 +47,7 @@ public class MainMenuPanel extends JPanel{
 		Container contentPane;
 		public RightPanel(Container contentPane){
 			//set up with a grid layout
-			super(new GridLayout(12,2));
+			super(new GridLayout(14,2));
 			this.contentPane = contentPane;
 			
 			//set up the labels that won't be changing, they simply say what symptom it is
@@ -92,6 +93,18 @@ public class MainMenuPanel extends JPanel{
 			JButton logoutButton = new JButton("Logout");
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
+			
+			JButton updateThresholdButton = new JButton("Update Threshold:");
+			updateThresholdButton.addActionListener(new EditThresholdListener(contentPane));
+			add(updateThresholdButton);
+			
+			JTextField thresholdField = new JTextField();
+			add(thresholdField);
+			
+			JButton viewPatientHistoryButton = new JButton("View Patient History");
+			updateThresholdButton.addActionListener(new ViewPatientHistoryListener(contentPane));
+			add(viewPatientHistoryButton);
+			
 			
 			timer = new Timer();
 			long delay = 0;
@@ -266,7 +279,6 @@ public class MainMenuPanel extends JPanel{
 		}
 	};
 	
-	
 	//listener for the button that takes you to edit personal details panel
 	public class EditDetailsListener implements ActionListener{
 		Container contentPane;
@@ -294,6 +306,27 @@ public class MainMenuPanel extends JPanel{
 			contentPane.validate();
 		}
 	}
+	
+	public class EditThresholdListener implements ActionListener{
+		Container contentPane;
+		public EditThresholdListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent e){
+			//TODO, finish the edit threshold click
+		}
+	}
+	
+	public class ViewPatientHistoryListener implements ActionListener{
+		Container contentPane;
+		public ViewPatientHistoryListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent e){
+			//TODO, finish the view patient history click
+		}
+	}
+	
 	
 	public String[] getPatientList(){
 		PrintStream console = System.out;
