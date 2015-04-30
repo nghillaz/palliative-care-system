@@ -18,7 +18,6 @@ public class SetDoctorPanel extends JPanel{
 	JComboBox selectDoctor;
 	JButton setAsDoctor;
 	JButton back;
-	
 	String[] doctorEmails;
 	
 	public SetDoctorPanel(Container contentPane) {
@@ -26,7 +25,6 @@ public class SetDoctorPanel extends JPanel{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		//creating the components and setting them up
-		//labels and combo box
 		setDoctor = new JLabel("Set Doctor:");
 		selectDoctor = new JComboBox<String>(getDoctorList());
 		setAsDoctor = new JButton("Set as Doctor");
@@ -79,22 +77,24 @@ public class SetDoctorPanel extends JPanel{
 				scanner.next();
 				
 				//set the current line number to 0
-				int lineNumber = 0;
+				int readLineNumber = 0;
+				int writeLineNumber = 0;
 				
 				//now we parse through commas
 				scanner.useDelimiter(",");
-				
 				while(scanner.hasNext()){
-					doctorNames[lineNumber] = scanner.next() + ", " + scanner.next();
-					doctorEmails[lineNumber] = scanner.next();
+					doctorNames[writeLineNumber] = scanner.next() + ", " + scanner.next();
+					doctorEmails[writeLineNumber] = scanner.next();
 					
 					//now we ignore the rest of the line
 					scanner.useDelimiter("\n");
-					scanner.nextLine();
+					if(scanner.nextLine().toLowerCase().contains("false,true")){
+						writeLineNumber--;
+					}
 					scanner.useDelimiter(",");
 					
-					lineNumber++;
-					
+					writeLineNumber++;
+					readLineNumber++;
 				}
 				return doctorNames;				
 			} catch (IOException e) {
