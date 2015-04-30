@@ -127,9 +127,6 @@ public class CreateAccountPanel extends JPanel{
 		add(createAccountButton);
 		add(Box.createRigidArea(new Dimension(0,2)));
 		add(backButton);
-		
-	
-		
 	}
 	
 	@SuppressWarnings("resource")
@@ -250,7 +247,6 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(password.toString());
 						fw.append(",");
 						fw.append(phoneNumber);
-						// TODO We need to append a default doctor or something
 						fw.append(",");
 						fw.append(assignRandomDoctor);
 						
@@ -286,7 +282,6 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(password.toString());
 						fw.append(",");
 						fw.append(phoneNumber);
-						// TODO We need to append a default doctor or something
 						fw.append(",");
 						fw.append(assignRandomDoctor);
 
