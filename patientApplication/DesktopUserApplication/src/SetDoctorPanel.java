@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 
 public class SetDoctorPanel extends JPanel{
@@ -18,7 +19,7 @@ public class SetDoctorPanel extends JPanel{
 	JButton setAsDoctor;
 	JButton back;
 	
-	String[] settingDoctor = getDoctorList();
+	String[] doctorEmails;
 	
 	public SetDoctorPanel(Container contentPane) {
 		//setting to box layout
@@ -27,13 +28,13 @@ public class SetDoctorPanel extends JPanel{
 		//creating the components and setting them up
 		//labels and combo box
 		setDoctor = new JLabel("Set Doctor:");
-		selectDoctor = new JComboBox(settingDoctor);
+		selectDoctor = new JComboBox<String>(getDoctorList());
 		setAsDoctor = new JButton("Set as Doctor");
 		back = new JButton("Back");
 		
 		//button listeners
 		setAsDoctor.addActionListener(new SetAsDoctorListener(contentPane));
-		//back.addActionListener(new BackListener(contentPane));
+		back.addActionListener(new BackListener(contentPane));
 		
 		//setting alignment
 		setDoctor.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -64,23 +65,38 @@ public class SetDoctorPanel extends JPanel{
 		
 		if(f.exists() && !f.isDirectory())
 		{
-			BufferedReader br;
-			@SuppressWarnings("unused")
-			String head;
-			String line;
 			String[] doctorNames;
+
+			doctorNames = new String[100];
+			doctorEmails = new String[100];
+			
 			try {
-				doctorNames = new String[100];
-				int i = 0;
-				br = new BufferedReader(new FileReader(f));
-				head = br.readLine();
-				while ((line = br.readLine()) != null) {
-				    String[] dNames = line.split(",");
-					doctorNames[i] = dNames[1] + ", " + dNames[0];
-					i++;
-				}
-				return doctorNames;
+				//scanner for reading the doctor details
+				Scanner scanner = new Scanner(f);
 				
+				//ignore the header line
+				scanner.useDelimiter("\n");
+				scanner.next();
+				
+				//set the current line number to 0
+				int lineNumber = 0;
+				
+				//now we parse through commas
+				scanner.useDelimiter(",");
+				
+				while(scanner.hasNext()){
+					doctorNames[lineNumber] = scanner.next() + ", " + scanner.next();
+					doctorEmails[lineNumber] = scanner.next();
+					
+					//now we ignore the rest of the line
+					scanner.useDelimiter("\n");
+					
+					//and set it back to parsing through as commas for the next doctor
+					scanner.useDelimiter(",");
+					System.out.println(doctorNames[lineNumber] + ", " + doctorEmails[lineNumber]);
+					scanner.next();
+				}
+				return doctorNames;				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -93,7 +109,6 @@ public class SetDoctorPanel extends JPanel{
 		}
 		return null;
 	}
-	
 	
 	public class SetAsDoctorListener implements ActionListener{
 		Container contentPane;
@@ -170,10 +185,8 @@ public class SetDoctorPanel extends JPanel{
 			}
 
 		}
-		}
 	}
 	
-	/*
 	public class BackListener implements ActionListener{
 		Container contentPane;
 		public BackListener(Container contentPane){
@@ -191,4 +204,3 @@ public class SetDoctorPanel extends JPanel{
 	
 	
 }
-*/
