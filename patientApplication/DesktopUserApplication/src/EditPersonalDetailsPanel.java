@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -152,69 +153,75 @@ public class EditPersonalDetailsPanel extends JPanel{
 			PrintStream console = System.out;
 			File f = Database.download("patients.csv", console);
 			String buffer = "";
-			// TODO what if the patient.csv doesn't exist? This needs to have a if (Exists && !isDirectory).
-					
-			try {
-				boolean found = false;
-				Scanner scanner = new Scanner(f);
-				scanner.useDelimiter("\n");
-				int lineNumber = 0;
-				
-				//scan for the account
-				while(scanner.hasNext())
-				{
-					if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
-						found = true;
-						System.out.println("line number is: " + lineNumber);
-						break;
-					}
-					lineNumber++;
-				}
-				
-				//not in the database
-				if(!found){
-					buffer = "";
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Email not found in the database.");
-					scanner.close();
-					return;
-				}
-				//is in the database
-				else{
-					buffer = "";
-					scanner.close();
-					scanner = new Scanner(f);
+			if(f.exists() && !f.isDirectory())
+			{
+				try {
+					boolean found = false;
+					Scanner scanner = new Scanner(f);
 					scanner.useDelimiter("\n");
+					int lineNumber = 0;
 					
-					for(int i = 0; i < lineNumber; i++){
-						buffer += scanner.next();
+					//scan for the account
+					while(scanner.hasNext())
+					{
+						if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
+							found = true;
+							System.out.println("line number is: " + lineNumber);
+							break;
+						}
+						lineNumber++;
 					}
-					scanner.next();
-					buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+"\n";
-					while(scanner.hasNext()){
-						buffer += scanner.next();
-					}
-					System.out.println("buffer is: " + buffer);
 					
-					try {
-						FileWriter fw = new FileWriter(f, false);
-						fw.append(buffer);
-						fw.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+					//not in the database
+					if(!found){
+						buffer = "";
+						JFrame frame = new JFrame();
+						JOptionPane.showMessageDialog(frame, "Email not found in the database.");
+						scanner.close();
+						return;
 					}
-					Database.upload("patients.csv", f);
-				}
-					
-				scanner.close();
-				System.out.println("Scanner closed.");
-				contentPane.removeAll();
-				contentPane.add(new MainMenuPanel(contentPane));
-				contentPane.invalidate();
-				contentPane.validate();
+					//is in the database
+					else{
+						buffer = "";
+						scanner.close();
+						scanner = new Scanner(f);
+						scanner.useDelimiter("\n");
 						
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+						for(int i = 0; i < lineNumber; i++){
+							buffer += scanner.next();
+						}
+						scanner.next();
+						buffer += firstName+","+lastName+","+email+","+password+","+phoneNumber+"\n";
+						while(scanner.hasNext()){
+							buffer += scanner.next();
+						}
+						System.out.println("buffer is: " + buffer);
+						
+						try {
+							FileWriter fw = new FileWriter(f, false);
+							fw.append(buffer);
+							fw.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						Database.upload("patients.csv", f);
+					}
+						
+					scanner.close();
+					System.out.println("Scanner closed.");
+					contentPane.removeAll();
+					contentPane.add(new MainMenuPanel(contentPane));
+					contentPane.invalidate();
+					contentPane.validate();
+							
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				
+			}
+			else{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "File not found.");
 			}
 		}
 	}

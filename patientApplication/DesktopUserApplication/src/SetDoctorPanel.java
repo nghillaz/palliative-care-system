@@ -94,28 +94,6 @@ public class SetDoctorPanel extends JPanel{
 		return null;
 	}
 	
-	//setDoctorPanel Listener
-	/*public class setDoctorPanelListener implements ActionListener{
-		Container contentPane;
-		public LoginListener(Container contentPane){
-			this.contentPane = contentPane;
-		}
-		
-		public void ActionPerformed(ActionEvent e){
-			PrintStream console = System.out;
-			File f = Database.download("doctors.csv", console);
-			
-			//downloads file from database
-			Database.download("doctors.csv", console);
-			
-			//TODO
-			try{
-				
-			}
-			
-		}
-	}*/
-	
 	
 	public class SetAsDoctorListener implements ActionListener{
 		Container contentPane;

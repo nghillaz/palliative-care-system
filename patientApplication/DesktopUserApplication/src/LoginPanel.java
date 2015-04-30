@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -81,45 +82,52 @@ public class LoginPanel extends JPanel{
 			File f = Database.download("patients.csv", console);
 			
 			Database.download("patients.csv", console);
-			// TODO what if the patients file doesn't exist?		
-			try {
-				boolean found = false;
-				Scanner scanner = new Scanner(f);
-				scanner.useDelimiter("\n");
-				System.out.println("text: " + emailField.getText());
-				//check to see if the email and password are valid
-				if(emailField.getText().length() < 4 || passwordField.getText().length() < 4){
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Account not found in database");
-					scanner.close();
-					return;
-				}
-				//search for the email and password in the account
-				while(scanner.hasNext())
-				{
-					String temp = scanner.next().toLowerCase();
-					if(temp.contains(emailField.getText().toLowerCase())
-							&& temp.contains(passwordField.getText().toLowerCase())){
-						found = true;
-						break;
+			
+			if(f.exists() && !f.isDirectory())
+			{
+				try {
+					boolean found = false;
+					Scanner scanner = new Scanner(f);
+					scanner.useDelimiter("\n");
+					System.out.println("text: " + emailField.getText());
+					//check to see if the email and password are valid
+					if(emailField.getText().length() < 4 || passwordField.getText().length() < 4){
+						JFrame frame = new JFrame();
+						JOptionPane.showMessageDialog(frame, "Account not found in database");
+						scanner.close();
+						return;
 					}
-				}
-				//the account could not be found
-				if(!found){
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Account not found in the database.");
+					//search for the email and password in the account
+					while(scanner.hasNext())
+					{
+						String temp = scanner.next().toLowerCase();
+						if(temp.contains(emailField.getText().toLowerCase())
+								&& temp.contains(passwordField.getText().toLowerCase())){
+							found = true;
+							break;
+						}
+					}
+					//the account could not be found
+					if(!found){
+						JFrame frame = new JFrame();
+						JOptionPane.showMessageDialog(frame, "Account not found in the database.");
+						scanner.close();
+						return;
+					}
+					//the account could be found
 					scanner.close();
-					return;
+					contentPane.removeAll();
+					contentPane.add(new MainMenuPanel(contentPane));
+					contentPane.invalidate();
+					contentPane.validate();
 				}
-				//the account could be found
-				scanner.close();
-				contentPane.removeAll();
-				contentPane.add(new MainMenuPanel(contentPane));
-				contentPane.invalidate();
-				contentPane.validate();
+				catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
-			catch (IOException e1) {
-				e1.printStackTrace();
+			else{
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, "File not found.");
 			}
 		}
 	}
