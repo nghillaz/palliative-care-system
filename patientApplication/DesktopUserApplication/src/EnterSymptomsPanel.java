@@ -1,10 +1,7 @@
 import java.awt.*;
-
 import javax.swing.*;
-
 import java.awt.event.*;
 import java.io.*;
-import java.util.Scanner;
 
 public class EnterSymptomsPanel extends JPanel{
 	
@@ -65,7 +62,7 @@ public class EnterSymptomsPanel extends JPanel{
 		JSlider nauseaSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
 		JSlider depressionSlider = new JSlider(JSlider.HORIZONTAL,
-                        0, 10, 0);
+                0, 10, 0);
 		JSlider anxietySlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
 		JSlider drowsinessSlider = new JSlider(JSlider.HORIZONTAL,
@@ -141,9 +138,8 @@ public class EnterSymptomsPanel extends JPanel{
 		oSlider.setSnapToTicks(true);
 		
 		//button listeners
-		//submitButton.addActionListener(new SubmitListener(contentPane));
+		submitButton.addActionListener(new SubmitListener(contentPane));
 		backButton.addActionListener(new BackListener(contentPane));
-		
 		
 		//setting alignment
 		
@@ -225,26 +221,25 @@ public class EnterSymptomsPanel extends JPanel{
 		
 	}
 	
-	/*public class SubmitListener implements ActionListener{
+	public class SubmitListener implements ActionListener{
 		Container contentPane;
-		public SubmitListener(Container contenetPane){
+		public SubmitListener(Container contentPane){
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent arg0){
-			int painValue = painSlider.getValue();
-			int tirednessValue = tirednessSlider.getValue();
-			int nauseaValue = nauseaSlider.getValue();
-			int depressionValue = depressionSlider.getValue();
-			int anxietyValue = anxietySlider.getValue();
-			int drowsinessValue = drowsinessSlider.getValue();
-			int appetiteValue = appetiteSlider.getValue();
-			int wellbeingValue = wellbeingSlider.getValue();
-			int sobValue = sobSlider.getValue();
-			int oValue = oSlider.getValue();
-			String email = "";
+			System.out.println(painSlider.toString());
+			Integer painValue = painSlider.getValue();
+			Integer tirednessValue = tirednessSlider.getValue();
+			Integer nauseaValue = nauseaSlider.getValue();
+			Integer depressionValue = depressionSlider.getValue();
+			Integer anxietyValue = anxietySlider.getValue();
+			Integer drowsinessValue = drowsinessSlider.getValue();
+			Integer appetiteValue = appetiteSlider.getValue();
+			Integer wellbeingValue = wellbeingSlider.getValue();
+			Integer sobValue = sobSlider.getValue();
+			Integer oValue = oSlider.getValue();
 			
-			PrintStream console = System.out;			
-			File f = Database.download("patients.csv", console);
+			
 			// TODO what if the patients.csv file does not exist? We need a check if it exists (if(.exists and !.isDirectory)
 			
 			// TODO So what this should do is:
@@ -253,71 +248,102 @@ public class EnterSymptomsPanel extends JPanel{
 			//			a. if the file exists, append (including a date)
 			//			b. if it does not, create the header line and append (including a date)
 			//		3. upload that file
-			String buffer = "";
+			String pEmail = LoginPanel.getEmail();
 			
-			try{
-				boolean found = false;
-				Scanner scanner = new Scanner(f);
-				scanner.useDelimiter("\n");
-				int lineNumber = 0;
-				while(scanner.hasNextLine()){
-					if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
-						found = true;
-						System.out.println("line number is: " + lineNumber);
-						break;
-					}
-					lineNumber++;
-				}if(!found){
-					buffer = "";
-					JFrame frame = new JFrame();
-					JOptionPane.showMessageDialog(frame, "Email not found in the database.");
-					scanner.close();
-					return;
-				}
-				//is in the database
-				else{
-					buffer = "";
-					scanner.close();
-					scanner = new Scanner(f);
-					scanner.useDelimiter("\n");
-					
-					for(int i = 0; i < lineNumber; i++){
-						buffer += scanner.next();
-					}
-					scanner.next();
-					buffer += painValue+","+tirednessValue+","+nauseaValue+","
-							+ ""+depressionValue+","+anxietyValue+","+drowsinessValue+","
-							+appetiteValue+","+wellbeingValue+","+sobValue+","+oValue+"\n";
-					while(scanner.hasNext()){
-						buffer += scanner.next();
-					}
-					System.out.println("buffer is: " + buffer);
-					
-					try {
-						FileWriter fw = new FileWriter(f, false);
-						fw.append(buffer);
-						fw.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					Database.upload("patients.csv", f);
-				}
+			PrintStream console = System.out;
+			File f = Database.download(pEmail + ".csv", console);
+			
+			if(f.exists() && !f.isDirectory())
+			{
+				FileWriter fw;
+				try {
+					fw = new FileWriter(pEmail + ".csv");
+					fw.append(painValue.toString());
+					fw.append(",");
+					fw.append(tirednessValue.toString());
+					fw.append(",");
+					fw.append(nauseaValue.toString());
+					fw.append(",");
+					fw.append(depressionValue.toString());
+					fw.append(",");
+					fw.append(anxietyValue.toString());
+					fw.append(",");
+					fw.append(drowsinessValue.toString());
+					fw.append(",");
+					fw.append(appetiteValue.toString());
+					fw.append(",");
+					fw.append(wellbeingValue.toString());
+					fw.append(",");
+					fw.append(sobValue.toString());
+					fw.append(",");
+					fw.append(oValue.toString());
 				
-				scanner.close();
-				System.out.println("Scanner closed.");
-				
-				contentPane.removeAll();
-				contentPane.add(new MainMenuPanel(contentPane));
-				contentPane.invalidate();
-				contentPane.validate();
-			}catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+					fw.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
+			}
+			else // pEmail.csv does not exist
+			{
+				FileWriter fw;
+				try {
+					fw = new FileWriter(pEmail + ".csv");
+					fw.append("pain");
+					fw.append(",");
+					fw.append("tiredness");
+					fw.append(",");
+					fw.append("nausea");
+					fw.append(",");
+					fw.append("depression");
+					fw.append(",");
+					fw.append("anxiety");
+					fw.append(",");
+					fw.append("drowsiness");
+					fw.append(",");
+					fw.append("appetite");
+					fw.append(",");
+					fw.append("wellbeing");
+					fw.append(",");
+					fw.append("shortnessOfBreath");
+					fw.append(",");
+					fw.append("other");
+					
+					fw.append("\n");
+					fw.append(painValue.toString());
+					fw.append(",");
+					fw.append(tirednessValue.toString());
+					fw.append(",");
+					fw.append(nauseaValue.toString());
+					fw.append(",");
+					fw.append(depressionValue.toString());
+					fw.append(",");
+					fw.append(anxietyValue.toString());
+					fw.append(",");
+					fw.append(drowsinessValue.toString());
+					fw.append(",");
+					fw.append(appetiteValue.toString());
+					fw.append(",");
+					fw.append(wellbeingValue.toString());
+					fw.append(",");
+					fw.append(sobValue.toString());
+					fw.append(",");
+					fw.append(oValue.toString());
+					
+					fw.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 			
+			Database.upload(pEmail + ".csv", new File(pEmail + ".csv"));
 			
+			contentPane.removeAll();
+			contentPane.add(new LoginPanel(contentPane));
+			contentPane.invalidate();
+			contentPane.validate();
 		}
 	}
-	*/
+	
 	public class BackListener implements ActionListener{
 		Container contentPane;
 		public BackListener(Container contentPane){
