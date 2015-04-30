@@ -22,13 +22,9 @@ public class MainMenuPanel extends JPanel{
 	Timer timer;
 	
 	public MainMenuPanel(Container contentPane){
-		// TODO prioritize patients based on severity
+		// TODO prioritize patients based on severity/list history
 		// TODO create a local textfield so the doctor can submit their painThreshold
-		// TODO create a time interval object to update numbers (put updateNumbers into a method)
-		
-		
-		// TODO create a list or graph of history of each patient somehow (low priority)
-		
+
 		//set to grid layout
 		super(new GridLayout(1,2));
 		
@@ -121,8 +117,7 @@ public class MainMenuPanel extends JPanel{
 				JList<String> pList = (JList<String>) listSelectionEvent.getSource();
 	        	String selectionValue = pList.getSelectedValue();
 	        	String[] Name = selectionValue.replaceAll("\\s", "").split(",");
-	        	System.out.println(Name[0]);
-	        	System.out.println(Name[1]);
+	        	System.out.println(Name[0] + " " + Name[1]);
 	        	
 	        	PrintStream console = System.out;
 	    		File f = Database.download("patients.csv", console);
@@ -175,11 +170,10 @@ public class MainMenuPanel extends JPanel{
 							Integer painLevel;
 							try {
 								painLevel = Integer.valueOf(tempArray[0]);
-								System.out.println("Pain Level = " + painLevel);
 								if(!temp.contains("pain"))
 								{
 									tempArray = temp.replaceAll("\\s", "").split(",");
-									if(painLevel > (5 + 3))
+									if(painLevel >= (5 + 3))
 									{
 										
 										for(int i = 0; i < symptomRatingLabels.length; i++)
@@ -217,24 +211,43 @@ public class MainMenuPanel extends JPanel{
 							}	
 						}
 						
-						if(j != 0 && k != 0)
+						if(k != 0 || j != 0) // message popup
 						{
+							System.out.println("j = " + j + "\nk = " + k);
 							String message = "";
-							for(int l = 0; l < j; l++)
-							{
-								message += "\n" + Name[1] + " " + Name[0] + " was significantly problematic with a pain level of " + painLevels[l] + " on " + dates[l];
-							}
-							if(k != 0)
+							if(k == 0 && j != 0) // sig problematic but not probl
 							{
 								for(int l = 0; l < j; l++)
 								{
-									message += "\n" + Name[1] + " " + Name[0] + " was problematic with a pain level of " + painLevelsb[l] + " on " + datesb[l];
-								}	
+									message += "\n" + Name[1] + " " + Name[0] + "  was significantly problematic with a pain level of " + painLevels[l] + " on " + dates[l];
+								}
 							}
-							
+							else if(k != 0 && j == 0) // prob but not sig
+							{
+								System.out.println("test");
+								for(int l = 0; l < k; l++)
+								{
+									message += "\n" + Name[1] + " " + Name[0] + "  was problematic with a pain level of " + painLevelsb[l] + " on " + datesb[l];
+								}
+							}
+							else // both
+							{
+								for(int l = 0; l < j; l++)
+								{
+									message += "\n" + Name[1] + " " + Name[0] + "  was significantly problematic with a pain level of " + painLevels[l] + " on " + dates[l];
+								}
+								for(int l = 0; l < k; l++)
+								{
+									message += "\n" + Name[1] + " " + Name[0] + "  was problematic with a pain level of " + painLevelsb[l] + " on " + datesb[l];
+								}
+							}
 							JFrame frame = new JFrame();
 							JOptionPane.showMessageDialog(frame, message);
 						}
+						else // no message
+						{
+							//do nothing
+						}						
 						scanner.close();	
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
@@ -242,8 +255,6 @@ public class MainMenuPanel extends JPanel{
 	    		}
 	    		else
 	    		{
-	    			//JFrame frame = new JFrame();
-	    			//JOptionPane.showMessageDialog(frame, Name[1] + " " + Name[0] + " has yet to submit symptoms.");
 	    			symptomRatingLabels[0].setForeground(Color.BLACK);
 	    			for(int i = 0; i < symptomRatingLabels.length; i++)
 					{
