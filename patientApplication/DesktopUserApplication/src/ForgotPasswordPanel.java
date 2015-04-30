@@ -27,24 +27,23 @@ public class ForgotPasswordPanel extends JPanel{
 		
 		//add the components to the panel
 		add(emailLabel);
-		add(emailField);
+		add(emailField); // TODO should our loginPanel have a static "emailField"?
 		add(submitButton);
 		add(backButton);
 	}
 	
 	//the listener for the submit button
 	public class SubmitButtonListener implements ActionListener{
-		Container contentPane;
-		public SubmitButtonListener(Container contentPane){
-			this.contentPane = contentPane;
+		Container contentPanel;
+		public SubmitButtonListener(Container contentPanel){
+			this.contentPanel = contentPanel;
 		}
 		String passwordb;
 		public void actionPerformed(ActionEvent e){
 			
-			//get the list of doctors
 			PrintStream console = System.out;
 			Database.download("patients.csv", console);
-			
+			// TODO what if the patients file doesn't exist? we need a check.
 			try {
 				Scanner scanner = new Scanner(new File("patients.csv"));
 				scanner.useDelimiter(",");
@@ -107,10 +106,10 @@ public class ForgotPasswordPanel extends JPanel{
 				}
 				
 				//load the login panel
-		        contentPane.removeAll();
-				contentPane.add(new LoginPanel(contentPane));
-				contentPane.invalidate();
-				contentPane.validate();
+		        contentPanel.removeAll();
+				contentPanel.add(new LoginPanel(contentPanel));
+				contentPanel.invalidate();
+				contentPanel.validate();
 			}
 		}
 	}

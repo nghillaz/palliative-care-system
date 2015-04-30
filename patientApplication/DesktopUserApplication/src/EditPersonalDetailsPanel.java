@@ -7,14 +7,12 @@ import java.util.Scanner;
 
 
 public class EditPersonalDetailsPanel extends JPanel{
-	//TODO some changes
 	JTextField firstNameField;
 	JTextField lastNameField;
 	JTextField emailField;
 	JTextField passwordField;
 	JTextField cPasswordField;
 	JTextField phoneNumberField;
-
 	
 	//this holds all the text fields
 	final ArrayList<JTextField> textFields = new ArrayList<>();
@@ -136,8 +134,6 @@ public class EditPersonalDetailsPanel extends JPanel{
 			String cPassword = cPasswordField.getText();
 			String phoneNumber = phoneNumberField.getText();
 
-			PrintStream console = System.out;
-			
 			//check if the password matches the confirm password and if any errors in filling out the form occur
 			if(!(password.equals(cPassword)))
 			{
@@ -153,10 +149,10 @@ public class EditPersonalDetailsPanel extends JPanel{
 			}
 			
 			//right here, we use the database class to get the list of patients
+			PrintStream console = System.out;
 			File f = Database.download("patients.csv", console);
 			String buffer = "";
-			
-			Database.download("patients.csv", console);
+			// TODO what if the patient.csv doesn't exist? This needs to have a if (Exists && !isDirectory).
 					
 			try {
 				boolean found = false;
@@ -214,7 +210,7 @@ public class EditPersonalDetailsPanel extends JPanel{
 				System.out.println("Scanner closed.");
 						
 			} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
+				e1.printStackTrace();
 			}
 		}
 	}

@@ -81,7 +81,7 @@ public class LoginPanel extends JPanel{
 			File f = Database.download("patients.csv", console);
 			
 			Database.download("patients.csv", console);
-					
+			// TODO what if the patients file doesn't exist?		
 			try {
 				boolean found = false;
 				Scanner scanner = new Scanner(f);

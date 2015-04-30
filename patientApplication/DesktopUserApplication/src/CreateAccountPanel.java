@@ -202,7 +202,7 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(password.toString());
 						fw.append(",");
 						fw.append(phoneNumber);
-
+						// TODO We need to append a default doctor or something
 						
 						fw.close();
 					} catch (IOException e1) {
@@ -236,8 +236,8 @@ public class CreateAccountPanel extends JPanel{
 						fw.append(password.toString());
 						fw.append(",");
 						fw.append(phoneNumber);
+						// TODO We need to append a default doctor or something
 
-						
 						fw.close();
 					} catch (IOException e1) {
 						e1.printStackTrace();

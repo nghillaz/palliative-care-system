@@ -15,7 +15,6 @@ public class SetDoctorPanel extends JPanel{
 	JButton setAsDoctor;
 	JButton back;
 	
-	//String [] settingDoctor = {""};
 	String [] settingDoctor = getDoctorList();
 	
 	public SetDoctorPanel(Container contentPane) {
@@ -140,7 +139,7 @@ public class SetDoctorPanel extends JPanel{
 		}
 	
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO
+			// TODO this does not work
 			contentPane.removeAll();
 			contentPane.add(new MainMenuPanel(contentPane));
 			contentPane.invalidate();

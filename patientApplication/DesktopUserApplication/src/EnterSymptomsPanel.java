@@ -20,6 +20,7 @@ public class EnterSymptomsPanel extends JPanel{
 	JLabel appetite;
 	JLabel wellbeing;
 	JLabel sob;
+	// TODO There should be "other" too
 	
 	//JSliders for symptoms
 	JSlider painSlider;
@@ -36,8 +37,6 @@ public class EnterSymptomsPanel extends JPanel{
 	JButton back;
 	
 	public EnterSymptomsPanel(Container contentPane){
-		//setting to box layout
-		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		//setting to grid layout
 		setLayout(new GridLayout(5,5));
@@ -213,7 +212,7 @@ public class EnterSymptomsPanel extends JPanel{
 		
 	}
 	
-	//test method
+	// TODO test method
 	public int getValue(){
 		return painSlider.getValue();
 	}
@@ -237,11 +236,16 @@ public class EnterSymptomsPanel extends JPanel{
 			int sobValue = sobSlider.getValue();
 			String email = "";
 			
-			PrintStream console = System.out;
-			
-			//will have to create or search for patient file here
-			
+			PrintStream console = System.out;			
 			File f = Database.download("patients.csv", console);
+			// TODO what if the patients.csv file does not exist? We need a check if it exists (if(.exists and !.isDirectory)
+			
+			// TODO So what this should do is:
+			//		1. Grab their email address
+			//		2. create/check a csv file of their email address
+			//			a. if the file exists, append (including a date)
+			//			b. if it does not, create the header line and append (including a date)
+			//		3. upload that file
 			String buffer = "";
 			
 			try{

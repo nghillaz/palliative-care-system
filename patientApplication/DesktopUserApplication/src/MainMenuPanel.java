@@ -6,7 +6,6 @@ import java.awt.event.*;
 public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
-
 			JButton enterSymptomsButton;		
 			JButton editDetailsButton;
 			JButton setDoctorButton;
@@ -17,7 +16,8 @@ public class MainMenuPanel extends JPanel{
 			
 			//create the components and set them up
 			//all of the buttons
-			enterSymptomsButton = new JButton("Enter Symptoms/Pain Level");						editDetailsButton = new JButton("Edit Details");
+			enterSymptomsButton = new JButton("Enter Symptoms/Pain Level");
+			editDetailsButton = new JButton("Edit Details");
 			setDoctorButton = new JButton("Set Doctor");
 			logOutButton = new JButton("Log Out");
 				
@@ -90,7 +90,6 @@ public class MainMenuPanel extends JPanel{
 		}
 	
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO
 			contentPane.removeAll();
 			contentPane.add(new SetDoctorPanel(contentPane));
 			contentPane.invalidate();
@@ -105,9 +104,7 @@ public class MainMenuPanel extends JPanel{
 		public logOutListener(Container contentPane){
 			this.contentPane = contentPane;
 		}
-	
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
@@ -115,96 +112,5 @@ public class MainMenuPanel extends JPanel{
 			
 		}
 		
-	}
-	
-	
-	
-	
-			/*
-			public class LoginListener implements ActionListener{
-				Container contentPane;
-				public LoginListener(Container contentPane){
-					this.contentPane = contentPane;
-				}
-				public void actionPerformed(ActionEvent e){
-					
-					//right here, we use the database class to get the list of patients
-					PrintStream console = System.out;
-					File f = Database.download("patients.csv", console);
-					
-					Database.download("patients.csv", console);
-							
-					try {
-						boolean found = false;
-						Scanner scanner = new Scanner(f);
-						scanner.useDelimiter("\n");
-						int lineNumber = 0;
-						System.out.println("text: " + emailField.getText());
-						//check to see if the email and password are valid
-						if(emailField.getText().length() < 4 || passwordField.getText().length() < 4){
-							JFrame frame = new JFrame();
-							JOptionPane.showMessageDialog(frame, "Account not found in database");
-							scanner.close();
-							return;
-						}
-						//search for the email and password in the account
-						while(scanner.hasNext())
-						{
-							String temp = scanner.next().toLowerCase();
-							if(temp.contains(emailField.getText().toLowerCase())
-									&& temp.contains(passwordField.getText().toLowerCase())){
-								found = true;
-								break;
-							}
-						}
-						//the account could not be found
-						if(!found){
-							JFrame frame = new JFrame();
-							JOptionPane.showMessageDialog(frame, "Account not found in the database.");
-							scanner.close();
-							return;
-						}
-						//the account could be found
-						scanner.close();
-						contentPane.removeAll();
-						contentPane.add(new MainMenuPanel(contentPane));
-						contentPane.invalidate();
-						contentPane.validate();
-					}
-					catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-			
-			//listener on the button to recover password
-			public class ForgotPasswordListener implements ActionListener{
-				Container contentPane;
-				public ForgotPasswordListener(Container contentPane){
-					this.contentPane = contentPane;
-				}
-				public void actionPerformed(ActionEvent e){
-					contentPane.removeAll();
-					contentPane.add(new ForgotPasswordPanel(contentPane));
-					contentPane.invalidate();
-					contentPane.validate();
-				}
-			}
-			
-			//listener for the button to create an account
-			public class CreateAccountListener implements ActionListener{
-				Container contentPane;
-				public CreateAccountListener(Container contentPane){
-					this.contentPane = contentPane;
-				}
-				public void actionPerformed(ActionEvent e){
-					contentPane.removeAll();
-					contentPane.add(new CreateAccountPanel(contentPane));
-					contentPane.invalidate();
-					contentPane.validate();
-				}
-			}*/
-		
-		
-		
-	}
+	}		
+}
