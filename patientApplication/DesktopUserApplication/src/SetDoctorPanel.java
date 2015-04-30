@@ -116,10 +116,6 @@ public class SetDoctorPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent arg0){
-			// TODO 1. Grab the email of the patient
-			// TODO 2. Locate the patient in the patients.csv file
-			// TODO 3. Append the doctor's email address
-			// TODO 4. Upload patient.csv
 			// TODO 5. add MainMenuPanel contentPane
 			
 			PrintStream console = System.out;
@@ -205,7 +201,7 @@ public class SetDoctorPanel extends JPanel{
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
-							Database.upload("doctors.csv", f);
+							Database.upload("patients.csv", f);
 						}
 					}catch (IOException e1) {
 						e1.printStackTrace();
