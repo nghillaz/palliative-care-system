@@ -10,16 +10,16 @@ public class EnterSymptomsPanel extends JPanel{
 	
 	//components for panel
 	//JLabels for symptoms
-	JLabel pain;
-	JLabel tiredness;
-	JLabel nausea;
-	JLabel depression;
-	JLabel anxiety;
-	JLabel drowsiness;
-	JLabel appetite;
-	JLabel wellbeing;
-	JLabel sob;
-	// TODO There should be "other" too
+	JLabel painLabel;
+	JLabel tirednessLabel;
+	JLabel nauseaLabel;
+	JLabel depressionLabel;
+	JLabel anxietyLabel;
+	JLabel drowsinessLabel;
+	JLabel appetiteLabel;
+	JLabel wellbeingLabel;
+	JLabel sobLabel;
+	JLabel otherLabel;
 	
 	//JSliders for symptoms
 	JSlider painSlider;
@@ -31,29 +31,31 @@ public class EnterSymptomsPanel extends JPanel{
 	JSlider appetiteSlider;
 	JSlider wellbeingSlider;
 	JSlider sobSlider;
+	JSlider oSlider;
 	
-	JButton submit;
-	JButton back;
+	JButton submitButton;
+	JButton backButton;
 	
 	public EnterSymptomsPanel(Container contentPane){
 		
 		//setting to grid layout
-		setLayout(new GridLayout(5,5));
+		setLayout(new GridLayout(6,5));
 		
 		//setting up the components
 		//labels
-		pain = new JLabel("Pain");
-		tiredness = new JLabel("Tiredness");
-		nausea = new JLabel("Nausea");
-		depression = new JLabel("Depression");
-		anxiety = new JLabel("Anxiety");
-		drowsiness = new JLabel("Drowsiness");
-		appetite = new JLabel("Appetite");
-		wellbeing = new JLabel("Wellbeing");
-		sob = new JLabel("Shortness of Breath");
+		painLabel = new JLabel("Pain");
+		tirednessLabel = new JLabel("Tiredness");
+		nauseaLabel = new JLabel("Nausea");
+		depressionLabel = new JLabel("Depression");
+		anxietyLabel = new JLabel("Anxiety");
+		drowsinessLabel = new JLabel("Drowsiness");
+		appetiteLabel = new JLabel("Appetite");
+		wellbeingLabel = new JLabel("Wellbeing");
+		sobLabel = new JLabel("Shortness of Breath");
+		otherLabel = new JLabel("Other");
 		
-		submit = new JButton("Submit");
-		back = new JButton("Back");
+		submitButton = new JButton("Submit");
+		backButton = new JButton("Back");
 		
 		//sliders
 		JSlider painSlider = new JSlider(JSlider.HORIZONTAL,
@@ -74,7 +76,8 @@ public class EnterSymptomsPanel extends JPanel{
                 0, 10, 0);
 		JSlider sobSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 10, 0);
-		
+		JSlider oSlider = new JSlider(JSlider.HORIZONTAL,
+                0, 10, 0);
 		
 		//setting paint ticks and labels
 		painSlider.setMajorTickSpacing(1);
@@ -131,40 +134,48 @@ public class EnterSymptomsPanel extends JPanel{
 		sobSlider.setPaintLabels(true);
 		sobSlider.setSnapToTicks(true);
 		
+		oSlider.setMajorTickSpacing(1);
+		oSlider.setMinorTickSpacing(1);
+		oSlider.setPaintTicks(true);
+		oSlider.setPaintLabels(true);
+		oSlider.setSnapToTicks(true);
 		
 		//button listeners
-		submit.addActionListener(new SubmitListener(contentPane));
-		back.addActionListener(new BackListener(contentPane));
+		//submitButton.addActionListener(new SubmitListener(contentPane));
+		backButton.addActionListener(new BackListener(contentPane));
 		
 		
 		//setting alignment
 		
-		pain.setAlignmentX(Component.CENTER_ALIGNMENT);
+		painLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		painSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		tiredness.setAlignmentX(Component.CENTER_ALIGNMENT);
+		tirednessLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tirednessSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		nausea.setAlignmentX(Component.CENTER_ALIGNMENT);
+		nauseaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		nauseaSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		depression.setAlignmentX(Component.CENTER_ALIGNMENT);
+		depressionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		depressionSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		anxiety.setAlignmentX(Component.CENTER_ALIGNMENT);
+		anxietyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		anxietySlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		drowsiness.setAlignmentX(Component.CENTER_ALIGNMENT);
+		drowsinessLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		drowsinessSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		appetite.setAlignmentX(Component.CENTER_ALIGNMENT);
+		appetiteLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		appetiteSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		wellbeing.setAlignmentX(Component.CENTER_ALIGNMENT);
+		wellbeingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		wellbeingSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		sob.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sobLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sobSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		otherLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		oSlider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		//setting slider size
 		painSlider.setMaximumSize(new Dimension(200, 30));
@@ -176,49 +187,45 @@ public class EnterSymptomsPanel extends JPanel{
 		appetiteSlider.setMaximumSize(new Dimension(200, 30));
 		wellbeingSlider.setMaximumSize(new Dimension(200,30));
 		sobSlider.setMaximumSize(new Dimension(200, 30));
-		
+		oSlider.setMaximumSize(new Dimension(200, 30));
 		
 		//adding components
-		add(pain);
+		add(painLabel);
 		add(painSlider);
 		
-		add(tiredness);
+		add(tirednessLabel);
 		add(tirednessSlider);
 
-		add(nausea);
+		add(nauseaLabel);
 		add(nauseaSlider);
 
-		add(depression);
+		add(depressionLabel);
 		add(depressionSlider);
 
-		add(anxiety);
+		add(anxietyLabel);
 		add(anxietySlider);
 
-		add(drowsiness);
+		add(drowsinessLabel);
 		add(drowsinessSlider);
 
-		add(appetite);
+		add(appetiteLabel);
 		add(appetiteSlider);
 
-		add(wellbeing);
+		add(wellbeingLabel);
 		add(wellbeingSlider);
 
-		add(sob);
+		add(sobLabel);
 		add(sobSlider);
 		
-		add(submit);
-		add(back);
+		add(otherLabel);
+		add(oSlider);
+		
+		add(submitButton);
+		add(backButton);
 		
 	}
 	
-	// TODO test method
-	public int getValue(){
-		return painSlider.getValue();
-	}
-	
-	
-	//TODO rest of this method implementation
-	public class SubmitListener implements ActionListener{
+	/*public class SubmitListener implements ActionListener{
 		Container contentPane;
 		public SubmitListener(Container contenetPane){
 			this.contentPane = contentPane;
@@ -233,6 +240,7 @@ public class EnterSymptomsPanel extends JPanel{
 			int appetiteValue = appetiteSlider.getValue();
 			int wellbeingValue = wellbeingSlider.getValue();
 			int sobValue = sobSlider.getValue();
+			int oValue = oSlider.getValue();
 			String email = "";
 			
 			PrintStream console = System.out;			
@@ -252,10 +260,6 @@ public class EnterSymptomsPanel extends JPanel{
 				Scanner scanner = new Scanner(f);
 				scanner.useDelimiter("\n");
 				int lineNumber = 0;
-				
-				
-				//TODO specific changes to method functionality
-				//scan for the account
 				while(scanner.hasNextLine()){
 					if((scanner.next().toLowerCase()).contains(email.toLowerCase())){
 						found = true;
@@ -283,7 +287,7 @@ public class EnterSymptomsPanel extends JPanel{
 					scanner.next();
 					buffer += painValue+","+tirednessValue+","+nauseaValue+","
 							+ ""+depressionValue+","+anxietyValue+","+drowsinessValue+","
-							+appetiteValue+","+wellbeingValue+","+sobValue+"\n";
+							+appetiteValue+","+wellbeingValue+","+sobValue+","+oValue+"\n";
 					while(scanner.hasNext()){
 						buffer += scanner.next();
 					}
@@ -313,7 +317,7 @@ public class EnterSymptomsPanel extends JPanel{
 			
 		}
 	}
-	
+	*/
 	public class BackListener implements ActionListener{
 		Container contentPane;
 		public BackListener(Container contentPane){

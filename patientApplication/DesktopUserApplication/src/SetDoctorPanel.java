@@ -123,8 +123,8 @@ public class SetDoctorPanel extends JPanel{
 		public void actionPerformed(ActionEvent arg0){
 			contentPane.removeAll();
 			
-			//TODO Add functionality of button
-			
+			// TODO Add functionality of button
+			// TODO append to patient's file
 			
 			contentPane.invalidate();
 			contentPane.validate();

@@ -204,10 +204,14 @@ public class EditPersonalDetailsPanel extends JPanel{
 						e1.printStackTrace();
 					}
 					Database.upload("patients.csv", f);
-					}
+				}
 					
 				scanner.close();
 				System.out.println("Scanner closed.");
+				contentPane.removeAll();
+				contentPane.add(new MainMenuPanel(contentPane));
+				contentPane.invalidate();
+				contentPane.validate();
 						
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
