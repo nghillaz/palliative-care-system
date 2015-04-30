@@ -1,11 +1,11 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
+
 
 public class LoginPanel extends JPanel{
 
@@ -86,7 +86,6 @@ public class LoginPanel extends JPanel{
 				boolean found = false;
 				Scanner scanner = new Scanner(f);
 				scanner.useDelimiter("\n");
-				int lineNumber = 0;
 				System.out.println("text: " + emailField.getText());
 				//check to see if the email and password are valid
 				if(emailField.getText().length() < 4 || passwordField.getText().length() < 4){

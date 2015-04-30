@@ -4,11 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-
 import javax.swing.*;
-
-import java.awt.*;
-
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
@@ -30,7 +26,7 @@ public class Database {
 	//method for downloading a file from the server of string keyname
 	public static File download(String keyName, PrintStream console){
 		try {
-            System.out.println("Downloading an object");
+            System.out.println("Downloading" + keyName + "...");
             S3Object s3object = s3Client.getObject(new GetObjectRequest(
             		bucketName, keyName));
             System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
@@ -76,7 +72,7 @@ public class Database {
 	//method for uploading to the server of string keyname
 	public static void upload(String keyName, File file){
 		try {
-            System.out.println("Uploading a new object to S3 from a file\n");
+            System.out.println("Uploading" + keyName + "...");
             s3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
             
             //if the upload is successful, tell the user
