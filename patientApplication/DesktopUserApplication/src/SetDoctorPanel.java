@@ -85,7 +85,7 @@ public class SetDoctorPanel extends JPanel{
 		else // patients.csv doesn't exist on the server or locally
 		{
 			JFrame frame = new JFrame();
-			JOptionPane.showMessageDialog(frame, "No patients were found.");
+			JOptionPane.showMessageDialog(frame, "No doctors were found.");
 			return new String[] {"---"};
 		}
 		return null;
