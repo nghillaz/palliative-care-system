@@ -98,7 +98,7 @@ public class MainMenuPanel extends JPanel{
 			
 			timer = new Timer();
 			long delay = 0;
-			long intervalPeriod = 30 * 1000; // 30 second interval
+			long intervalPeriod = 60 * 1000; // 60 second interval
 			TimerTask task = new TimerTask()
 			{
 				@Override
@@ -217,7 +217,7 @@ public class MainMenuPanel extends JPanel{
 							}	
 						}
 						
-						if(j != 0)
+						if(j != 0 && k != 0)
 						{
 							String message = "";
 							for(int l = 0; l < j; l++)
@@ -244,6 +244,7 @@ public class MainMenuPanel extends JPanel{
 	    		{
 	    			//JFrame frame = new JFrame();
 	    			//JOptionPane.showMessageDialog(frame, Name[1] + " " + Name[0] + " has yet to submit symptoms.");
+	    			symptomRatingLabels[0].setForeground(Color.BLACK);
 	    			for(int i = 0; i < symptomRatingLabels.length; i++)
 					{
 						symptomRatingLabels[i].setText("---");
