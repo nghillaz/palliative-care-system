@@ -37,8 +37,6 @@ public class EnterSymptomsPanel extends JPanel{
 	JButton submitButton;
 	JButton backButton;
 	
-	//TODO, make a column for whether a symptom has been read by a doctor.  This value will be updated from the doctor portal
-	
 	public EnterSymptomsPanel(Container contentPane){
 		
 		//setting to grid layout

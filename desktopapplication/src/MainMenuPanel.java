@@ -26,8 +26,6 @@ public class MainMenuPanel extends JPanel{
 	String[] patientNames;
 	
 	public MainMenuPanel(Container contentPane){
-		// TODO prioritize patients based on severity/list history
-		
 		//set to grid layout
 		super(new GridLayout(1,2));
 		
@@ -239,12 +237,14 @@ public class MainMenuPanel extends JPanel{
 								}
 								//set the date and time properly
 								symptomRatingLabels[10].setText(tempArray[10]);
-								if(dangerLevel == "lots" && tempArray[11].toUpperCase().equals("FALSE")){
-									JFrame frame = new JFrame();
-									JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are significantly problematic!");
-								}else if(dangerLevel == "some" && tempArray[11].toUpperCase().equals("FALSE")){
-									JFrame frame = new JFrame();
-									JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are problematic!");
+								
+								if(dangerLevel.equals("lots") && tempArray[11].trim().equals("FALSE")){
+									System.out.println("lots of danger!!!");
+									JFrame warningFrame = new JFrame();
+									JOptionPane.showMessageDialog(warningFrame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are significantly problematic!");
+								}else if(dangerLevel.equals("some") && tempArray[11].trim().equals("FALSE")){
+									JFrame warningFrame = new JFrame();
+									JOptionPane.showMessageDialog(warningFrame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are problematic!");
 								}
 								String buffer = "";
 								Scanner symptomScanner = new Scanner(patientf);
@@ -253,11 +253,12 @@ public class MainMenuPanel extends JPanel{
 								buffer += symptomScanner.next() + "\n";
 								//add in the modified symptom report
 								buffer += tempArray[0] + "," + tempArray[1] + "," + tempArray[2] + "," + tempArray[3] + "," + tempArray[4] + "," + tempArray[5] + ","
-										+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE";
+										+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE" + "\n";
 								//skip the line we just constructed manually
-								symptomScanner.next();
+								symptomScanner.nextLine();
+								symptomScanner.nextLine();
 								while(symptomScanner.hasNext()){
-									buffer += symptomScanner.next();
+									buffer += symptomScanner.nextLine() + "\n";
 								}
 								//now we write the new buffer into the old symptom report file
 								FileWriter symptomWriter = new FileWriter(patientf, false);

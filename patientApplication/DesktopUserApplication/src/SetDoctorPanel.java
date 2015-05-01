@@ -116,7 +116,6 @@ public class SetDoctorPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent arg0){
-			// TODO 5. add MainMenuPanel contentPane
 			
 			PrintStream console = System.out;
 			
