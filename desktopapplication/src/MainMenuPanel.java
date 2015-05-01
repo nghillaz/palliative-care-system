@@ -38,8 +38,7 @@ public class MainMenuPanel extends JPanel{
 		patientList = new JList<String>(patientNames);
 		patientList.addListSelectionListener(lSelectionListener);
 		add(patientList);
-		add(new RightPanel(contentPane));
-		
+		add(new RightPanel(contentPane));		
 	}
 	
 	//the panel that handles displaying the patient data
@@ -94,16 +93,21 @@ public class MainMenuPanel extends JPanel{
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
 			
+			JTextField thresholdField = new JTextField();
+			
 			JButton updateThresholdButton = new JButton("Update Threshold:");
-			updateThresholdButton.addActionListener(new EditThresholdListener(contentPane));
+			updateThresholdButton.addActionListener(new EditThresholdListener(contentPane, thresholdField));
 			add(updateThresholdButton);
 			
-			JTextField thresholdField = new JTextField();
 			add(thresholdField);
 			
 			JButton viewPatientHistoryButton = new JButton("View Patient History");
 			updateThresholdButton.addActionListener(new ViewPatientHistoryListener(contentPane));
 			add(viewPatientHistoryButton);
+			
+			JButton updateDataButton = new JButton("Update Data");
+			updateDataButton.addActionListener(new UpdateDataListener(contentPane));
+			add(updateDataButton);
 			
 			
 			timer = new Timer();
@@ -250,6 +254,16 @@ public class MainMenuPanel extends JPanel{
 		}
 	}
 	
+	public class UpdateDataListener implements ActionListener{
+		Container contentPane;
+		public UpdateDataListener(Container contentPane){
+			this.contentPane = contentPane;
+		}
+		public void actionPerformed(ActionEvent e){
+			patientList = new JList<String>(getPatientList());
+		}
+	}
+	
 	public class BackListener implements ActionListener{
 		Container contentPane;
 		public BackListener(Container contentPane){
@@ -266,11 +280,19 @@ public class MainMenuPanel extends JPanel{
 	
 	public class EditThresholdListener implements ActionListener{
 		Container contentPane;
-		public EditThresholdListener(Container contentPane){
+		JTextField textField;
+		public EditThresholdListener(Container contentPane, JTextField textField){
 			this.contentPane = contentPane;
+			this.textField = textField;
 		}
 		public void actionPerformed(ActionEvent e){
-			//TODO, finish the edit threshold click
+			//check if the textfield can be cast as an int
+			try {
+		        Integer.valueOf(textField.getText());
+		        textField.setText("");
+		    } catch (NumberFormatException f) {
+		        return;
+		    }
 		}
 	}
 	
