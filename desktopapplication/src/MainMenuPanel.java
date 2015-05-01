@@ -24,8 +24,6 @@ public class MainMenuPanel extends JPanel{
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity/list history
-		// TODO threshold for every symptom?
-		// TODO create a local textfield so the doctor can submit their painThreshold
 
 		//set to grid layout
 		super(new GridLayout(1,2));
@@ -33,7 +31,7 @@ public class MainMenuPanel extends JPanel{
 		contentPane.setPreferredSize(new Dimension(1000,480));
 		
 		//the list of patients, on a panel on the left
-		patientNames = getPatientList();
+		patientNames = getPatientNames();
 		
 		patientList = new JList<String>(patientNames);
 		patientList.addListSelectionListener(lSelectionListener);
@@ -185,9 +183,7 @@ public class MainMenuPanel extends JPanel{
 						if(scanner.hasNext()){
 							//get the second line
 							String temp = scanner.nextLine();
-							System.out.println(temp);
 							String[] tempArray = temp.split(",", 11);
-							System.out.println(tempArray[0]);
 							Integer painLevel;
 							try {
 								painLevel = Integer.valueOf(tempArray[0]);
@@ -195,7 +191,6 @@ public class MainMenuPanel extends JPanel{
 								if(painLevel >= (threshold)){
 									for(int i = 0; i < symptomRatingLabels.length; i++)
 									{
-										System.out.println(tempArray[i]);
 										symptomRatingLabels[i].setText(" " + tempArray[i]);
 									}
 									symptomRatingLabels[0].setForeground(Color.RED);
@@ -260,7 +255,7 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			patientList = new JList<String>(getPatientList());
+			patientList.setModel(getPatientList(new DefaultListModel<String>()));
 		}
 	}
 	
@@ -306,8 +301,7 @@ public class MainMenuPanel extends JPanel{
 		}
 	}
 	
-	
-	public String[] getPatientList(){
+	public String[] getPatientNames(){
 		PrintStream console = System.out;
 		File f = Database.download("patients.csv", console);
 		
@@ -319,7 +313,7 @@ public class MainMenuPanel extends JPanel{
 			String line;
 			String[] patientNames;
 			try {
-				patientNames = new String[100];
+				patientNames = new String[50];
 				int i = 0;
 				br = new BufferedReader(new FileReader(f));
 				head = br.readLine();
@@ -328,12 +322,13 @@ public class MainMenuPanel extends JPanel{
 					{
 						System.out.println("line = " + line);
 						String[] pNames = line.split(",");
-						patientNames[i] = pNames[1] + ", " + pNames[0];
+						patientNames[i] = pNames[0] + ", " + pNames[1];
 						i++;
 					}
 				}
 				br.close();
 				return patientNames;
+				
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -344,6 +339,46 @@ public class MainMenuPanel extends JPanel{
 			JFrame frame = new JFrame();
 			JOptionPane.showMessageDialog(frame, "No patients were found.");
 			return new String[] {"---"};
+		}
+		return null;
+	}
+	
+	public DefaultListModel<String> getPatientList(DefaultListModel<String> model){
+		PrintStream console = System.out;
+		File f = Database.download("patients.csv", console);
+		
+		if(f.exists() && !f.isDirectory())
+		{
+			BufferedReader br;
+			@SuppressWarnings("unused")
+			String head;
+			String line;
+			try {
+				patientNames = new String[100];
+				br = new BufferedReader(new FileReader(f));
+				head = br.readLine();
+				while ((line = br.readLine()) != null) {
+					if(line.contains(LoginPanel.getEmail()))
+					{
+						System.out.println("line = " + line);
+						String[] pNames = line.split(",");
+						model.addElement(pNames[1] + ", " + pNames[0]);
+					}
+				}
+				br.close();
+				return model;
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else // patients.csv doesn't exist on the server or locally
+		{
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame, "No patients were found.");
+			model.addElement("---");
+			return model;
 		}
 		return null;
 	}
