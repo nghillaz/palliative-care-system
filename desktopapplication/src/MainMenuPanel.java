@@ -48,7 +48,7 @@ public class MainMenuPanel extends JPanel{
 		Container contentPane;
 		public RightPanel(Container contentPane){
 			//set up with a grid layout
-			super(new GridLayout(24,2));
+			super(new GridLayout(23,2));
 			this.contentPane = contentPane;
 			
 			//set up the labels that won't be changing, they simply say what symptom it is
@@ -87,13 +87,13 @@ public class MainMenuPanel extends JPanel{
 				}
 			}
 			
-			JButton editDetails = new JButton("Edit Personal Details");
-			editDetails.addActionListener(new EditDetailsListener(contentPane));
-			add(editDetails);
+			JButton viewPatientHistoryButton = new JButton("View Patient History");
+			viewPatientHistoryButton.addActionListener(new ViewPatientHistoryListener(contentPane));
+			add(viewPatientHistoryButton);
 			
-			JButton logoutButton = new JButton("Logout");
-			logoutButton.addActionListener(new BackListener(contentPane));
-			add(logoutButton);
+			JButton updateDataButton = new JButton("Update Data");
+			updateDataButton.addActionListener(new UpdateDataListener(contentPane));
+			add(updateDataButton);
 			
 			JButton[] thresholdButtons = new JButton[10];
 			
@@ -107,19 +107,20 @@ public class MainMenuPanel extends JPanel{
 			}
 			
 			//these Buttons will never change from these values
-			thresholdButtons[0].setText("Pain Threshold:");
-			thresholdButtons[1].setText("Tiredness Threshold:");
-			thresholdButtons[2].setText("Nausea Threshold:");
-			thresholdButtons[3].setText("Depression Threshold:");
-			thresholdButtons[4].setText("Anxiety Threshold:");
-			thresholdButtons[5].setText("Drowsiness Threshold:");
-			thresholdButtons[6].setText("Appetite Threshold:");
-			thresholdButtons[7].setText("Wellbeing Threshold:");
-			thresholdButtons[8].setText("Shortness of breath Threshold:");
-			thresholdButtons[9].setText("Other Threshold:");
+			thresholdButtons[0].setText("Edit Pain Threshold:");
+			thresholdButtons[1].setText("Edit Tiredness Threshold:");
+			thresholdButtons[2].setText("Edit Nausea Threshold:");
+			thresholdButtons[3].setText("Edit Depression Threshold:");
+			thresholdButtons[4].setText("Edit Anxiety Threshold:");
+			thresholdButtons[5].setText("Edit Drowsiness Threshold:");
+			thresholdButtons[6].setText("Edit Appetite Threshold:");
+			thresholdButtons[7].setText("Edit Wellbeing Threshold:");
+			thresholdButtons[8].setText("Edit Shortness of breath Threshold:");
+			thresholdButtons[9].setText("Edit Other Threshold:");
 			
 			for(int i = 0; i < thresholdButtons.length; i++){
 				thresholdButtons[i].addActionListener(new EditThresholdListener(contentPane, thresholdTextFields[i], i));
+				System.out.println("i = " + i);
 			}
 			
 			//set up the panel so that the Buttons are in the correct spots
@@ -135,13 +136,14 @@ public class MainMenuPanel extends JPanel{
 				}
 			}
 			
-			JButton viewPatientHistoryButton = new JButton("View Patient History");
-			viewPatientHistoryButton.addActionListener(new ViewPatientHistoryListener(contentPane));
-			add(viewPatientHistoryButton);
+			JButton editDetails = new JButton("Edit Personal Details");
+			editDetails.addActionListener(new EditDetailsListener(contentPane));
+			add(editDetails);
 			
-			JButton updateDataButton = new JButton("Update Data");
-			updateDataButton.addActionListener(new UpdateDataListener(contentPane));
-			add(updateDataButton);
+			JButton logoutButton = new JButton("Logout");
+			logoutButton.addActionListener(new BackListener(contentPane));
+			add(logoutButton);
+			
 		}	
 	}
 	
@@ -207,33 +209,35 @@ public class MainMenuPanel extends JPanel{
 							//get the second line
 							String temp = scanner.nextLine();
 							String[] tempArray = temp.split(",", 11);
-							Integer painLevel;
+							int painLevel;
 							try {
-								painLevel = Integer.valueOf(tempArray[0]);
 								//if the pain level is at the threshold, make the text red
-								if(painLevel >= (thresholdValues[0])){
-									for(int i = 0; i < symptomRatingLabels.length; i++)
-									{
-										symptomRatingLabels[i].setText(" " + tempArray[i]);
+								for(int i = 0; i < thresholdValues.length; i++){
+									painLevel = Integer.valueOf(tempArray[i]);
+									if(painLevel >= (thresholdValues[i] + 3)){
+										for(int j = 0; j < symptomRatingLabels.length; j++)
+										{
+											symptomRatingLabels[j].setText(" " + tempArray[j]);
+										}
+										symptomRatingLabels[i].setForeground(Color.RED);
 									}
-									symptomRatingLabels[0].setForeground(Color.RED);
-								}
-								//if the pain level is only mildly urgent
-								else if(painLevel >= (thresholdValues[0]) && painLevel < (thresholdValues[0] + 3))
-								{
-									for(int i = 0; i < symptomRatingLabels.length; i++)
+									//if the pain level is only mildly urgent
+									else if(painLevel >= (thresholdValues[i] + 2) && painLevel < (thresholdValues[i] + 3))
 									{
-										symptomRatingLabels[i].setText(" " + tempArray[i]);
+										for(int j = 0; j < symptomRatingLabels.length; j++)
+										{
+											symptomRatingLabels[j].setText(" " + tempArray[j]);
+										}
+										symptomRatingLabels[i].setForeground(Color.BLUE);
 									}
-									symptomRatingLabels[0].setForeground(Color.ORANGE);
-								}
-								else
-								{
-									for(int i = 0; i < symptomRatingLabels.length; i++)
+									else
 									{
-										symptomRatingLabels[i].setText(" " + tempArray[i]);
+										for(int j = 0; j < symptomRatingLabels.length; j++)
+										{
+											symptomRatingLabels[j].setText(" " + tempArray[j]);
+										}
+										symptomRatingLabels[i].setForeground(Color.BLACK);
 									}
-									symptomRatingLabels[0].setForeground(Color.BLACK);
 								}
 								
 							} catch (NumberFormatException e) {
