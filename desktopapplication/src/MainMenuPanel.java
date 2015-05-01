@@ -173,93 +173,50 @@ public class MainMenuPanel extends JPanel{
 	    		if(patientf.exists() && !patientf.isDirectory())
 	    		{
 					try {
+						//scan the patient reports, show the most recent one (on line 2)
 						Scanner scanner = new Scanner(patientf);
 						scanner.useDelimiter("\n");
-						int j = 0, k = 0;
-						String[] painLevels = new String[50], dates = new String[50], painLevelsb = new String[50], datesb = new String[50];
-						while(scanner.hasNext())
-						{
-							String temp = scanner.next();
-							String[] tempArray = temp.split(",", 2);
+						//skip the header
+						scanner.nextLine();
+						if(scanner.hasNext()){
+							//get the second line
+							String temp = scanner.nextLine();
+							System.out.println(temp);
+							String[] tempArray = temp.split(",", 11);
+							System.out.println(tempArray[0]);
 							Integer painLevel;
 							try {
 								painLevel = Integer.valueOf(tempArray[0]);
-								if(!temp.contains("pain"))
+								//if the pain level is at the threshold, make the text red
+								if(painLevel >= (threshold)){
+									for(int i = 0; i < symptomRatingLabels.length; i++)
+									{
+										System.out.println(tempArray[i]);
+										symptomRatingLabels[i].setText(" " + tempArray[i]);
+									}
+									symptomRatingLabels[0].setForeground(Color.RED);
+								}
+								//if the pain level is only mildly urgent
+								else if(painLevel >= (threshold) && painLevel < (threshold + 3))
 								{
-									tempArray = temp.replaceAll("\\s", "").split(",");
-									if(painLevel >= (5 + 3))
+									for(int i = 0; i < symptomRatingLabels.length; i++)
 									{
-										
-										for(int i = 0; i < symptomRatingLabels.length; i++)
-										{
-											symptomRatingLabels[i].setText(" " + tempArray[i]);
-										}
-										symptomRatingLabels[0].setForeground(Color.RED);
-										painLevels[j] = painLevel.toString();
-										dates[j] = tempArray[10];
-										j++;
+										symptomRatingLabels[i].setText(" " + tempArray[i]);
 									}
-									else if(painLevel >= (5 + 2) && painLevel < (5 + 3))
+									symptomRatingLabels[0].setForeground(Color.ORANGE);
+								}
+								else
+								{
+									for(int i = 0; i < symptomRatingLabels.length; i++)
 									{
-										for(int i = 0; i < symptomRatingLabels.length; i++)
-										{
-											symptomRatingLabels[i].setText(" " + tempArray[i]);
-										}
-										symptomRatingLabels[0].setForeground(Color.ORANGE);
-										painLevelsb[k] = painLevel.toString();
-										datesb[k] = tempArray[10];
-										k++;
+										symptomRatingLabels[i].setText(" " + tempArray[i]);
 									}
-									else
-									{
-										for(int i = 0; i < symptomRatingLabels.length; i++)
-										{
-											symptomRatingLabels[i].setText(" " + tempArray[i]);
-										}
-										symptomRatingLabels[0].setForeground(Color.BLACK);
-									}
+									symptomRatingLabels[0].setForeground(Color.BLACK);
 								}
 								
 							} catch (NumberFormatException e) {
 								//e.printStackTrace();
 							}	
-						}
-						
-						if(k != 0 || j != 0) // message popup
-						{
-							String message = "";
-							if(k == 0 && j != 0) // sig problematic but not probl
-							{
-								for(int l = 0; l < j; l++)
-								{
-									message += "\n" + Name[1] + " " + Name[0] + "  was significantly problematic with a pain level of " + painLevels[l] + " on " + dates[l];
-								}
-							}
-							else if(k != 0 && j == 0) // prob but not sig
-							{
-								System.out.println("test");
-								for(int l = 0; l < k; l++)
-								{
-									message += "\n" + Name[1] + " " + Name[0] + "  was problematic with a pain level of " + painLevelsb[l] + " on " + datesb[l];
-								}
-							}
-							else // both
-							{
-								for(int l = 0; l < j; l++)
-								{
-									message += "\n" + Name[1] + " " + Name[0] + "  was significantly problematic with a pain level of " + painLevels[l] + " on " + dates[l];
-								}
-								for(int l = 0; l < k; l++)
-								{
-									message += "\n" + Name[1] + " " + Name[0] + "  was problematic with a pain level of " + painLevelsb[l] + " on " + datesb[l];
-								}
-							}
-							JFrame frame = new JFrame();
-							JOptionPane.showMessageDialog(frame, message);
-						}
-						else // no message
-						{
-							//do nothing
 						}						
 						scanner.close();	
 					} catch (FileNotFoundException e) {
