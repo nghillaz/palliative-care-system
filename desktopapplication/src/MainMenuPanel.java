@@ -18,6 +18,8 @@ public class MainMenuPanel extends JPanel{
 	
 	int[] thresholdValues = new int[10];
 	
+	int selectedPatient;
+	
 	JList<String> patientList;
 	String[] patientNames;
 	
@@ -156,9 +158,15 @@ public class MainMenuPanel extends JPanel{
 	        	System.out.println(thresholdValues[0]);
 	        	@SuppressWarnings("unchecked")
 				JList<String> pList = (JList<String>) listSelectionEvent.getSource();
-	        	String selectionValue = pList.getSelectedValue();
-	        	String[] Name = selectionValue.replaceAll("\\s", "").split(",");
-	        	System.out.println(Name[0] + " " + Name[1]);
+	        	//if list has lost focus to buttons
+	        	String[] Name;
+	        	if(pList.getSelectedValue() == null){
+	        		String selectionValue = pList.getModel().getElementAt(selectedPatient);
+		        	Name = selectionValue.replaceAll("\\s", "").split(",");
+	        	}else{
+	        		String selectionValue = pList.getSelectedValue();
+		        	Name = selectionValue.replaceAll("\\s", "").split(",");
+	        	}
 	        	
 	        	PrintStream console = System.out;
 	    		File f = Database.download("patients.csv", console);
@@ -283,6 +291,10 @@ public class MainMenuPanel extends JPanel{
 		}
 		public void actionPerformed(ActionEvent e){
 			patientList.setModel(getPatientList(new DefaultListModel<String>()));
+			for(int i = 0; i < patientNames.length; i++)
+			{
+				patientList.setSelectedValue(patientNames[i], true);
+			}
 		}
 	}
 	
