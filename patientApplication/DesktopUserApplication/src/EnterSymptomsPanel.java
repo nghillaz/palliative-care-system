@@ -271,7 +271,7 @@ public class EnterSymptomsPanel extends JPanel{
 					//add the new line after the header
 					buffer += "\n" + painValue.toString() + "," + tirednessValue.toString() + "," + nauseaValue.toString() + "," + depressionValue.toString() + ","
 							+ anxietyValue.toString() + "," + drowsinessValue.toString() + "," + appetiteValue.toString() + "," + wellbeingValue.toString() + ","
-							+ sobValue.toString() + "," + oValue.toString() + "," + date;
+							+ sobValue.toString() + "," + oValue.toString() + "," + date + "," + "FALSE";
 					//add the rest of the lines
 					while(scanner.hasNext()){
 						buffer += "\n" + scanner.nextLine();

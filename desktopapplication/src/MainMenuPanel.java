@@ -191,18 +191,13 @@ public class MainMenuPanel extends JPanel{
 								break;
 							}
 						}
-						scanner.close();
-					
+						scanner.close();	
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
-	    			} //catch (IOException e) {
-	    				//e.printStackTrace();
-	    			//}
+	    			} 
 	    		}
 	    		else // file doesn't exist on the server or locally
 	    		{
-	    			JFrame frame = new JFrame();
-	    			JOptionPane.showMessageDialog(frame, "No patients were found.");
 	    			return;
 	    		}
 	    		
@@ -210,120 +205,70 @@ public class MainMenuPanel extends JPanel{
 	    		
 	    		if(patientf.exists() && !patientf.isDirectory())
 	    		{
-					try {
+	    			try {
 						//scan the patient reports, show the most recent one (on line 2)
 						Scanner scanner = new Scanner(patientf);
 						scanner.useDelimiter("\n");
 						//skip the header
-						scanner.nextLine();
+						scanner.next();
 						if(scanner.hasNext()){
-							//get the second line
-							String temp = scanner.nextLine();
-							String[] tempArray = temp.split(",", 12);
-							int painLevel;
+							//get the most recent report if it exists
+							String temp = scanner.next();
+							String[] tempArray = temp.split(",", 13);
 							try {
-								//if the pain level is at the threshold, make the text red
+								//danger level is none, some, or lots depending on pain level
+								String dangerLevel = "none";
 								for(int i = 0; i < thresholdValues.length; i++){
-									painLevel = Integer.valueOf(tempArray[i]);
-									if(painLevel >= (thresholdValues[i] + 3)){
-										for(int j = 0; j < symptomRatingLabels.length; j++)
-										{
-											symptomRatingLabels[j].setText(" " + tempArray[j]);
-										}
+									if(Integer.valueOf(tempArray[i]) >= (thresholdValues[i] + 3)){
+										//the symptom is significantly problematic
 										symptomRatingLabels[i].setForeground(Color.RED);
-										//warning dialogue -- significantly problematic
-										if(tempArray[10].toUpperCase().equals("TRUE")){
-											//it's been read already
-											scanner.close();
-										}else{
-											JFrame frame = new JFrame();
-											JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[0] + " " + Name[1] + "'s symptoms are significantly problematic!");
-											String buffer = "";
-											FileWriter fw;
-											try{
-												//mark the symptom report as read
-												fw = new FileWriter(f, false);
-												scanner = new Scanner(f);
-												scanner.useDelimiter("\n");
-												buffer += scanner.nextLine();
-												buffer += tempArray[0] + "," + tempArray[1] + "," + tempArray[2] + "," + tempArray[3] + "," + tempArray[4] + "," + tempArray[5] + ","
-														+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE";
-												while(scanner.hasNext()){
-													buffer += scanner.next();
-												}
-												fw.append(buffer);
-												scanner.close();
-												fw.close();
-											}catch (IOException e) {
-												e.printStackTrace();
-											}				
-										}
+										dangerLevel = "lots";
 									}
-									//if the pain level is only mildly urgent
-									else if(painLevel >= (thresholdValues[i] + 2) && painLevel < (thresholdValues[i] + 3))
-									{
-										for(int j = 0; j < symptomRatingLabels.length; j++)
-										{
-											symptomRatingLabels[j].setText(" " + tempArray[j]);
-										}
+									else if(Integer.valueOf(tempArray[i]) >= (thresholdValues[i] + 2) && Integer.valueOf(tempArray[i]) < (thresholdValues[i] + 3)){
+										//the symptom is problematic
 										symptomRatingLabels[i].setForeground(Color.BLUE);
-										//warning dialogue -- problematic
-										if(tempArray[10].toUpperCase().equals("TRUE")){
-											//it's been read already
-											scanner.close();
-										}else{
-											JFrame frame = new JFrame();
-											JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[0] + " " + Name[1] + "'s symptoms are problematic!");
-											String buffer = "";
-											FileWriter fw;
-											try{
-												//mark the symptom report as read
-												fw = new FileWriter(f, false);
-												scanner = new Scanner(f);
-												scanner.useDelimiter("\n");
-												buffer += scanner.nextLine();
-												buffer += tempArray[0] + "," + tempArray[1] + "," + tempArray[2] + "," + tempArray[3] + "," + tempArray[4] + "," + tempArray[5] + ","
-														+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE";
-												while(scanner.hasNext()){
-													buffer += scanner.next();
-												}
-												fw.append(buffer);
-												scanner.close();
-												fw.close();
-											}catch (IOException e) {
-												e.printStackTrace();
-											}
-										}
+										if(dangerLevel != "lots")
+											dangerLevel = "some";
 									}
-									else
-									{
-										for(int j = 0; j < symptomRatingLabels.length; j++)
-										{
-											symptomRatingLabels[j].setText(" " + tempArray[j]);
-										}
+									else{
 										symptomRatingLabels[i].setForeground(Color.BLACK);
 									}
 								}
-								
-							} catch (NumberFormatException e) {
-								//e.printStackTrace();
-							}	
-						}						
-						scanner.close();	
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-	    		}
-	    		else
-	    		{
-	    			symptomRatingLabels[0].setForeground(Color.BLACK);
-	    			for(int i = 0; i < symptomRatingLabels.length; i++)
-					{
-						symptomRatingLabels[i].setText("---");
-					}
-	    			return;
-	    		}
-	        }
+								if(dangerLevel == "lots" && tempArray[11].toUpperCase().equals("FALSE")){
+									JFrame frame = new JFrame();
+									JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are significantly problematic!");
+								}else if(dangerLevel == "some" && tempArray[11].toUpperCase().equals("FALSE")){
+									JFrame frame = new JFrame();
+									JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are problematic!");
+								}
+								String buffer = "";
+								Scanner symptomScanner = new Scanner(patientf);
+								symptomScanner.useDelimiter("\n");
+								//scan in the header
+								buffer += symptomScanner.next() + "\n";
+								//add in the modified symptom report
+								buffer += tempArray[0] + "," + tempArray[1] + "," + tempArray[2] + "," + tempArray[3] + "," + tempArray[4] + "," + tempArray[5] + ","
+										+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE";
+								//skip the line we just constructed manually
+								symptomScanner.next();
+								while(symptomScanner.hasNext()){
+									buffer += symptomScanner.next();
+								}
+								//now we write the new buffer into the old symptom report file
+								FileWriter symptomWriter = new FileWriter(patientf, false);
+								symptomWriter.append(buffer);
+								Database.upload(patientEmail + ".csv", patientf);
+								symptomScanner.close();
+								symptomWriter.close();
+							}catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						} 
+		    		}catch (IOException e1) {
+		    			e1.printStackTrace();
+		    		}
+		        }
+			}
 		}
 	};
 	
@@ -367,8 +312,6 @@ public class MainMenuPanel extends JPanel{
 			contentPane.validate();
 		}
 	}
-	
-	
 	
 	public class ViewPatientHistoryListener implements ActionListener{
 		Container contentPane;
@@ -454,8 +397,6 @@ public class MainMenuPanel extends JPanel{
 		}
 		else // patients.csv doesn't exist on the server or locally
 		{
-			JFrame frame = new JFrame();
-			JOptionPane.showMessageDialog(frame, "No patients were found.");
 			model.addElement("---");
 			return model;
 		}
