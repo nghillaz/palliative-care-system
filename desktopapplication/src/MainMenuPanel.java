@@ -1,12 +1,14 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -146,6 +148,7 @@ public class MainMenuPanel extends JPanel{
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
 			
+			updateSymptomsValues();
 		}	
 	}
 	
@@ -216,7 +219,7 @@ public class MainMenuPanel extends JPanel{
 						if(scanner.hasNext()){
 							//get the second line
 							String temp = scanner.nextLine();
-							String[] tempArray = temp.split(",", 11);
+							String[] tempArray = temp.split(",", 12);
 							int painLevel;
 							try {
 								//if the pain level is at the threshold, make the text red
@@ -228,6 +231,33 @@ public class MainMenuPanel extends JPanel{
 											symptomRatingLabels[j].setText(" " + tempArray[j]);
 										}
 										symptomRatingLabels[i].setForeground(Color.RED);
+										//warning dialogue -- significantly problematic
+										if(tempArray[10].toUpperCase().equals("TRUE")){
+											//it's been read already
+											scanner.close();
+										}else{
+											JFrame frame = new JFrame();
+											JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[0] + " " + Name[1] + "'s symptoms are significantly problematic!");
+											String buffer = "";
+											FileWriter fw;
+											try{
+												//mark the symptom report as read
+												fw = new FileWriter(f, false);
+												scanner = new Scanner(f);
+												scanner.useDelimiter("\n");
+												buffer += scanner.nextLine();
+												buffer += tempArray[0] + "," + tempArray[1] + "," + tempArray[2] + "," + tempArray[3] + "," + tempArray[4] + "," + tempArray[5] + ","
+														+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE";
+												while(scanner.hasNext()){
+													buffer += scanner.next();
+												}
+												fw.append(buffer);
+												scanner.close();
+												fw.close();
+											}catch (IOException e) {
+												e.printStackTrace();
+											}				
+										}
 									}
 									//if the pain level is only mildly urgent
 									else if(painLevel >= (thresholdValues[i] + 2) && painLevel < (thresholdValues[i] + 3))
@@ -237,6 +267,33 @@ public class MainMenuPanel extends JPanel{
 											symptomRatingLabels[j].setText(" " + tempArray[j]);
 										}
 										symptomRatingLabels[i].setForeground(Color.BLUE);
+										//warning dialogue -- problematic
+										if(tempArray[10].toUpperCase().equals("TRUE")){
+											//it's been read already
+											scanner.close();
+										}else{
+											JFrame frame = new JFrame();
+											JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[0] + " " + Name[1] + "'s symptoms are problematic!");
+											String buffer = "";
+											FileWriter fw;
+											try{
+												//mark the symptom report as read
+												fw = new FileWriter(f, false);
+												scanner = new Scanner(f);
+												scanner.useDelimiter("\n");
+												buffer += scanner.nextLine();
+												buffer += tempArray[0] + "," + tempArray[1] + "," + tempArray[2] + "," + tempArray[3] + "," + tempArray[4] + "," + tempArray[5] + ","
+														+ tempArray[6] + "," + tempArray[7] + "," + tempArray[8] + "," + tempArray[9] + "," + tempArray[10] + "," + "TRUE";
+												while(scanner.hasNext()){
+													buffer += scanner.next();
+												}
+												fw.append(buffer);
+												scanner.close();
+												fw.close();
+											}catch (IOException e) {
+												e.printStackTrace();
+											}
+										}
 									}
 									else
 									{
