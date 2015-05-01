@@ -299,11 +299,7 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			patientList.setModel(getPatientList(new DefaultListModel<String>()));
-			for(int i = 0; i < patientNames.length; i++)
-			{
-				patientList.setSelectedValue(patientNames[i], true);
-			}
+			updateSymptomsValues();
 		}
 	}
 	
@@ -434,10 +430,7 @@ public class MainMenuPanel extends JPanel{
 		        System.out.println("new threshold value at " + index + " is " + thresholdValues[index]);
 		        textField.setText("");
 		        //update the numbers' colors
-		        for(int i = 0; i < patientNames.length; i++)
-				{
-					patientList.setSelectedValue(patientNames[i], true);
-				}
+		        updateSymptomsValues();
 		    } catch (NumberFormatException f) {
 		        return;
 		    }

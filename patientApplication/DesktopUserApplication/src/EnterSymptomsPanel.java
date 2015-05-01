@@ -248,8 +248,9 @@ public class EnterSymptomsPanel extends JPanel{
 			int day = calendar.get(Calendar.DAY_OF_MONTH);
 			int month = calendar.get(Calendar.MONTH);
 			int year = calendar.get(Calendar.YEAR);
-			//TODO, add time maybe???
-			String date = "" + day+ "/" + (month += 1) + "/" + year;
+			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+			int min = calendar.get(Calendar.MINUTE);
+			String date = "" + day+ "/" + (month += 1) + "/" + year + " " + hour + ":" + min;
 			String pEmail = LoginPanel.getEmail();
 			
 			PrintStream console = System.out;
