@@ -15,15 +15,14 @@ import java.util.Scanner;
 
 public class MainMenuPanel extends JPanel{
 	
-	protected String[] tempArray;
-	protected JLabel[] symptomRatingLabels;
-	
+	String[] tempArray;
+	JLabel[] symptomRatingLabels;
 	int[] thresholdValues = new int[10];
-	
 	int selectedPatient;
-	
 	JList<String> patientList;
 	String[] patientNames;
+	String patientEmail = "";
+	PrintStream console = System.out;
 	
 	public MainMenuPanel(Container contentPane){
 		//set to grid layout
@@ -169,9 +168,8 @@ public class MainMenuPanel extends JPanel{
 		        	Name = selectionValue.replaceAll("\\s", "").split(",");
 	        	}
 	        	
-	        	PrintStream console = System.out;
+	        	
 	    		File f = Database.download("patients.csv", console);
-	    		String patientEmail = null;
 	    		if(f.exists() && !f.isDirectory())
 	    		{
 	    			try
@@ -270,7 +268,8 @@ public class MainMenuPanel extends JPanel{
 							}catch (NumberFormatException e1) {
 								e1.printStackTrace();
 							}
-						} 
+						}
+						scanner.close();
 		    		}catch (IOException e1) {
 		    			e1.printStackTrace();
 		    		}
@@ -323,6 +322,23 @@ public class MainMenuPanel extends JPanel{
 		}
 		public void actionPerformed(ActionEvent e){
 			//TODO, finish the view patient history click
+			File patientf = Database.download(patientEmail + ".csv", console);
+			
+			Scanner scanner;
+			String message = "";
+			try {
+				scanner = new Scanner(patientf);
+				scanner.useDelimiter("\n");
+				message += scanner.nextLine().replace(",", " | ") + "\n";
+				while(scanner.hasNext()){
+					message += scanner.nextLine().replace(",", " | ") + "\n";
+				}
+				scanner.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}			
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame, message);
 		}
 	}
 	
