@@ -117,7 +117,7 @@ public class MainMenuPanel extends JPanel{
 			thresholdButtons[5].setText("Edit Drowsiness Threshold:");
 			thresholdButtons[6].setText("Edit Appetite Threshold:");
 			thresholdButtons[7].setText("Edit Wellbeing Threshold:");
-			thresholdButtons[8].setText("Edit Shortness of breath Threshold:");
+			thresholdButtons[8].setText("Edit Shortness of Breath Threshold:");
 			thresholdButtons[9].setText("Edit Other Threshold:");
 			
 			for(int i = 0; i < thresholdButtons.length; i++){
