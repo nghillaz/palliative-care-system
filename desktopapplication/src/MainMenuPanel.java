@@ -221,19 +221,24 @@ public class MainMenuPanel extends JPanel{
 								for(int i = 0; i < thresholdValues.length; i++){
 									if(Integer.valueOf(tempArray[i]) >= (thresholdValues[i] + 3)){
 										//the symptom is significantly problematic
+										symptomRatingLabels[i].setText(tempArray[i]);
 										symptomRatingLabels[i].setForeground(Color.RED);
 										dangerLevel = "lots";
 									}
 									else if(Integer.valueOf(tempArray[i]) >= (thresholdValues[i] + 2) && Integer.valueOf(tempArray[i]) < (thresholdValues[i] + 3)){
 										//the symptom is problematic
+										symptomRatingLabels[i].setText(tempArray[i]);
 										symptomRatingLabels[i].setForeground(Color.BLUE);
 										if(dangerLevel != "lots")
 											dangerLevel = "some";
 									}
 									else{
+										symptomRatingLabels[i].setText(tempArray[i]);
 										symptomRatingLabels[i].setForeground(Color.BLACK);
 									}
 								}
+								//set the date and time properly
+								symptomRatingLabels[10].setText(tempArray[10]);
 								if(dangerLevel == "lots" && tempArray[11].toUpperCase().equals("FALSE")){
 									JFrame frame = new JFrame();
 									JOptionPane.showMessageDialog(frame, tempArray[10] + ": " + Name[1] + " " + Name[0] + "'s symptoms are significantly problematic!");
@@ -256,11 +261,12 @@ public class MainMenuPanel extends JPanel{
 								}
 								//now we write the new buffer into the old symptom report file
 								FileWriter symptomWriter = new FileWriter(patientf, false);
+								System.out.println(buffer);
 								symptomWriter.append(buffer);
-								Database.upload(patientEmail + ".csv", patientf);
 								symptomScanner.close();
 								symptomWriter.close();
-							}catch (IOException e1) {
+								Database.upload(patientEmail + ".csv", patientf);
+							}catch (NumberFormatException e1) {
 								e1.printStackTrace();
 							}
 						} 
