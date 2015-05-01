@@ -7,7 +7,7 @@ public class MainClass {
 		JFrame frame = new JFrame("Rice Palliative Care Software - Doctor Portal");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Dimension initSize = new Dimension(640,480);
+		Dimension initSize = new Dimension(640,640);
 		frame.setPreferredSize(initSize);
 		
 		//every panel has the content pane as an argument in the constructor

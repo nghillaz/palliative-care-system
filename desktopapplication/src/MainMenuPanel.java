@@ -10,25 +10,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainMenuPanel extends JPanel{
 	
 	protected String[] tempArray;
 	protected JLabel[] symptomRatingLabels;
-	int threshold = 5;
+	
+	int[] thresholdValues = new int[10];
+	
 	JList<String> patientList;
 	String[] patientNames;
-	Timer timer;
 	
 	public MainMenuPanel(Container contentPane){
 		// TODO prioritize patients based on severity/list history
-
+		
 		//set to grid layout
 		super(new GridLayout(1,2));
 		
-		contentPane.setPreferredSize(new Dimension(1000,480));
+		//initialize threshold values array
+		for(int i = 0; i < thresholdValues.length; i++){
+			thresholdValues[i] = 5;
+		}
+		
+		contentPane.setPreferredSize(new Dimension(1000,1000));
 		
 		//the list of patients, on a panel on the left
 		patientNames = getPatientNames();
@@ -44,7 +48,7 @@ public class MainMenuPanel extends JPanel{
 		Container contentPane;
 		public RightPanel(Container contentPane){
 			//set up with a grid layout
-			super(new GridLayout(14,2));
+			super(new GridLayout(24,2));
 			this.contentPane = contentPane;
 			
 			//set up the labels that won't be changing, they simply say what symptom it is
@@ -91,35 +95,53 @@ public class MainMenuPanel extends JPanel{
 			logoutButton.addActionListener(new BackListener(contentPane));
 			add(logoutButton);
 			
-			JTextField thresholdField = new JTextField();
+			JButton[] thresholdButtons = new JButton[10];
 			
-			JButton updateThresholdButton = new JButton("Update Threshold:");
-			updateThresholdButton.addActionListener(new EditThresholdListener(contentPane, thresholdField));
-			add(updateThresholdButton);
+			for(int i = 0; i < thresholdButtons.length; i++){
+				thresholdButtons[i] = new JButton();
+			}
 			
-			add(thresholdField);
+			JTextField[] thresholdTextFields = new JTextField[10];
+			for(int i = 0; i < thresholdTextFields.length; i++){
+				thresholdTextFields[i] = new JTextField();
+			}
+			
+			//these Buttons will never change from these values
+			thresholdButtons[0].setText("Pain Threshold:");
+			thresholdButtons[1].setText("Tiredness Threshold:");
+			thresholdButtons[2].setText("Nausea Threshold:");
+			thresholdButtons[3].setText("Depression Threshold:");
+			thresholdButtons[4].setText("Anxiety Threshold:");
+			thresholdButtons[5].setText("Drowsiness Threshold:");
+			thresholdButtons[6].setText("Appetite Threshold:");
+			thresholdButtons[7].setText("Wellbeing Threshold:");
+			thresholdButtons[8].setText("Shortness of breath Threshold:");
+			thresholdButtons[9].setText("Other Threshold:");
+			
+			for(int i = 0; i < thresholdButtons.length; i++){
+				thresholdButtons[i].addActionListener(new EditThresholdListener(contentPane, thresholdTextFields[i], i));
+			}
+			
+			//set up the panel so that the Buttons are in the correct spots
+			//it's some weird math, but the logic makes them alternate left/right filling up all 22 spots
+			for(int i = 0; i < thresholdButtons.length * 2; i++){
+				if(i%2 == 0){
+					//left side
+					add(thresholdButtons[(int) Math.floor(i/2)]);
+				}
+				if(i%2 == 1){
+					//right side
+					add(thresholdTextFields[(int) Math.floor(i/2)]);
+				}
+			}
 			
 			JButton viewPatientHistoryButton = new JButton("View Patient History");
-			updateThresholdButton.addActionListener(new ViewPatientHistoryListener(contentPane));
+			viewPatientHistoryButton.addActionListener(new ViewPatientHistoryListener(contentPane));
 			add(viewPatientHistoryButton);
 			
 			JButton updateDataButton = new JButton("Update Data");
 			updateDataButton.addActionListener(new UpdateDataListener(contentPane));
 			add(updateDataButton);
-			
-			
-			timer = new Timer();
-			long delay = 0;
-			long intervalPeriod = 60 * 1000; // 60 second interval
-			TimerTask task = new TimerTask()
-			{
-				@Override
-			    public void run()
-				{
-					updateSymptomsValues();
-			    }
-			};
-			timer.scheduleAtFixedRate(task, delay, intervalPeriod);
 		}	
 	}
 	
@@ -129,6 +151,7 @@ public class MainMenuPanel extends JPanel{
 		public void valueChanged(ListSelectionEvent listSelectionEvent) {
 	        if(!listSelectionEvent.getValueIsAdjusting())
 	        {
+	        	System.out.println(thresholdValues[0]);
 	        	@SuppressWarnings("unchecked")
 				JList<String> pList = (JList<String>) listSelectionEvent.getSource();
 	        	String selectionValue = pList.getSelectedValue();
@@ -188,7 +211,7 @@ public class MainMenuPanel extends JPanel{
 							try {
 								painLevel = Integer.valueOf(tempArray[0]);
 								//if the pain level is at the threshold, make the text red
-								if(painLevel >= (threshold)){
+								if(painLevel >= (thresholdValues[0])){
 									for(int i = 0; i < symptomRatingLabels.length; i++)
 									{
 										symptomRatingLabels[i].setText(" " + tempArray[i]);
@@ -196,7 +219,7 @@ public class MainMenuPanel extends JPanel{
 									symptomRatingLabels[0].setForeground(Color.RED);
 								}
 								//if the pain level is only mildly urgent
-								else if(painLevel >= (threshold) && painLevel < (threshold + 3))
+								else if(painLevel >= (thresholdValues[0]) && painLevel < (thresholdValues[0] + 3))
 								{
 									for(int i = 0; i < symptomRatingLabels.length; i++)
 									{
@@ -265,7 +288,6 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			timer.cancel();
 			contentPane.removeAll();
 			contentPane.add(new LoginPanel(contentPane));
 			contentPane.invalidate();
@@ -273,23 +295,7 @@ public class MainMenuPanel extends JPanel{
 		}
 	}
 	
-	public class EditThresholdListener implements ActionListener{
-		Container contentPane;
-		JTextField textField;
-		public EditThresholdListener(Container contentPane, JTextField textField){
-			this.contentPane = contentPane;
-			this.textField = textField;
-		}
-		public void actionPerformed(ActionEvent e){
-			//check if the textfield can be cast as an int
-			try {
-		        Integer.valueOf(textField.getText());
-		        textField.setText("");
-		    } catch (NumberFormatException f) {
-		        return;
-		    }
-		}
-	}
+	
 	
 	public class ViewPatientHistoryListener implements ActionListener{
 		Container contentPane;
@@ -390,4 +396,32 @@ public class MainMenuPanel extends JPanel{
 			patientList.setSelectedValue(patientNames[i], true);
 		}
 	}
+	
+	public class EditThresholdListener implements ActionListener{
+		Container contentPane;
+		JTextField textField;
+		int index;
+		public EditThresholdListener(Container contentPane, JTextField textField, int index){
+			this.contentPane = contentPane;
+			this.textField = textField;
+			this.index = index;
+		}
+		public void actionPerformed(ActionEvent e){
+			//check if the textfield can be cast as an int
+			try {
+		        thresholdValues[index] = Integer.valueOf(textField.getText());
+		        System.out.println("new threshold value at " + index + " is " + thresholdValues[index]);
+		        textField.setText("");
+		        //update the numbers' colors
+		        for(int i = 0; i < patientNames.length; i++)
+				{
+					patientList.setSelectedValue(patientNames[i], true);
+				}
+		    } catch (NumberFormatException f) {
+		        return;
+		    }
+		}
+	}
+	
+	
 }
