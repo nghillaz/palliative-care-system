@@ -327,9 +327,9 @@ public class MainMenuPanel extends JPanel{
 			try {
 				scanner = new Scanner(patientf);
 				scanner.useDelimiter("\n");
-				//message += scanner.nextLine().replace(",", " | ") + "\n";
 				while(scanner.hasNext()){
-					message += scanner.nextLine().replace(",", " | ") + "\n";
+					message += scanner.nextLine().replace(",read", "").replace(",FALSE", "").replace(",TRUE", "")
+							.replace(",", "  |  ") + "\n";
 				}
 				scanner.close();
 			} catch (FileNotFoundException e1) {
