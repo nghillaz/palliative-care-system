@@ -37,6 +37,8 @@ public class EnterSymptomsPanel extends JPanel{
 	JButton submitButton;
 	JButton backButton;
 	
+	//TODO, make a column for whether a symptom has been read by a doctor.  This value will be updated from the doctor portal
+	
 	public EnterSymptomsPanel(Container contentPane){
 		
 		//setting to grid layout
@@ -248,7 +250,7 @@ public class EnterSymptomsPanel extends JPanel{
 			int day = calendar.get(Calendar.DAY_OF_MONTH);
 			int month = calendar.get(Calendar.MONTH);
 			int year = calendar.get(Calendar.YEAR);
-			
+			//TODO, add time maybe???
 			String date = "" + day+ "/" + (month += 1) + "/" + year;
 			String pEmail = LoginPanel.getEmail();
 			
@@ -267,12 +269,12 @@ public class EnterSymptomsPanel extends JPanel{
 					//add the header line to the buffer
 					buffer += scanner.nextLine();
 					//add the new line after the header
-					buffer += painValue.toString() + "," + tirednessValue.toString() + "," + nauseaValue.toString() + "," + depressionValue.toString() + ","
+					buffer += "\n" + painValue.toString() + "," + tirednessValue.toString() + "," + nauseaValue.toString() + "," + depressionValue.toString() + ","
 							+ anxietyValue.toString() + "," + drowsinessValue.toString() + "," + appetiteValue.toString() + "," + wellbeingValue.toString() + ","
-							+ sobValue.toString() + "," + oValue.toString() + "," + date + "\n";
+							+ sobValue.toString() + "," + oValue.toString() + "," + date;
 					//add the rest of the lines
 					while(scanner.hasNext()){
-						buffer += scanner.nextLine();
+						buffer += "\n" + scanner.nextLine();
 					}
 					scanner.close();
 					
@@ -311,6 +313,8 @@ public class EnterSymptomsPanel extends JPanel{
 					fw.append("other");
 					fw.append(",");
 					fw.append("date");
+					fw.append(",");
+					fw.append("read");
 					
 					fw.append("\n");
 					fw.append(painValue.toString());
@@ -334,6 +338,8 @@ public class EnterSymptomsPanel extends JPanel{
 					fw.append(oValue.toString());
 					fw.append(",");
 					fw.append(date);
+					fw.append(",");
+					fw.append("FALSE");
 					
 					fw.close();
 				} catch (IOException e1) {
