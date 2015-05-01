@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
@@ -321,7 +320,6 @@ public class MainMenuPanel extends JPanel{
 			this.contentPane = contentPane;
 		}
 		public void actionPerformed(ActionEvent e){
-			//TODO, finish the view patient history click
 			File patientf = Database.download(patientEmail + ".csv", console);
 			
 			Scanner scanner;
@@ -329,7 +327,7 @@ public class MainMenuPanel extends JPanel{
 			try {
 				scanner = new Scanner(patientf);
 				scanner.useDelimiter("\n");
-				message += scanner.nextLine().replace(",", " | ") + "\n";
+				//message += scanner.nextLine().replace(",", " | ") + "\n";
 				while(scanner.hasNext()){
 					message += scanner.nextLine().replace(",", " | ") + "\n";
 				}
