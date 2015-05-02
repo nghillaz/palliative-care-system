@@ -120,7 +120,6 @@ public class MainMenuPanel extends JPanel{
 			
 			for(int i = 0; i < thresholdButtons.length; i++){
 				thresholdButtons[i].addActionListener(new EditThresholdListener(contentPane, thresholdTextFields[i], i));
-				System.out.println("i = " + i);
 			}
 			
 			//set up the panel so that the Buttons are in the correct spots
@@ -361,7 +360,7 @@ public class MainMenuPanel extends JPanel{
 					{
 						System.out.println("line = " + line);
 						String[] pNames = line.split(",");
-						patientNames[i] = pNames[0] + ", " + pNames[1];
+						patientNames[i] = pNames[1] + ", " + pNames[0];
 						i++;
 					}
 				}
