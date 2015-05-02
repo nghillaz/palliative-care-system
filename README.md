@@ -28,7 +28,7 @@ File List
 --------------------------
 How to Run the Softwares
 --------------------------
-Double-click on the .jar file and the application will open
+Double-click on the .jar file and the application will open.
 
 Patient Portal Application
 --------------------------
