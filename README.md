@@ -35,8 +35,8 @@ Patient Portal Application
 1. Create an account by clicking on the "Create an Account" button.
 2. Login using the credentials you created.
 3. You can click on the "Enter Symptoms/Pain Level" button to enter respective symptoms.
-4. You can click on Set Doctor to set your preferred doctor.
-5. You can click on Edit Personal Details to change your personal details. Note: You will have to enter the the email ID you used to create the account to ensure that your data is updated. 
+4. You can click on "Set Doctor" button to set your preferred doctor.
+5. You can click on "Edit Personal Details" button to change your personal details. Note: You will have to enter the the email ID you used to create the account to ensure that your data is updated. 
 6. You can logout form the application by clicking on the "Logout" button.
 
 Doctor Portal Application
