@@ -1,4 +1,6 @@
 # CSE360 Team22 README
+NOTE:  This Application has had its AWS Credentials removed for security purposes.  Thus it will not properly interract with the database.
+==============
 Doctor Portal Application
 --------------------------
 File List

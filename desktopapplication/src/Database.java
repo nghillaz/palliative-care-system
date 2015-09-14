@@ -18,11 +18,9 @@ import com.amazonaws.services.s3.model.S3Object;
 
 public class Database {
 	
-	static AWSCredentials credentials = new BasicAWSCredentials(
-			"AKIAJ6ESZAJPDCWD4MOA", 
-			"SK1p8jgrSA4t6TlpOgXrX4IW9cVJRjCWSOIu901t");
-	static String bucketName			= "rpcareapp";
-	static AmazonS3 s3Client = new AmazonS3Client(credentials);
+	//--
+	//AWS Credentials removed for security reasons
+	//--	
 	
 	//method for downloading a file from the server of string keyname
 	public static File download(String keyName, PrintStream console){
